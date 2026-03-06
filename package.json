@@ -1,9 +1,33 @@
 {
   "name": "BRAGram",
   "version": "1.0.0",
-  "scripts": {
-  },
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "prepare": "husky",
+    "build:client": "pnpm --filter=client build",
+    "build:server": "pnpm --filter=server build",
+    "build": "pnpm build:client && pnpm build:server",
+    "lint:client": "pnpm --filter=client lint",
+    "lint:server": "pnpm --filter=server lint",
+    "lint": "pnpm lint:client && pnpm lint:server",
+    "format:client": "pnpm --filter=client format",
+    "format:server": "pnpm --filter=server format",
+    "format": "pnpm format:client && pnpm format:server"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2"
+  },
+  "lint-staged": {
+    "apps/client/**/*.{js,jsx,ts,tsx}": [
+      "pnpm --filter=client format",
+      "pnpm --filter=client lint"
+    ],
+    "apps/server/**/*.{js,ts}": [
+      "pnpm --filter=server format",
+      "pnpm --filter=server lint"
+    ]
+  }
 }
