@@ -1,0 +1,66 @@
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
+import { UserService } from '../user/user.service';
+
+interface User {
+  id: number;
+  kakaoId: string;
+  nickname: string;
+}
+
+@Injectable()
+export class AuthService {
+  constructor(
+    private jwtService: JwtService,
+    private userService: UserService,
+    private configService: ConfigService,
+  ) {}
+
+  async login(user: User) {
+    const tokens = await this.generateTokens(user.id, user.kakaoId);
+    const hashed = await bcrypt.hash(tokens.refreshToken, 10);
+    await this.userService.updateRefreshToken(user.id, hashed);
+    return tokens;
+  }
+
+  async refreshTokens(refreshToken: string) {
+    let payload: { sub: number; kakaoId: string };
+    try {
+      payload = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      });
+    } catch {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.userService.findById(payload.sub);
+    if (!user?.refreshToken) throw new UnauthorizedException();
+
+    const matches = await bcrypt.compare(refreshToken, user.refreshToken);
+    if (!matches) throw new UnauthorizedException();
+
+    const tokens = await this.generateTokens(user.id, user.kakaoId);
+    const hashed = await bcrypt.hash(tokens.refreshToken, 10);
+    await this.userService.updateRefreshToken(user.id, hashed);
+    return tokens;
+  }
+
+  private async generateTokens(userId: number, kakaoId: string) {
+    const payload = { sub: userId, kakaoId };
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+        expiresIn: '1h',
+      }),
+      this.jwtService.signAsync(payload, {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+        expiresIn: '30d',
+      }),
+    ]);
+
+    return { accessToken, refreshToken };
+  }
+}

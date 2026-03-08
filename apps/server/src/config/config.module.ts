@@ -15,6 +15,15 @@ const envSchema = z.object({
   POSTGRES_PASSWORD: z.string(),
   POSTGRES_DB: z.string(),
   DATABASE_URL: z.url(),
+
+  // Kakao OAuth
+  KAKAO_CLIENT_ID: z.string(),
+  KAKAO_CLIENT_SECRET: z.string(),
+  KAKAO_REDIRECT_URI: z.string(),
+
+  // JWT
+  JWT_SECRET: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
 });
 
 @Global()
