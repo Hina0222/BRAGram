@@ -6,7 +6,7 @@ import { apiClient } from '@/shared/api';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/shared/store/auth-store';
 
-export default function Home() {
+export default function HomePage() {
   const router = useRouter();
   const { clearAuth } = useAuthStore();
 
