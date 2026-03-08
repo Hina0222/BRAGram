@@ -47,6 +47,25 @@ export class AuthService {
     return tokens;
   }
 
+  async logoutByRefreshToken(refreshToken: string) {
+    let payload: { sub: number; kakaoId: string };
+    try {
+      payload = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      });
+    } catch {
+      return;
+    }
+
+    const user = await this.userService.findById(payload.sub);
+    if (!user?.refreshToken) return;
+
+    const matches = await bcrypt.compare(refreshToken, user.refreshToken);
+    if (!matches) return;
+
+    await this.userService.updateRefreshToken(user.id, null);
+  }
+
   private async generateTokens(userId: number, kakaoId: string) {
     const payload = { sub: userId, kakaoId };
 

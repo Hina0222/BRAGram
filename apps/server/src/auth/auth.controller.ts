@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Request,
   Req,
   Res,
   UseGuards,
@@ -36,7 +35,7 @@ export class AuthController {
   @Get('kakao/callback')
   @UseGuards(KakaoAuthGuard)
   async kakaoCallback(
-    @Request() req: { user: { id: number; kakaoId: string; nickname: string } },
+    @Req() req: { user: { id: number; kakaoId: string; nickname: string } },
     @Res() res: Response,
   ) {
     const { accessToken, refreshToken } = await this.authService.login(
@@ -45,6 +44,19 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, REFRESH_TOKEN_COOKIE_OPTIONS);
     const clientUrl = this.configService.get<string>('CLIENT_URL');
     res.redirect(`${clientUrl}/auth/callback?accessToken=${accessToken}`);
+  }
+
+  @Post('logout')
+  async logout(
+    @Req() req: ExpressRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const cookies = req.cookies as Record<string, string | undefined>;
+    const refreshToken = cookies['refreshToken'];
+    if (refreshToken) {
+      await this.authService.logoutByRefreshToken(refreshToken);
+    }
+    res.clearCookie('refreshToken', REFRESH_TOKEN_COOKIE_OPTIONS);
   }
 
   @Post('refresh')
