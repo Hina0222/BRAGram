@@ -1,9 +1,2 @@
-import { z } from 'zod';
-
-export const MeResponseSchema = z.object({
-  id: z.number(),
-  nickname: z.string(),
-  profileImage: z.string().nullable(),
-});
-
-export type MeResponse = z.infer<typeof MeResponseSchema>;
+export * from './user/index.js';
+export * from './pet/index.js';
