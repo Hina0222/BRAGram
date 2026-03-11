@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { StepPetType, StepBasicInfo, StepPhoto } from '@/features/pet/create/ui';
 import { ChevronLeft } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/shared/ui';
 import { useCreatePetMutation } from '@/features/pet/create/api/useCreatePetMutation';
@@ -29,7 +29,19 @@ export function CreatePetForm() {
       bio: '',
     },
   });
-  const { handleSubmit, trigger } = methods;
+  const { handleSubmit, trigger, control } = methods;
+  const [type, name] = useWatch({ control, name: ['type', 'name'] });
+
+  const canNext = () => {
+    switch (step) {
+      case 1:
+        return !!type;
+      case 2:
+        return !!name?.trim();
+      default:
+        return true;
+    }
+  };
 
   const onSubmit = (data: CreatePetFormValues) => {
     mutate(data);
@@ -95,6 +107,7 @@ export function CreatePetForm() {
           type="button"
           className="h-13 w-full rounded-2xl bg-brand text-base font-semibold text-primary-foreground hover:bg-brand-dark"
           onClick={handleButtonClick}
+          disabled={!canNext()}
         >
           {step === TOTAL_STEPS ? '완료하기' : '다음'}
         </Button>
