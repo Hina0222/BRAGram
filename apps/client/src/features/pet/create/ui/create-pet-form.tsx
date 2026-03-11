@@ -1,66 +1,55 @@
 'use client';
 
-import { type ChangeEvent, useRef, useState } from 'react';
+import { useState } from 'react';
 import { StepPetType, StepBasicInfo, StepPhoto } from '@/features/pet/create/ui';
 import { ChevronLeft } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import { useForm } from 'react-hook-form';
-import { CreatePetRequest, CreatePetSchema } from '@bragram/schemas/pet';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/shared/ui';
 import { useCreatePetMutation } from '@/features/pet/create/api/useCreatePetMutation';
+import { CreatePetFormSchema, CreatePetFormValues } from '@/features/pet/create/model/schema';
 
 const TOTAL_STEPS = 3;
+const stepFields: Record<number, (keyof CreatePetFormValues)[]> = {
+  1: ['type'],
+  2: ['name', 'breed', 'birthDate', 'bio'],
+};
 
 export function CreatePetForm() {
   const [step, setStep] = useState(1);
-  const [photo, setPhoto] = useState<string | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { mutate } = useCreatePetMutation();
 
-  const {
-    register,
-    control,
-    trigger,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<CreatePetRequest>({
-    resolver: zodResolver(CreatePetSchema),
-    defaultValues: { name: '', breed: '', birthDate: '', bio: '' },
+  const methods = useForm<CreatePetFormValues>({
+    resolver: zodResolver(CreatePetFormSchema),
+    defaultValues: {
+      name: '',
+      breed: '',
+      birthDate: '',
+      bio: '',
+    },
   });
+  const { handleSubmit, trigger } = methods;
 
-  const petType = watch('type');
-  const nameValue = watch('name');
-
-  const canNext = () => {
-    if (step === 1) return !!petType;
-    if (step === 2) return (nameValue ?? '').trim().length > 0;
-    return true;
+  const onSubmit = (data: CreatePetFormValues) => {
+    mutate(data);
   };
 
   const handleNext = async () => {
-    if (step === 2) {
-      const valid = await trigger(['name', 'breed', 'birthDate', 'bio']);
+    const fields = stepFields[step];
+    if (fields) {
+      const valid = await trigger(fields);
       if (!valid) return;
     }
-    if (step < TOTAL_STEPS) {
-      setStep(s => s + 1);
+    setStep(s => s + 1);
+  };
+
+  const handleButtonClick = () => {
+    if (step === TOTAL_STEPS) {
+      handleSubmit(onSubmit)();
+    } else {
+      handleNext();
     }
-  };
-
-  const onSubmit = (data: CreatePetRequest) => {
-    if (step !== TOTAL_STEPS) return;
-    mutate({ ...data, image: photoFile ?? undefined });
-  };
-
-  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setPhotoFile(file);
-    setPhoto(URL.createObjectURL(file));
   };
 
   return (
@@ -90,36 +79,26 @@ export function CreatePetForm() {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col">
-        <div className="flex flex-1 flex-col px-5">
-          {step === 1 && (
-            <StepPetType selected={petType} onSelect={type => setValue('type', type)} />
-          )}
-          {step === 2 && <StepBasicInfo register={register} control={control} errors={errors} />}
-          {step === 3 && (
-            <StepPhoto photo={photo} onFileClick={() => fileInputRef.current?.click()} />
-          )}
-        </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handlePhotoChange}
-        />
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col px-5">
+            {step === 1 && <StepPetType />}
+            {step === 2 && <StepBasicInfo />}
+            {step === 3 && <StepPhoto />}
+          </div>
+        </form>
+      </FormProvider>
 
-        {/* 하단 버튼 */}
-        <div className="px-5 pt-4 pb-10">
-          <Button
-            type={step === TOTAL_STEPS ? 'submit' : 'button'}
-            className="h-13 w-full rounded-2xl bg-brand text-base font-semibold text-primary-foreground hover:bg-brand-dark"
-            onClick={step === TOTAL_STEPS ? undefined : handleNext}
-            disabled={!canNext()}
-          >
-            {step === TOTAL_STEPS ? '완료하기' : '다음'}
-          </Button>
-        </div>
-      </form>
+      {/* 하단 버튼 */}
+      <div className="px-5 pt-4 pb-10">
+        <Button
+          type="button"
+          className="h-13 w-full rounded-2xl bg-brand text-base font-semibold text-primary-foreground hover:bg-brand-dark"
+          onClick={handleButtonClick}
+        >
+          {step === TOTAL_STEPS ? '완료하기' : '다음'}
+        </Button>
+      </div>
     </>
   );
 }

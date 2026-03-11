@@ -1,16 +1,30 @@
 'use client';
 
-import React from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Camera } from 'lucide-react';
+import { useFormContext } from 'react-hook-form';
+import type { CreatePetFormValues } from '@/features/pet/create/model/schema';
 
-export function StepPhoto({
-  photo,
-  onFileClick,
-}: {
-  photo: string | null;
-  onFileClick: () => void;
-}) {
+export function StepPhoto() {
+  const { setValue, getValues } = useFormContext<CreatePetFormValues>();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(() => {
+    const file = getValues('image');
+    return file ? URL.createObjectURL(file) : null;
+  });
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    const url = URL.createObjectURL(file);
+
+    setPreviewUrl(url);
+    setValue('image', file);
+  };
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="text-center">
@@ -21,12 +35,13 @@ export function StepPhoto({
       </div>
 
       <button
-        onClick={onFileClick}
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
         className="relative mt-4 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-brand/50 bg-card transition-colors hover:border-brand"
       >
-        {photo ? (
+        {previewUrl ? (
           <Image
-            src={photo}
+            src={previewUrl}
             alt="펫 사진"
             className="h-full w-full object-cover"
             width={140}
@@ -39,6 +54,14 @@ export function StepPhoto({
           </div>
         )}
       </button>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
 
       <p className="mt-2 text-center text-xs text-muted-foreground">
         탭하여 갤러리에서 사진을 선택하거나

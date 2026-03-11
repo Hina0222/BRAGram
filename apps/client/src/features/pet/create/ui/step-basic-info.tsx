@@ -1,18 +1,22 @@
 'use client';
 
-import { Control, Controller, FieldErrors, UseFormRegister } from 'react-hook-form';
-import type { CreatePetRequest, PetGender } from '@bragram/schemas/pet';
+import { Controller, useFormContext } from 'react-hook-form';
+import type { PetGender } from '@bragram/schemas/pet';
+import type { CreatePetFormValues } from '@/features/pet/create/model/schema';
 import { cn } from '@/shared/lib/utils';
 
-export function StepBasicInfo({
-  register,
-  control,
-  errors,
-}: {
-  register: UseFormRegister<CreatePetRequest>;
-  control: Control<CreatePetRequest>;
-  errors: FieldErrors<CreatePetRequest>;
-}) {
+const genderTypes = [
+  { val: 'male' as PetGender, label: '남아 ♂' },
+  { val: 'female' as PetGender, label: '여아 ♀' },
+];
+
+export function StepBasicInfo() {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<CreatePetFormValues>();
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -69,12 +73,7 @@ export function StepBasicInfo({
             control={control}
             render={({ field }) => (
               <div className="flex gap-3">
-                {(
-                  [
-                    { val: 'male' as PetGender, label: '남아 ♂' },
-                    { val: 'female' as PetGender, label: '여아 ♀' },
-                  ] as { val: PetGender; label: string }[]
-                ).map(({ val, label }) => (
+                {genderTypes.map(({ val, label }) => (
                   <button
                     key={val}
                     type="button"

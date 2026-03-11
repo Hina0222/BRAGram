@@ -2,14 +2,17 @@
 
 import type { PetType } from '@bragram/schemas/pet';
 import { cn } from '@/shared/lib/utils';
+import { Controller, useFormContext } from 'react-hook-form';
+import type { CreatePetFormValues } from '@/features/pet/create/model/schema';
 
-export function StepPetType({
-  selected,
-  onSelect,
-}: {
-  selected: PetType | undefined;
-  onSelect: (t: PetType) => void;
-}) {
+const petTypes: { type: PetType; emoji: string; label: string }[] = [
+  { type: 'dog', emoji: '🐶', label: '강아지' },
+  { type: 'cat', emoji: '🐱', label: '고양이' },
+];
+
+export function StepPetType() {
+  const { control } = useFormContext<CreatePetFormValues>();
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -17,33 +20,30 @@ export function StepPetType({
         <p className="text-sm text-muted-foreground">반려동물 종류를 선택해주세요</p>
       </div>
       <div className="mt-4 flex gap-4">
-        {(
-          [
-            { type: 'dog' as PetType, emoji: '🐶', label: '강아지' },
-            { type: 'cat' as PetType, emoji: '🐱', label: '고양이' },
-          ] as { type: PetType; emoji: string; label: string }[]
-        ).map(({ type, emoji, label }) => (
-          <button
-            key={type}
-            onClick={() => onSelect(type)}
-            className={cn(
-              'flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border-2 py-10 transition-all duration-200',
-              selected === type
-                ? 'border-brand bg-brand/12'
-                : 'border-border bg-card hover:border-brand/50'
-            )}
-          >
-            <span className="text-5xl">{emoji}</span>
-            <span
-              className={cn(
-                'text-base font-semibold',
-                selected === type ? 'text-brand' : 'text-foreground'
-              )}
-            >
-              {label}
-            </span>
-          </button>
-        ))}
+        <Controller
+          name="type"
+          control={control}
+          render={({ field }) => (
+            <div className="mt-4 flex flex-1 gap-4">
+              {petTypes.map(({ type, emoji, label }) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => field.onChange(type)}
+                  className={cn(
+                    'flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border-2 py-10',
+                    field.value === type
+                      ? 'border-brand bg-brand/12'
+                      : 'border-border bg-card hover:border-brand/50'
+                  )}
+                >
+                  <span className="text-5xl">{emoji}</span>
+                  <span className="text-base font-semibold">{label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        />
       </div>
     </div>
   );
