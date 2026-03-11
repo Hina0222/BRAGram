@@ -6,7 +6,7 @@ import { API_ROUTES } from '@/shared/api/api-routes.constants';
 import { petQueryKeys } from '@/features/pet/create/model/pet.query-key';
 import type { CreatePetRequest, PetResponse } from '@bragram/schemas/pet';
 
-type CreatePetParams = CreatePetRequest & { image: File };
+type CreatePetParams = CreatePetRequest & { image?: File };
 
 export const createPet = async (data: CreatePetParams): Promise<PetResponse> => {
   const formData = new FormData();
@@ -16,7 +16,7 @@ export const createPet = async (data: CreatePetParams): Promise<PetResponse> => 
   if (data.birthDate) formData.append('birthDate', data.birthDate);
   if (data.gender) formData.append('gender', data.gender);
   if (data.bio) formData.append('bio', data.bio);
-  formData.append('image', data.image);
+  if (data.image) formData.append('image', data.image);
 
   return apiClient.post<PetResponse>(API_ROUTES.PETS.CREATE_PET.URL, formData);
 };
@@ -30,8 +30,8 @@ export const createPetMutationOptions = () => {
       console.log('성공');
       queryClient.invalidateQueries({ queryKey: petQueryKeys.details() });
     },
-    onError: () => {
-      console.log('실패');
+    onError: (error: Error) => {
+      console.log('실패:', error.message);
     },
   };
 };

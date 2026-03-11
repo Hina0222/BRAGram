@@ -52,8 +52,8 @@ export function CreatePetForm() {
   };
 
   const onSubmit = (data: CreatePetRequest) => {
-    if (!photoFile) return;
-    mutate({ ...data, image: photoFile });
+    if (step !== TOTAL_STEPS) return;
+    mutate({ ...data, image: photoFile ?? undefined });
   };
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {

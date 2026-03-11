@@ -64,7 +64,6 @@ export const httpMethod = async <Data>(
     return response.data as Data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(error);
       const errorMessage =
         error.response?.data?.message || error.message || '네트워크 요청에 실패했습니다';
       throw new Error(errorMessage);
