@@ -12,6 +12,14 @@ import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { KakaoAuthGuard } from './guards/kakao-auth.guard';
 
+const ACCESS_TOKEN_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  maxAge: 15 * 60 * 1000,
+  path: '/',
+};
+
 const REFRESH_TOKEN_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
@@ -41,9 +49,10 @@ export class AuthController {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user,
     );
+    res.cookie('access_token', accessToken, ACCESS_TOKEN_COOKIE_OPTIONS);
     res.cookie('refreshToken', refreshToken, REFRESH_TOKEN_COOKIE_OPTIONS);
     const clientUrl = this.configService.get<string>('CLIENT_URL');
-    res.redirect(`${clientUrl}/auth/callback?accessToken=${accessToken}`);
+    res.redirect(`${clientUrl}/auth/callback`);
   }
 
   @Post('logout')
@@ -56,6 +65,7 @@ export class AuthController {
     if (refreshToken) {
       await this.authService.logoutByRefreshToken(refreshToken);
     }
+    res.clearCookie('access_token', ACCESS_TOKEN_COOKIE_OPTIONS);
     res.clearCookie('refreshToken', REFRESH_TOKEN_COOKIE_OPTIONS);
   }
 
@@ -71,7 +81,7 @@ export class AuthController {
     const { accessToken, refreshToken: newRefreshToken } =
       await this.authService.refreshTokens(refreshToken);
 
+    res.cookie('access_token', accessToken, ACCESS_TOKEN_COOKIE_OPTIONS);
     res.cookie('refreshToken', newRefreshToken, REFRESH_TOKEN_COOKIE_OPTIONS);
-    return { accessToken };
   }
 }

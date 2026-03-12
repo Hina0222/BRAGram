@@ -4,23 +4,20 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@/shared/api';
 import { useAuthStore } from '@/shared/store/auth-store';
-import type { MeResponse } from '@bragram/schemas';
+import type { MeResponse } from '@bragram/schemas/user';
 
 export default function AuthCallbackPage() {
   const router = useRouter();
   const { setAuth } = useAuthStore();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get('accessToken');
-    if (!accessToken) return;
-
     apiClient
-      .get<MeResponse>('/users/me', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get<MeResponse>('/users/me')
       .then(user => {
-        setAuth(accessToken, user);
+        setAuth(user);
+        router.replace('/');
+      })
+      .catch(() => {
         router.replace('/');
       });
   }, [router, setAuth]);

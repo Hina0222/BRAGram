@@ -5,6 +5,7 @@ import { Settings } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { BottomNav } from '@/widgets/bottom-nav';
 import { useAuthStore } from '@/shared/store/auth-store';
+import Link from 'next/link';
 
 const MOCK_PETS = [
   { id: 1, name: '코코', emoji: '🐶' },
@@ -77,6 +78,7 @@ export default function MyPage() {
       {/* 내 펫 가로 스크롤 */}
       <section className="px-5 pb-6">
         <h2 className="mb-3 text-sm font-semibold text-foreground">내 반려동물</h2>
+        <Link href={'/my/pets'}>펫 목록</Link>
         <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-1">
           {MOCK_PETS.map(pet => (
             <div key={pet.id} className="flex flex-shrink-0 flex-col items-center gap-1.5">

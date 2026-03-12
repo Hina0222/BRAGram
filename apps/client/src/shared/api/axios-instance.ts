@@ -1,18 +1,22 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useAuthStore } from '@/shared/store/auth-store';
-
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use(config => {
-  const token = useAuthStore.getState().accessToken;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+axiosInstance.interceptors.request.use(async config => {
+  if (typeof window === 'undefined') {
+    const { cookies } = await import('next/headers');
+    const accessToken = (await cookies()).get('access_token')?.value;
+    if (accessToken) {
+      config.headers.Cookie = `access_token=${accessToken}`;
+    }
+  }
   return config;
 });
 
-let refreshPromise: Promise<string> | null = null;
+let refreshPromise: Promise<void> | null = null;
 
 axiosInstance.interceptors.response.use(
   response => response,
@@ -32,17 +36,13 @@ axiosInstance.interceptors.response.use(
 
     try {
       refreshPromise ??= axiosInstance
-        .post<{ accessToken: string }>('/auth/refresh')
-        .then(({ data }) => {
-          useAuthStore.getState().setAccessToken(data.accessToken);
-          return data.accessToken;
-        })
+        .post('/auth/refresh')
+        .then(() => {})
         .finally(() => {
           refreshPromise = null;
         });
 
-      const accessToken = await refreshPromise;
-      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+      await refreshPromise;
       return axiosInstance(originalRequest);
     } catch {
       useAuthStore.getState().clearAuth();
