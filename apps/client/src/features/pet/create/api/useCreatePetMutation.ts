@@ -9,15 +9,12 @@ import { toast } from 'sonner';
 
 type CreatePetParams = CreatePetRequest & { image?: File };
 
-export const createPet = async (data: CreatePetParams): Promise<PetResponse> => {
+export const createPet = async ({ image, ...data }: CreatePetParams): Promise<PetResponse> => {
   const formData = new FormData();
-  formData.append('name', data.name);
-  formData.append('type', data.type);
-  if (data.breed) formData.append('breed', data.breed);
-  if (data.birthDate) formData.append('birthDate', data.birthDate);
-  if (data.gender) formData.append('gender', data.gender);
-  if (data.bio) formData.append('bio', data.bio);
-  if (data.image) formData.append('image', data.image);
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== undefined) formData.append(key, value);
+  });
+  if (image) formData.append('image', image);
 
   return apiClient.post<PetResponse>(API_ROUTES.PETS.CREATE_PET.URL, formData);
 };
