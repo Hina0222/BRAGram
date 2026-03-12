@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { MeResponse } from '@bragram/schemas';
+import type { MeResponse } from '@bragram/schemas/user';
 
 interface AuthState {
   user: MeResponse | null;

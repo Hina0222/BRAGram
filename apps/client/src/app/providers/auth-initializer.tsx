@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { apiClient } from '@/shared/api';
 import { useAuthStore } from '@/shared/store/auth-store';
-import type { MeResponse } from '@bragram/schemas';
+import type { MeResponse } from '@bragram/schemas/user';
 
 export function AuthInitializer({ children }: { children: React.ReactNode }) {
   const { setAuth, clearAuth, setInitialized } = useAuthStore();

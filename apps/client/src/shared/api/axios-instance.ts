@@ -61,11 +61,11 @@ export const httpMethod = async <Data>(
       ...options,
     });
 
-    return response.data as Data;
+    return response.data?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage =
-        error.response?.data?.message || error.message || '네트워크 요청에 실패했습니다';
+        error.response?.data?.error?.message || error.message || '네트워크 요청에 실패했습니다';
       throw new Error(errorMessage);
     }
     throw new Error('알 수 없는 오류가 발생했습니다');
