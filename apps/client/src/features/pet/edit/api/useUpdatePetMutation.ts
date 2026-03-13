@@ -12,7 +12,7 @@ type UpdatePetParams = UpdatePetRequest & { id: number; image?: File };
 export const updatePet = async ({ id, image, ...data }: UpdatePetParams): Promise<PetResponse> => {
   const formData = new FormData();
   Object.entries(data).forEach(([key, value]) => {
-    if (value !== undefined) formData.append(key, value);
+    if (value !== undefined && value !== '') formData.append(key, value);
   });
   if (image) formData.append('image', image);
 
@@ -24,9 +24,9 @@ export const updatePetMutationOptions = () => {
 
   return {
     mutationFn: updatePet,
-    onSuccess: (_: PetResponse, { id }: UpdatePetParams) => {
+    onSuccess: () => {
       toast.success('반려동물을 업데이트했습니다.');
-      queryClient.invalidateQueries({ queryKey: petQueryKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: petQueryKeys.details() });
     },
     onError: (error: Error) => {
       toast.error(error.message);

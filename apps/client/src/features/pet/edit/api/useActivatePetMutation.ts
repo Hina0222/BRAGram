@@ -16,9 +16,9 @@ export const activatePetMutationOptions = () => {
 
   return {
     mutationFn: activatePet,
-    onSuccess: (_: PetResponse, id: number) => {
+    onSuccess: () => {
       toast.success('반려동물을 활성화했습니다.');
-      queryClient.invalidateQueries({ queryKey: petQueryKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: petQueryKeys.details() });
     },
     onError: (error: Error) => {
       toast.error(error.message);

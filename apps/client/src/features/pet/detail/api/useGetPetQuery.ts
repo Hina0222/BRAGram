@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api';
 import { API_ROUTES } from '@/shared/api/api-routes.constants';
 import { petQueryKeys } from '@/features/pet/create/model/pet.query-key';
@@ -19,4 +19,8 @@ export const getPetQueryOptions = (id: number) => {
 
 export const useGetPetQuery = (id: number) => {
   return useQuery(getPetQueryOptions(id));
+};
+
+export const useGetPetSuspenseQuery = (id: number) => {
+  return useSuspenseQuery(getPetQueryOptions(id));
 };

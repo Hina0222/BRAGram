@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import type { ComponentType, ReactElement } from 'react';
 
-export const withSuspense = <T extends Record<string, unknown>>(
+export const withSuspense = <T extends object>(
   Component: ComponentType<T>,
   SuspenseComponent: ReactElement
 ) =>
