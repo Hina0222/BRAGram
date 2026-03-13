@@ -17,16 +17,13 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { MissionService } from './mission.service';
 import { ImageUpload } from '../common/decorators/image-upload.decorator';
+import type { AuthenticatedRequest } from '../common/types/authenticated-request.type';
 import {
   CreateSubmissionSchema,
   SubmissionHistoryQuerySchema,
   type SubmissionResponse,
   type TodayMissionResponse,
 } from '@bragram/schemas/mission';
-
-interface AuthenticatedRequest extends Request {
-  user: { id: number; kakaoId: string };
-}
 
 @UseGuards(JwtAuthGuard)
 @Controller('missions')

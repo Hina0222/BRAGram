@@ -17,15 +17,12 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PetService } from './pet.service';
 import { ImageUpload } from '../common/decorators/image-upload.decorator';
+import type { AuthenticatedRequest } from '../common/types/authenticated-request.type';
 import {
   CreatePetSchema,
   UpdatePetSchema,
   PetResponse,
 } from '@bragram/schemas/pet';
-
-interface AuthenticatedRequest extends Request {
-  user: { id: number; kakaoId: string };
-}
 
 @UseGuards(JwtAuthGuard)
 @Controller('pets')
