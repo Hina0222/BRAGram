@@ -6,9 +6,17 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PetModule } from './pet/pet.module';
+import { MissionModule } from './mission/mission.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, UserModule, AuthModule, PetModule],
+  imports: [
+    ConfigModule,
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    PetModule,
+    MissionModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

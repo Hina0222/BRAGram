@@ -13,6 +13,27 @@ import {
 import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
 
+export const IMAGE_PRESET = {
+  PET_THUMBNAIL: {
+    folder: 'pets',
+    width: 400,
+    height: 400,
+    fit: 'cover' as const,
+    withoutEnlargement: false,
+    quality: 80,
+  },
+  MISSION: {
+    folder: 'missions',
+    width: 1080,
+    height: 1080,
+    fit: 'inside' as const,
+    withoutEnlargement: true,
+    quality: 85,
+  },
+} as const;
+
+type ImagePreset = (typeof IMAGE_PRESET)[keyof typeof IMAGE_PRESET];
+
 @Injectable()
 export class AwsService {
   private readonly logger = new Logger(AwsService.name);
@@ -36,18 +57,21 @@ export class AwsService {
     });
   }
 
-  async uploadImage(buffer: Buffer, folder: string): Promise<string> {
+  async uploadImage(buffer: Buffer, preset: ImagePreset): Promise<string> {
     let resized: Buffer;
     try {
       resized = await sharp(buffer)
-        .resize(400, 400, { fit: 'cover' })
-        .webp({ quality: 80 })
+        .resize(preset.width, preset.height, {
+          fit: preset.fit,
+          withoutEnlargement: preset.withoutEnlargement,
+        })
+        .webp({ quality: preset.quality })
         .toBuffer();
     } catch {
       throw new BadRequestException('이미지 처리에 실패했습니다.');
     }
 
-    const key = `${folder}/${uuidv4()}.webp`;
+    const key = `${preset.folder}/${uuidv4()}.webp`;
 
     try {
       await this.s3.send(

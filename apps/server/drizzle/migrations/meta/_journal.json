@@ -8,6 +8,13 @@
       "when": 1772891415690,
       "tag": "0000_woozy_johnny_blaze",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773393519224,
+      "tag": "0001_milky_living_lightning",
+      "breakpoints": true
     }
   ]
 }

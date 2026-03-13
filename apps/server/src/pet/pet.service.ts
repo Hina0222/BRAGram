@@ -8,7 +8,7 @@ import { eq, and, asc, desc } from 'drizzle-orm';
 import { DRIZZLE_ORM } from '../database/database.provider';
 import type { DrizzleDB } from '../database/database.provider';
 import { pets } from '../database/schema';
-import { AwsService } from '../aws/aws.service';
+import { AwsService, IMAGE_PRESET } from '../aws/aws.service';
 import {
   CreatePetRequest,
   UpdatePetRequest,
@@ -37,7 +37,10 @@ export class PetService {
     }
 
     const imageUrl = imageBuffer
-      ? await this.awsService.uploadImage(imageBuffer, 'pets')
+      ? await this.awsService.uploadImage(
+          imageBuffer,
+          IMAGE_PRESET.PET_THUMBNAIL,
+        )
       : null;
     const isFirst = existing.length === 0;
 
@@ -90,7 +93,10 @@ export class PetService {
 
     let imageUrl = pet.imageUrl;
     if (imageBuffer) {
-      imageUrl = await this.awsService.uploadImage(imageBuffer, 'pets');
+      imageUrl = await this.awsService.uploadImage(
+        imageBuffer,
+        IMAGE_PRESET.PET_THUMBNAIL,
+      );
       if (pet.imageUrl) await this.awsService.deleteImage(pet.imageUrl);
     }
 
