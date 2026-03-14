@@ -6,6 +6,7 @@ import { API_ROUTES } from '@/shared/api/api-routes.constants';
 import { petQueryKeys } from '@/entities/pet/model/pet.query-key';
 import type { CreatePetRequest, PetResponse } from '@bragram/schemas/pet';
 import { toast } from 'sonner';
+import { missionQueryKeys } from '@/entities/mission/model/mission.query-key';
 
 type CreatePetParams = CreatePetRequest & { image?: File };
 
@@ -25,8 +26,9 @@ export const createPetMutationOptions = () => {
   return {
     mutationFn: createPet,
     onSuccess: () => {
-      toast.success('반려동물을 저장했습니다.');
+      toast.success('반려동물을 추가했습니다.');
       queryClient.invalidateQueries({ queryKey: petQueryKeys.details() });
+      queryClient.invalidateQueries({ queryKey: missionQueryKeys.today() });
     },
     onError: (error: Error) => {
       toast.error(error.message);
