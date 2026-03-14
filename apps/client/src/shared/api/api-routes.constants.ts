@@ -53,5 +53,18 @@ export const API_ROUTES = {
       URL: (submissionId: number) => `/feeds/${submissionId}/likes`,
       METHOD: 'DELETE',
     },
+    GET_COMMENTS: {
+      URL: (submissionId: number) => `/feeds/${submissionId}/comments`,
+      METHOD: 'GET',
+    },
+    CREATE_COMMENT: {
+      URL: (submissionId: number) => `/feeds/${submissionId}/comments`,
+      METHOD: 'POST',
+    },
+    DELETE_COMMENT: {
+      URL: (submissionId: number, commentId: number) =>
+        `/feeds/${submissionId}/comments/${commentId}`,
+      METHOD: 'DELETE',
+    },
   },
 } as const;
