@@ -45,6 +45,10 @@ export const API_ROUTES = {
     },
   },
   FEEDS: {
+    GET_FEEDS: {
+      URL: '/feeds',
+      METHOD: 'GET',
+    },
     ADD_LIKE: {
       URL: (submissionId: number) => `/feeds/${submissionId}/likes`,
       METHOD: 'POST',
