@@ -29,6 +29,7 @@ export const createPetMutationOptions = () => {
       toast.success('반려동물을 추가했습니다.');
       queryClient.invalidateQueries({ queryKey: petQueryKeys.details() });
       queryClient.invalidateQueries({ queryKey: missionQueryKeys.today() });
+      queryClient.invalidateQueries({ queryKey: missionQueryKeys.history() });
     },
     onError: (error: Error) => {
       toast.error(error.message);

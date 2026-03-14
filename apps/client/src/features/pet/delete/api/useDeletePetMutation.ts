@@ -20,6 +20,7 @@ export const deletePetMutationOptions = () => {
       toast.success('반려동물을 삭제했습니다.');
       queryClient.invalidateQueries({ queryKey: petQueryKeys.details() });
       queryClient.invalidateQueries({ queryKey: missionQueryKeys.today() });
+      queryClient.invalidateQueries({ queryKey: missionQueryKeys.history() });
     },
     onError: (error: Error) => {
       toast.error(error.message);

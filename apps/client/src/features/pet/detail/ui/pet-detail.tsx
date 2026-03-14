@@ -22,6 +22,9 @@ function PetDetail({ id }: PetDetailProps) {
       <InfoRow label="생년월일" value={pet.birthDate} />
       <InfoRow label="성별" value={pet.gender ? GENDER_LABEL[pet.gender] : null} />
       <InfoRow label="소개" value={pet.bio} />
+      <InfoRow label="총 점수" value={String(pet.score)} />
+      <InfoRow label="주간 점수" value={String(pet.weeklyScore)} />
+      <InfoRow label="월간 점수" value={String(pet.monthlyScore)} />
 
       {!pet.isActive && (
         <Button
