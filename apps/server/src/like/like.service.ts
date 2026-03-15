@@ -7,7 +7,7 @@ import {
 import { eq, and, sql } from 'drizzle-orm';
 import { DRIZZLE_ORM } from '../database/database.provider';
 import type { DrizzleDB } from '../database/database.provider';
-import { likes, missionSubmissions } from '../database/schema';
+import { likes, missionSubmissions, pets } from '../database/schema';
 import type { LikeResponse } from '@bragram/schemas/like';
 
 @Injectable()
@@ -19,6 +19,7 @@ export class LikeService {
       .select({
         id: missionSubmissions.id,
         likeCount: missionSubmissions.likeCount,
+        petId: missionSubmissions.petId,
       })
       .from(missionSubmissions)
       .where(eq(missionSubmissions.id, submissionId));
@@ -37,6 +38,16 @@ export class LikeService {
           .where(eq(missionSubmissions.id, submissionId))
           .returning({ likeCount: missionSubmissions.likeCount });
 
+        await tx
+          .update(pets)
+          .set({
+            score: sql`${pets.score} + 1`,
+            weeklyScore: sql`${pets.weeklyScore} + 1`,
+            monthlyScore: sql`${pets.monthlyScore} + 1`,
+            updatedAt: new Date(),
+          })
+          .where(eq(pets.id, submission.petId));
+
         return updated;
       });
 
@@ -54,6 +65,15 @@ export class LikeService {
     userId: number,
     submissionId: number,
   ): Promise<LikeResponse> {
+    const [submission] = await this.db
+      .select({ petId: missionSubmissions.petId })
+      .from(missionSubmissions)
+      .where(eq(missionSubmissions.id, submissionId));
+
+    if (!submission) {
+      throw new NotFoundException('제출 내역을 찾을 수 없습니다.');
+    }
+
     const updatedSubmission = await this.db.transaction(async (tx) => {
       const deleted = await tx
         .delete(likes)
@@ -74,6 +94,19 @@ export class LikeService {
         })
         .where(eq(missionSubmissions.id, submissionId))
         .returning({ likeCount: missionSubmissions.likeCount });
+
+      await tx
+        .update(pets)
+        .set({
+          score: sql`GREATEST
+              (${pets.score} - 1, 0)`,
+          weeklyScore: sql`GREATEST
+              (${pets.weeklyScore} - 1, 0)`,
+          monthlyScore: sql`GREATEST
+              (${pets.monthlyScore} - 1, 0)`,
+          updatedAt: new Date(),
+        })
+        .where(eq(pets.id, submission.petId));
 
       return updated;
     });
