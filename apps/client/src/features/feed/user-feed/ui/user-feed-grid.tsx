@@ -7,6 +7,7 @@ import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import { useGetUserFeedsSuspenseInfiniteQuery } from '../api/useGetUserFeedsInfiniteQuery';
 import { UserFeedGridSkeleton } from './user-feed-grid-skeleton';
 import { UserFeedGridError } from '@/features/feed/user-feed/ui';
+import Link from 'next/link';
 
 interface UserFeedGridProps {
   userId: number;
@@ -38,9 +39,11 @@ function UserFeedGrid({ userId }: UserFeedGridProps) {
     <div>
       <div className="grid grid-cols-3 gap-0.5">
         {feeds.map(item => (
-          <div key={item.id} className="relative aspect-square overflow-hidden bg-card">
-            <Image src={item.imageUrl} alt={item.pet.name} fill className="object-cover" />
-          </div>
+          <Link key={item.id} href={`/feed/${item.id}`}>
+            <div className="relative aspect-square overflow-hidden bg-card">
+              <Image src={item.imageUrl} alt={item.pet.name} fill className="object-cover" />
+            </div>
+          </Link>
         ))}
       </div>
       <div ref={ref} className="flex justify-center py-4">
