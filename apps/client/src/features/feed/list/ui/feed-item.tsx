@@ -6,6 +6,7 @@ import { MessageCircle } from 'lucide-react';
 import { LikeButton } from '@/features/like/ui';
 import { FeedAuthor } from '@/features/feed/ui';
 import type { FeedItem as FeedItemType } from '@bragram/schemas/feed';
+import { Badge } from '@/shared/ui/badge';
 
 interface FeedItemProps {
   item: FeedItemType;
@@ -31,9 +32,7 @@ export function FeedItem({ item }: FeedItemProps) {
 
       {/* 미션 태그 + 해시태그 */}
       <div className="flex flex-wrap items-center gap-1.5 px-5">
-        <span className="rounded-full bg-[oklch(0.72_0.18_42/15%)] px-2.5 py-0.5 text-xs text-primary">
-          {item.missionTitle}
-        </span>
+        <Badge>{item.missionTitle}</Badge>
         {item.hashtags?.map(tag => (
           <span key={tag} className="text-xs text-muted-foreground">
             #{tag}

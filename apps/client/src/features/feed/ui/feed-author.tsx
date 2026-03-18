@@ -9,7 +9,7 @@ export function FeedAuthor({ pet, owner, createdAt }: FeedAuthorProps) {
   return (
     <div className="flex items-center px-5">
       <Link href={`/community/user/${owner.id}`} className="flex items-center gap-2">
-        <div className="size-8 shrink-0 overflow-hidden rounded-full bg-muted">
+        <div className="relative size-8 shrink-0 overflow-hidden rounded-full bg-muted">
           {pet.imageUrl ? (
             <Image
               src={pet.imageUrl}
