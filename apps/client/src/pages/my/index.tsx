@@ -5,17 +5,11 @@ import { Settings } from 'lucide-react';
 import Link from 'next/link';
 import { BottomNav } from '@/widgets/bottom-nav';
 import { useAuthStore } from '@/shared/store/auth-store';
-import { useGetPetsQuery } from '@/features/pet/list/api/useGetPetsQuery';
 import { UserFeedGrid } from '@/features/feed/user-feed/ui';
-
-const PET_EMOJI: Record<string, string> = {
-  dog: '🐶',
-  cat: '🐱',
-};
+import { MyPetList } from '@/widgets/pet';
 
 export default function MyPage() {
   const { user } = useAuthStore();
-  const { data: pets, isLoading: isPetsLoading } = useGetPetsQuery();
 
   const displayName = user?.nickname ?? '집사님';
 
@@ -69,22 +63,8 @@ export default function MyPage() {
       <section className="px-5 pb-6">
         <h2 className="mb-3 text-sm font-semibold text-foreground">내 반려동물</h2>
         <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-1">
-          {isPetsLoading
-            ? null
-            : pets?.map(pet => (
-                <div key={pet.id} className="flex flex-shrink-0 flex-col items-center gap-1.5">
-                  <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-[oklch(0.72_0.18_42/50%)] bg-card text-2xl">
-                    {pet.imageUrl ? (
-                      <Image src={pet.imageUrl} alt={pet.name} fill className="object-cover" />
-                    ) : (
-                      (PET_EMOJI[pet.type] ?? '🐾')
-                    )}
-                  </div>
-                  <span className="text-xs text-muted-foreground">{pet.name}</span>
-                </div>
-              ))}
-          {/* 펫 추가 버튼 */}
-          <Link href="/my/pets" className="flex flex-shrink-0 flex-col items-center gap-1.5">
+          <MyPetList />
+          <Link href="" className="flex flex-shrink-0 flex-col items-center gap-1.5">
             <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-[oklch(0.72_0.18_42/50%)]">
               <span className="text-xl">+</span>
             </div>

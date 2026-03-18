@@ -5,6 +5,9 @@ import { useActivatePetMutation } from '@/features/pet/edit/api/useActivatePetMu
 import { useGetPetSuspenseQuery } from '@/features/pet/detail/api/useGetPetQuery';
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import { PetDetailError, PetDetailSkeleton } from '@/features/pet/detail/ui';
+import { Trash2 } from 'lucide-react';
+import React from 'react';
+import { useDeletePetMutation } from '@/features/pet/delete/api/useDeletePetMutation';
 
 const GENDER_LABEL = { male: '수컷', female: '암컷' } as const;
 
@@ -15,6 +18,7 @@ interface PetDetailProps {
 function PetDetail({ id }: PetDetailProps) {
   const { data: pet } = useGetPetSuspenseQuery(id);
   const { mutate: activatePet, isPending } = useActivatePetMutation();
+  const { mutate: deletePet } = useDeletePetMutation();
 
   return (
     <section className="flex flex-col gap-px px-5">
@@ -25,7 +29,16 @@ function PetDetail({ id }: PetDetailProps) {
       <InfoRow label="총 점수" value={String(pet.score)} />
       <InfoRow label="주간 점수" value={String(pet.weeklyScore)} />
       <InfoRow label="월간 점수" value={String(pet.monthlyScore)} />
-
+      <button
+        onClick={e => {
+          e.preventDefault();
+          e.stopPropagation();
+          deletePet(pet.id);
+        }}
+        className="cursor-pointer text-muted-foreground transition-colors hover:text-destructive"
+      >
+        <Trash2 size={18} />
+      </button>
       {!pet.isActive && (
         <Button
           variant="outline"

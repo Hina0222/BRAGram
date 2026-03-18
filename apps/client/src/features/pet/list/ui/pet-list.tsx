@@ -1,19 +1,23 @@
 'use client';
 
-import { useGetPetsSuspenseQuery } from '@/features/pet/list/api/useGetPetsQuery';
-import { withErrorBoundary, withSuspense } from '@/shared/boundary';
-import { PetListError, PetListItem, PetListSkeleton } from '@/features/pet/list/ui';
+import type { PetResponse } from '@bragram/schemas/pet';
+import { PetListItem } from '@/features/pet/list/ui';
 
-function PetList() {
-  const { data: pets } = useGetPetsSuspenseQuery();
+interface PetListProps {
+  pets: Pick<PetResponse, 'id' | 'name' | 'imageUrl' | 'type'>[];
+  getPetHref: (petId: number) => string;
+}
+
+function PetList({ pets, getPetHref }: PetListProps) {
+  if (pets.length === 0) return null;
 
   return (
-    <ul className="flex flex-col gap-2 px-5">
+    <ul className="scrollbar-hide flex gap-4 overflow-x-auto pb-1">
       {pets.map(pet => (
-        <PetListItem pet={pet} key={pet.id} />
+        <PetListItem pet={pet} key={pet.id} href={getPetHref(pet.id)} />
       ))}
     </ul>
   );
 }
 
-export default withErrorBoundary(withSuspense(PetList, <PetListSkeleton />), PetListError);
+export default PetList;
