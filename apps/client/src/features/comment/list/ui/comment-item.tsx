@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui';
 import { useAuthStore } from '@/shared/store/auth-store';
 import { useDeleteCommentMutation } from '@/features/comment/delete/api/useDeleteCommentMutation';
 import type { CommentItem as CommentItemType } from '@bragram/schemas/comment';
+import Link from 'next/link';
 
 interface CommentItemProps {
   comment: CommentItemType;
@@ -20,23 +21,30 @@ export function CommentItem({ comment, submissionId }: CommentItemProps) {
 
   return (
     <div className="flex gap-2.5">
-      <div className="relative size-7 shrink-0 overflow-hidden rounded-full bg-muted">
-        {comment.author.profileImage ? (
-          <Image
-            src={comment.author.profileImage}
-            alt={comment.author.nickname}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <ImageOff size={12} className="text-muted-foreground" />
-          </div>
-        )}
-      </div>
+      <Link href={`/community/user/${comment.author.id}`} className="size-fit">
+        <div className="relative size-7 overflow-hidden rounded-full bg-muted">
+          {comment.author.profileImage ? (
+            <Image
+              src={comment.author.profileImage}
+              alt={comment.author.nickname}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <ImageOff size={12} className="text-muted-foreground" />
+            </div>
+          )}
+        </div>
+      </Link>
       <div className="flex flex-1 flex-col gap-0.5">
-        <span className="text-xs font-medium text-foreground">{comment.author.nickname}</span>
+        <Link
+          href={`/community/user/${comment.author.id}`}
+          className="w-fit text-xs font-medium text-foreground hover:underline"
+        >
+          {comment.author.nickname}
+        </Link>
         <p className="text-sm text-foreground">{comment.content}</p>
         <span className="text-xs text-muted-foreground">
           {new Date(comment.createdAt).toLocaleDateString('ko-KR')}
