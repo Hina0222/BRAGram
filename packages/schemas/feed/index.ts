@@ -7,7 +7,7 @@ export const FeedQuerySchema = z.object({
 
 export const FeedItemSchema = z.object({
   id: z.number(),
-  imageUrl: z.string(),
+  imageUrls: z.array(z.string()),
   hashtags: z.array(z.string()).nullable(),
   createdAt: z.string(),
   pet: z.object({id: z.number(), name: z.string(), imageUrl: z.string().nullable()}),

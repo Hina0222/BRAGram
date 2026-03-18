@@ -240,8 +240,8 @@ async function seed() {
   const insertedPets = await db
     .select({ id: pets.id, userId: pets.userId })
     .from(pets).where(sql`${pets.userId} = ANY(
-    ${sql.raw(`ARRAY[${userIds.join(',')}]::int[]`)}
-    )`);
+          ${sql.raw(`ARRAY[${userIds.join(',')}]::int[]`)}
+          )`);
 
   console.log(`  ✅ ${insertedPets.length}마리 확인`);
 
@@ -251,7 +251,7 @@ async function seed() {
   const submissionValues: {
     missionId: number;
     petId: number;
-    imageUrl: string;
+    imageUrls: string[];
     comment: string;
   }[] = [];
 
@@ -262,7 +262,7 @@ async function seed() {
       submissionValues.push({
         missionId,
         petId: pet.id,
-        imageUrl: IMAGE_URLS[(pi + mi) % IMAGE_URLS.length],
+        imageUrls: [IMAGE_URLS[(pi + mi) % IMAGE_URLS.length]],
         comment: pick(PET_COMMENTS, pi + mi),
       });
     });

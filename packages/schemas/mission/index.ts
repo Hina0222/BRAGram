@@ -39,7 +39,7 @@ export const SubmissionResponseSchema = z.object({
   id: z.number(),
   missionId: z.number(),
   petId: z.number(),
-  imageUrl: z.string(),
+  imageUrls: z.array(z.string()),
   comment: z.string().nullable(),
   hashtags: z.array(z.string()).nullable(),
   createdAt: z.date(),

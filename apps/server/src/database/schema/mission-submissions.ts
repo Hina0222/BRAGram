@@ -20,7 +20,7 @@ export const missionSubmissions = pgTable(
     petId: integer('pet_id')
       .notNull()
       .references(() => pets.id, { onDelete: 'cascade' }),
-    imageUrl: varchar('image_url', { length: 500 }).notNull(),
+    imageUrls: jsonb('image_urls').notNull().$type<string[]>(),
     comment: varchar('comment', { length: 150 }),
     hashtags: jsonb('hashtags').$type<string[]>(),
     likeCount: integer('like_count').default(0).notNull(),

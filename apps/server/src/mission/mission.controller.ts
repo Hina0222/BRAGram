@@ -8,7 +8,7 @@ import {
   Query,
   ParseIntPipe,
   UseGuards,
-  UploadedFile,
+  UploadedFiles,
   BadRequestException,
   HttpCode,
   HttpStatus,
@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { MissionService } from './mission.service';
-import { ImageUpload } from '../common/decorators/image-upload.decorator';
+import { ImagesUpload } from '../common/decorators/image-upload.decorator';
 import type { AuthenticatedRequest } from '../common/types/authenticated-request.type';
 import {
   CreateSubmissionSchema,
@@ -49,15 +49,18 @@ export class MissionController {
   }
 
   @Post(':missionId/submissions')
-  @ImageUpload()
+  @ImagesUpload()
   async submit(
     @Req() req: AuthenticatedRequest,
     @Param('missionId', ParseIntPipe) missionId: number,
     @Body() body: Record<string, unknown>,
-    @UploadedFile() file?: Express.Multer.File,
+    @UploadedFiles() files?: Express.Multer.File[],
   ): Promise<SubmissionResponse> {
-    if (!file) {
-      throw new BadRequestException('이미지를 업로드해주세요.');
+    if (!files || files.length === 0) {
+      throw new BadRequestException('이미지를 1장 이상 업로드해주세요.');
+    }
+    if (files.length > 5) {
+      throw new BadRequestException('이미지는 최대 5장까지 업로드 가능합니다.');
     }
 
     const parsed = CreateSubmissionSchema.safeParse(body);
@@ -68,7 +71,7 @@ export class MissionController {
     return this.missionService.submitMission(
       req.user.id,
       missionId,
-      file.buffer,
+      files.map((f) => f.buffer),
       parsed.data,
     );
   }

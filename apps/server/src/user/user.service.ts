@@ -189,7 +189,7 @@ export class UserService {
     const rows = await this.db
       .select({
         id: missionSubmissions.id,
-        imageUrl: missionSubmissions.imageUrl,
+        imageUrls: missionSubmissions.imageUrls,
         hashtags: missionSubmissions.hashtags,
         createdAt: missionSubmissions.createdAt,
         likeCount: missionSubmissions.likeCount,
@@ -234,7 +234,7 @@ export class UserService {
 
     const feedItems: FeedItem[] = data.map((r) => ({
       id: r.id,
-      imageUrl: r.imageUrl,
+      imageUrls: r.imageUrls,
       hashtags: r.hashtags ?? null,
       createdAt: r.createdAt.toISOString(),
       pet: { id: r.petId, name: r.petName, imageUrl: r.petImageUrl ?? null },

@@ -27,7 +27,7 @@ export class FeedService {
     const baseQuery = this.db
       .select({
         id: missionSubmissions.id,
-        imageUrl: missionSubmissions.imageUrl,
+        imageUrls: missionSubmissions.imageUrls,
         hashtags: missionSubmissions.hashtags,
         createdAt: missionSubmissions.createdAt,
         likeCount: missionSubmissions.likeCount,
@@ -79,7 +79,7 @@ export class FeedService {
 
     const feedItems: FeedItem[] = data.map((r) => ({
       id: r.id,
-      imageUrl: r.imageUrl,
+      imageUrls: r.imageUrls,
       hashtags: r.hashtags ?? null,
       createdAt: r.createdAt.toISOString(),
       pet: { id: r.petId, name: r.petName, imageUrl: r.petImageUrl ?? null },
@@ -103,7 +103,7 @@ export class FeedService {
     const rows = await this.db
       .select({
         id: missionSubmissions.id,
-        imageUrl: missionSubmissions.imageUrl,
+        imageUrls: missionSubmissions.imageUrls,
         hashtags: missionSubmissions.hashtags,
         createdAt: missionSubmissions.createdAt,
         likeCount: missionSubmissions.likeCount,
@@ -137,7 +137,7 @@ export class FeedService {
 
     return {
       id: r.id,
-      imageUrl: r.imageUrl,
+      imageUrls: r.imageUrls,
       hashtags: r.hashtags ?? null,
       createdAt: r.createdAt.toISOString(),
       pet: { id: r.petId, name: r.petName, imageUrl: r.petImageUrl ?? null },

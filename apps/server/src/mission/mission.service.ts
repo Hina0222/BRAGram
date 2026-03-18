@@ -78,7 +78,7 @@ export class MissionService {
   async submitMission(
     userId: number,
     missionId: number,
-    imageBuffer: Buffer,
+    imageBuffers: Buffer[],
     body: CreateSubmissionRequest,
   ): Promise<SubmissionResponse> {
     const activePet = await this.getActivePet(userId);
@@ -94,9 +94,10 @@ export class MissionService {
       throw new NotFoundException('미션을 찾을 수 없습니다.');
     }
 
-    const imageUrl = await this.awsService.uploadImage(
-      imageBuffer,
-      IMAGE_PRESET.MISSION,
+    const imageUrls = await Promise.all(
+      imageBuffers.map((buf) =>
+        this.awsService.uploadImage(buf, IMAGE_PRESET.MISSION),
+      ),
     );
 
     try {
@@ -106,7 +107,7 @@ export class MissionService {
           .values({
             missionId,
             petId: activePet.id,
-            imageUrl,
+            imageUrls,
             comment: body.comment ?? null,
             hashtags: body.hashtags ?? null,
           })
@@ -127,12 +128,13 @@ export class MissionService {
 
       return submission as SubmissionResponse;
     } catch (err: unknown) {
+      await Promise.all(
+        imageUrls.map((url) => this.awsService.deleteImage(url)),
+      );
       const pgErr = err as { cause?: { code?: string } };
       if (pgErr?.cause?.code === '23505') {
-        await this.awsService.deleteImage(imageUrl);
         throw new ConflictException('이미 제출된 미션입니다.');
       }
-      await this.awsService.deleteImage(imageUrl);
       throw err;
     }
   }
@@ -146,7 +148,7 @@ export class MissionService {
       .select({
         id: missionSubmissions.id,
         petId: missionSubmissions.petId,
-        imageUrl: missionSubmissions.imageUrl,
+        imageUrls: missionSubmissions.imageUrls,
         baseScore: missions.baseScore,
       })
       .from(missionSubmissions)
@@ -187,7 +189,9 @@ export class MissionService {
         .where(eq(pets.id, pet.id));
     });
 
-    await this.awsService.deleteImage(submission.imageUrl);
+    await Promise.all(
+      submission.imageUrls.map((url) => this.awsService.deleteImage(url)),
+    );
   }
 
   async findHistory(
