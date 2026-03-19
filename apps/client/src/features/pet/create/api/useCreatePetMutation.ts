@@ -4,13 +4,12 @@ import { useMutation } from '@tanstack/react-query';
 import { apiClient, getQueryClient } from '@/shared/api';
 import { API_ROUTES } from '@/shared/api/api-routes.constants';
 import { petQueryKeys } from '@/entities/pet/model/pet.query-key';
-import type { CreatePetRequest, PetResponse } from '@bragram/schemas/pet';
+import type { PetResponse } from '@bragram/schemas/pet';
+import type { CreatePetFormValues } from '@/features/pet/create/model/schema';
 import { toast } from 'sonner';
 import { missionQueryKeys } from '@/entities/mission/model/mission.query-key';
 
-type CreatePetParams = CreatePetRequest & { image?: File };
-
-export const createPet = async ({ image, ...data }: CreatePetParams): Promise<PetResponse> => {
+export const createPet = async ({ image, ...data }: CreatePetFormValues): Promise<PetResponse> => {
   const formData = new FormData();
   Object.entries(data).forEach(([key, value]) => {
     if (value !== undefined && value !== '') formData.append(key, value);
