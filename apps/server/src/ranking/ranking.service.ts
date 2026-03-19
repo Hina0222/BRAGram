@@ -51,7 +51,7 @@ export class RankingService {
       petType: r.petType,
       petImageUrl: r.petImageUrl ?? null,
       score: r.score,
-      ownerNickname: r.ownerNickname,
+      ownerNickname: r.ownerNickname!,
       ownerProfileImage: r.ownerProfileImage ?? null,
     }));
 

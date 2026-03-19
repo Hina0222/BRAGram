@@ -55,7 +55,7 @@ export class CommentService {
       createdAt: r.createdAt.toISOString(),
       author: {
         id: r.authorId,
-        nickname: r.authorNickname,
+        nickname: r.authorNickname!,
         profileImage: r.authorProfileImage ?? null,
       },
     }));
@@ -110,7 +110,7 @@ export class CommentService {
       createdAt: result.createdAt.toISOString(),
       author: {
         id: user.id,
-        nickname: user.nickname,
+        nickname: user.nickname!,
         profileImage: user.profileImage ?? null,
       },
     };

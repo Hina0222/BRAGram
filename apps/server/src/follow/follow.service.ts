@@ -134,7 +134,7 @@ export class FollowService {
 
     const items: FollowItem[] = data.map((r) => ({
       id: r.id,
-      nickname: r.nickname,
+      nickname: r.nickname!,
       profileImage: r.profileImage ?? null,
       isFollowing: isFollowingSet.has(r.id),
     }));
@@ -183,7 +183,7 @@ export class FollowService {
 
     const items: FollowItem[] = data.map((r) => ({
       id: r.id,
-      nickname: r.nickname,
+      nickname: r.nickname!,
       profileImage: r.profileImage ?? null,
       isFollowing: isFollowingSet.has(r.id),
     }));

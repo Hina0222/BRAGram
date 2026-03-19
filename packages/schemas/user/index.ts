@@ -2,7 +2,7 @@ import {z} from "zod";
 
 export const MeResponseSchema = z.object({
   id: z.number(),
-  nickname: z.string(),
+  nickname: z.string().nullable(),
   profileImage: z.string().nullable(),
   followerCount: z.number(),
   followingCount: z.number(),

@@ -22,17 +22,10 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     _refreshToken: string,
     profile: {
       id: string;
-      displayName: string;
-      _json: { kakao_account?: { profile?: { profile_image_url?: string } } };
     },
   ) {
-    const profileImage =
-      profile._json.kakao_account?.profile?.profile_image_url;
-
     return this.userService.findOrCreate({
       kakaoId: String(profile.id),
-      nickname: profile.displayName,
-      profileImage,
     });
   }
 }

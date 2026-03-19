@@ -26,8 +26,6 @@ import type { FeedItem, FeedListResponse } from '@bragram/schemas/feed';
 
 interface KakaoProfile {
   kakaoId: string;
-  nickname: string;
-  profileImage?: string;
 }
 
 @Injectable()
@@ -63,8 +61,6 @@ export class UserService {
       .insert(users)
       .values({
         kakaoId: profile.kakaoId,
-        nickname: profile.nickname,
-        profileImage: profile.profileImage,
       })
       .returning();
     return created[0];
@@ -105,7 +101,7 @@ export class UserService {
     return {
       data: data.map((r) => ({
         id: r.id,
-        nickname: r.nickname,
+        nickname: r.nickname!,
         profileImage: r.profileImage ?? null,
       })),
       hasNext,
@@ -163,7 +159,7 @@ export class UserService {
 
     return {
       id: user.id,
-      nickname: user.nickname,
+      nickname: user.nickname!,
       profileImage: user.profileImage ?? null,
       followerCount: user.followerCount,
       followingCount: user.followingCount,
@@ -238,7 +234,7 @@ export class UserService {
       hashtags: r.hashtags ?? null,
       createdAt: r.createdAt.toISOString(),
       pet: { id: r.petId, name: r.petName, imageUrl: r.petImageUrl ?? null },
-      owner: { id: r.ownerId, nickname: r.ownerNickname },
+      owner: { id: r.ownerId, nickname: r.ownerNickname! },
       missionTitle: r.missionTitle,
       likeCount: r.likeCount,
       commentCount: r.commentCount,
@@ -273,7 +269,7 @@ export class UserService {
     if (imageBuffer) {
       profileImage = await this.awsService.uploadImage(
         imageBuffer,
-        IMAGE_PRESET.PET_THUMBNAIL,
+        IMAGE_PRESET.USER_PROFILE,
       );
       if (user.profileImage) {
         await this.awsService.deleteImage(user.profileImage);
