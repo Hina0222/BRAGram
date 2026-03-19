@@ -4,7 +4,7 @@ import { getRankingsInfiniteQueryOptions } from '@/features/ranking/list/api/use
 
 export default async function RankingWeeklyPage() {
   return (
-    <ServerFetchBoundary queryOptions={getRankingsInfiniteQueryOptions('weekly')}>
+    <ServerFetchBoundary infiniteQueryOptions={getRankingsInfiniteQueryOptions('weekly')}>
       <RankingList type="weekly" />
     </ServerFetchBoundary>
   );

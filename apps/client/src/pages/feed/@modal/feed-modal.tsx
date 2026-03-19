@@ -13,7 +13,8 @@ export default async function FeedModal({ params }: FeedModalProps) {
 
   return (
     <ServerFetchBoundary
-      queryOptions={[getFeedQueryOptions(feedId), getCommentsInfiniteQueryOptions(feedId)]}
+      queryOptions={getFeedQueryOptions(feedId)}
+      infiniteQueryOptions={getCommentsInfiniteQueryOptions(feedId)}
     >
       <FeedDetailModal id={feedId} />
     </ServerFetchBoundary>

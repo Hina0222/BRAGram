@@ -1,35 +1,45 @@
 import { ReactNode } from 'react';
 import { connection } from 'next/server';
 import { getQueryClient } from '@/shared/api';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import {
+  dehydrate,
+  FetchInfiniteQueryOptions,
+  FetchQueryOptions,
+  HydrationBoundary,
+  QueryKey,
+} from '@tanstack/react-query';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type QueryOption = {
-  queryKey: readonly unknown[];
-  queryFn: any;
-  initialPageParam?: any;
-  getNextPageParam?: any;
-  [key: string]: any;
-};
+export type FetchOptions = Pick<FetchQueryOptions, 'queryKey' | 'queryFn'>;
+export type FetchInfiniteOptions = Pick<
+  FetchInfiniteQueryOptions<unknown, Error, unknown, QueryKey, number>,
+  'queryKey' | 'queryFn' | 'initialPageParam'
+>;
 
 interface ServerFetchBoundaryProps {
   children: ReactNode;
-  queryOptions: QueryOption | QueryOption[];
+  queryOptions?: FetchOptions | FetchOptions[];
+  infiniteQueryOptions?: FetchInfiniteOptions | FetchInfiniteOptions[];
 }
 
-export const ServerFetchBoundary = async ({ children, queryOptions }: ServerFetchBoundaryProps) => {
+export const ServerFetchBoundary = async ({
+  children,
+  queryOptions,
+  infiniteQueryOptions,
+}: ServerFetchBoundaryProps) => {
   await connection();
   const queryClient = getQueryClient();
-  const optionsArray = Array.isArray(queryOptions) ? queryOptions : [queryOptions];
 
-  await Promise.all(
-    optionsArray.map(options => {
-      if ('initialPageParam' in options) {
-        return queryClient.prefetchInfiniteQuery(options as any);
-      }
-      return queryClient.prefetchQuery(options);
-    })
-  );
+  const queries = queryOptions ? (Array.isArray(queryOptions) ? queryOptions : [queryOptions]) : [];
+  const infiniteQueries = infiniteQueryOptions
+    ? Array.isArray(infiniteQueryOptions)
+      ? infiniteQueryOptions
+      : [infiniteQueryOptions]
+    : [];
+
+  await Promise.all([
+    ...queries.map(opt => queryClient.prefetchQuery(opt)),
+    ...infiniteQueries.map(opt => queryClient.prefetchInfiniteQuery(opt)),
+  ]);
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 };

@@ -19,10 +19,8 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
     <div className="pb-20">
       <BackHeader title="프로필" />
       <ServerFetchBoundary
-        queryOptions={[
-          getUserProfileQueryOptions(userId),
-          getUserFeedsInfiniteQueryOptions(userId),
-        ]}
+        queryOptions={getUserProfileQueryOptions(userId)}
+        infiniteQueryOptions={getUserFeedsInfiniteQueryOptions(userId)}
       >
         <UserProfile userId={userId} />
 

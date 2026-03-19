@@ -20,7 +20,8 @@ export default async function FeedPage({ params }: FeedPageProps) {
       <TitleHeader title="피드" />
 
       <ServerFetchBoundary
-        queryOptions={[getFeedQueryOptions(feedId), getCommentsInfiniteQueryOptions(feedId)]}
+        queryOptions={getFeedQueryOptions(feedId)}
+        infiniteQueryOptions={getCommentsInfiniteQueryOptions(feedId)}
       >
         <FeedDetail id={feedId} />
 

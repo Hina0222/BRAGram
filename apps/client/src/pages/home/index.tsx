@@ -8,7 +8,7 @@ export default async function HomePage() {
   return (
     <div className="pb-20">
       <TitleHeader title="홈" />
-      <ServerFetchBoundary queryOptions={getFeedsInfiniteQueryOptions()}>
+      <ServerFetchBoundary infiniteQueryOptions={getFeedsInfiniteQueryOptions()}>
         <FeedList />
       </ServerFetchBoundary>
       <BottomNav />

@@ -4,7 +4,7 @@ import { getRankingsInfiniteQueryOptions } from '@/features/ranking/list/api/use
 
 export default async function RankingMonthlyPage() {
   return (
-    <ServerFetchBoundary queryOptions={getRankingsInfiniteQueryOptions('monthly')}>
+    <ServerFetchBoundary infiniteQueryOptions={getRankingsInfiniteQueryOptions('monthly')}>
       <RankingList type="monthly" />
     </ServerFetchBoundary>
   );

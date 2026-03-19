@@ -4,7 +4,7 @@ import { getRankingsInfiniteQueryOptions } from '@/features/ranking/list/api/use
 
 export default async function RankingAllPage() {
   return (
-    <ServerFetchBoundary queryOptions={getRankingsInfiniteQueryOptions('all')}>
+    <ServerFetchBoundary infiniteQueryOptions={getRankingsInfiniteQueryOptions('all')}>
       <RankingList type="all" />
     </ServerFetchBoundary>
   );
