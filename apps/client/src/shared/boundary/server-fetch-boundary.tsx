@@ -36,10 +36,13 @@ export const ServerFetchBoundary = async ({
       : [infiniteQueryOptions]
     : [];
 
-  await Promise.all([
-    ...queries.map(opt => queryClient.prefetchQuery(opt)),
-    ...infiniteQueries.map(opt => queryClient.prefetchInfiniteQuery(opt)),
-  ]);
+  queries.forEach(opt => {
+    queryClient.prefetchQuery(opt);
+  });
+
+  infiniteQueries.forEach(opt => {
+    queryClient.prefetchInfiniteQuery(opt);
+  });
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 };
