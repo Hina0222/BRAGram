@@ -30,6 +30,11 @@ export function useProfileSetupForm() {
       onSuccess: () => {
         router.push('/onboarding/pet');
       },
+      onError: (error: Error) => {
+        if (error.message === '이미 사용 중인 닉네임입니다.') {
+          methods.setError('nickname', { message: error.message });
+        }
+      },
     });
   });
 
