@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { cookies } from 'next/headers';
+import { connection } from 'next/server';
 import { getQueryClient } from '@/shared/api';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
@@ -18,7 +18,7 @@ interface ServerFetchBoundaryProps {
 }
 
 export const ServerFetchBoundary = async ({ children, queryOptions }: ServerFetchBoundaryProps) => {
-  await cookies();
+  await connection();
   const queryClient = getQueryClient();
   const optionsArray = Array.isArray(queryOptions) ? queryOptions : [queryOptions];
 
