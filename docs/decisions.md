@@ -10,12 +10,14 @@
 
 ### 각 레이어의 역할
 
-- **Proxy (1차 가드)**: 요청이 페이지에 도달하기 전에 Edge에서 쿠키 유무로 빠르게 리다이렉트. 데이터 처리나 인증 검증을 맡기는 용도가 아니라, "빠른 요청 가로채기 + 간단한 분기"만 담당.
-- **axios interceptor (2차 가드)**: API 호출 시 401이 발생하면 `refreshPromise` 싱글톤 패턴으로 refresh를 한 번만 시도. 동시에 여러 요청이 401을 받아도 `/auth/refresh`는 중복 호출되지 않음. refresh도 실패하면 me 캐시 제거 + `/signin` 리다이렉트.
-- **useMeQuery (데이터 관리)**: `staleTime: Infinity`로 세션 동안 유저 정보를 캐시. 새로고침 시 `/users/me` 한 번만 호출하고, 쿠키가 유효하면 refresh 없이 바로 데이터를 받아옴.
+- **Proxy (1차 가드)**: 요청이 페이지에 도달하기 전에 `refreshToken` 쿠키 유무로 빠르게 리다이렉트.
+- **axios interceptor (2차 가드)**: API 호출 시 401이 발생하면 `refreshPromise` 싱글톤 패턴으로 refresh를 한 번만 시도. 동시에 여러 요청이 401을 받아도
+  `/auth/refresh`는 중복 호출되지 않음. refresh도 실패하면 me 캐시 제거 + `/signin` 리다이렉트.
+- **useMeQuery (데이터 관리)**: `staleTime: Infinity`로 세션 동안 유저 정보를 캐시. 새로고침 시 `/users/me` 한 번만 호출하고, 쿠키가 유효하면 refresh 없이 바로
+  데이터를 받아옴.
 
 ### 흐름 요약
 
-1. 요청 진입 → Proxy가 쿠키 없으면 `/signin`으로 즉시 차단 (깜빡임 방지)
+1. 요청 진입 → Proxy가 `refreshToken` 쿠키 없으면 `/signin`으로 즉시 차단 (깜빡임 방지)
 2. 페이지 렌더링 → `useMeQuery`가 `/users/me` 호출로 실제 유저 데이터 확보
 3. 토큰 만료 시 → interceptor가 refresh 시도 → 성공하면 원래 요청 재시도, 실패하면 로그아웃 처리

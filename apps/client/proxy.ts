@@ -15,16 +15,16 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const accessToken = request.cookies.get('access_token')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
   const isPublicRoute = PUBLIC_ROUTES.some(route => pathname.startsWith(route));
 
   // 로그인 상태에서 /signin 접근 → / 리다이렉트
-  if (accessToken && pathname === '/signin') {
+  if (refreshToken && pathname === '/signin') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
   // 비로그인 상태에서 protected 라우트 접근 → /signin 리다이렉트
-  if (!accessToken && !isPublicRoute) {
+  if (!refreshToken && !isPublicRoute) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
