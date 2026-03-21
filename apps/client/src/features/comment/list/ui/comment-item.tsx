@@ -5,6 +5,7 @@ import { Button } from '@/shared/ui';
 import { useDeleteCommentMutation } from '@/features/comment/delete/api/useDeleteCommentMutation';
 import type { CommentItem as CommentItemType } from '@bragram/schemas/comment';
 import Link from 'next/link';
+import { timeAgo } from '@/shared/lib/utils';
 
 interface CommentItemProps {
   comment: CommentItemType;
@@ -14,6 +15,11 @@ interface CommentItemProps {
 
 export function CommentItem({ comment, submissionId, isOwner }: CommentItemProps) {
   const { mutate: deleteComment, isPending } = useDeleteCommentMutation(submissionId);
+
+  const handleDelete = () => {
+    if (!confirm('댓글을 삭제하시겠습니까?')) return;
+    deleteComment(comment.id);
+  };
 
   return (
     <div className="flex gap-2.5">
@@ -40,16 +46,14 @@ export function CommentItem({ comment, submissionId, isOwner }: CommentItemProps
           {comment.author.nickname}
         </Link>
         <p className="text-sm text-foreground">{comment.content}</p>
-        <span className="text-xs text-muted-foreground">
-          {new Date(comment.createdAt).toLocaleDateString('ko-KR')}
-        </span>
+        <span className="text-xs text-muted-foreground">{timeAgo(comment.createdAt)}</span>
       </div>
       {isOwner && (
         <Button
           variant="ghost"
           size="icon-xs"
           disabled={isPending}
-          onClick={() => deleteComment(comment.id)}
+          onClick={handleDelete}
           className="shrink-0 text-muted-foreground hover:text-destructive"
         >
           <Trash2 size={14} />

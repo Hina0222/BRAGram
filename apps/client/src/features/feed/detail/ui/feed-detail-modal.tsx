@@ -35,7 +35,7 @@ function FeedDetailModal({ id }: FeedDetailModalProps) {
             <FeedDetail id={Number(id)} />
           </div>
           <div className="flex flex-col md:border-l">
-            <div className="hidden flex-1 overflow-y-auto px-5 py-4 md:block">
+            <div className="hidden flex-1 overflow-y-auto px-5 py-4 pt-12 md:block">
               <CommentList submissionId={id} />
             </div>
             <div className="shrink-0 px-5 py-4">
