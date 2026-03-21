@@ -294,7 +294,7 @@ async function seed() {
 
   // ── 4. 팔로우 INSERT (ON CONFLICT DO NOTHING) ─────────────────────────────
   console.log('👥 Inserting follows...');
-  const allUserIds = [1, 2, 3, 4, ...userIds];
+  const allUserIds = [...userIds];
   const followSet = new Set<string>();
   const followValues: { followerId: number; followingId: number }[] = [];
 
