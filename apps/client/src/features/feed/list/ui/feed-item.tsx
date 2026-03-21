@@ -14,6 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/shared/ui';
+import { timeAgo } from '@/shared/lib/utils';
 
 interface FeedItemProps {
   item: FeedItemType;
@@ -23,7 +24,7 @@ export const FeedItem = memo(function FeedItem({ item }: FeedItemProps) {
   return (
     <article className="overflow-hidden rounded-2xl bg-card shadow-sm">
       {/* 작성자 정보 */}
-      <FeedAuthor pet={item.pet} owner={item.owner} createdAt={item.createdAt} />
+      <FeedAuthor pet={item.pet} owner={item.owner} />
 
       {/* 이미지 */}
       <Carousel className="w-full">
@@ -70,7 +71,7 @@ export const FeedItem = memo(function FeedItem({ item }: FeedItemProps) {
       {item.comment && <p className="px-4 pb-2 text-xs text-foreground">{item.comment}</p>}
 
       {/* 미션 태그 + 해시태그 */}
-      <div className="flex flex-wrap items-center gap-1.5 px-4 pb-4">
+      <div className="flex flex-wrap items-center gap-1.5 px-4 pb-2">
         <Badge className="border-transparent bg-primary/10 text-[10px] font-bold tracking-wider text-primary uppercase">
           {item.missionTitle}
         </Badge>
@@ -80,6 +81,8 @@ export const FeedItem = memo(function FeedItem({ item }: FeedItemProps) {
           </span>
         ))}
       </div>
+
+      <div className="px-4 pb-2 text-xs text-muted-foreground">{timeAgo(item.createdAt)}</div>
     </article>
   );
 });

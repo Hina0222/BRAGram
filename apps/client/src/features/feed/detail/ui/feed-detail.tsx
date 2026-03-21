@@ -13,6 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/shared/ui';
+import { timeAgo } from '@/shared/lib/utils';
 
 interface FeedDetailProps {
   id: number;
@@ -24,7 +25,7 @@ function FeedDetail({ id }: FeedDetailProps) {
   return (
     <article className="flex flex-col gap-3 border-b border-border pb-4">
       {/* 작성자 정보 */}
-      <FeedAuthor pet={item.pet} owner={item.owner} createdAt={item.createdAt} />
+      <FeedAuthor pet={item.pet} owner={item.owner} />
 
       {/* 이미지 */}
       <Carousel className="w-full">
@@ -49,26 +50,30 @@ function FeedDetail({ id }: FeedDetailProps) {
         )}
       </Carousel>
 
-      {/* 제출 코멘트 */}
-      {item.comment && <p className="px-5 text-sm text-foreground">{item.comment}</p>}
+      <div className="space-y-1">
+        {/* 제출 코멘트 */}
+        {item.comment && <p className="text-sm text-foreground">{item.comment}</p>}
 
-      {/* 미션 태그 + 해시태그 */}
-      <div className="flex flex-wrap items-center gap-1.5 px-5">
-        <Badge>{item.missionTitle}</Badge>
-        {item.hashtags?.map(tag => (
-          <span key={tag} className="text-xs text-muted-foreground">
-            #{tag}
-          </span>
-        ))}
-      </div>
+        {/* 미션 태그 + 해시태그 */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Badge>{item.missionTitle}</Badge>
+          {item.hashtags?.map(tag => (
+            <span key={tag} className="text-xs text-muted-foreground">
+              #{tag}
+            </span>
+          ))}
+        </div>
 
-      {/* 좋아요 */}
-      <div className="flex items-center gap-1 px-4">
-        <LikeButton
-          submissionId={item.id}
-          initialLikeCount={item.likeCount}
-          initialIsLiked={item.isLiked}
-        />
+        {/* 좋아요 */}
+        <div className="flex items-center gap-1">
+          <LikeButton
+            submissionId={item.id}
+            initialLikeCount={item.likeCount}
+            initialIsLiked={item.isLiked}
+          />
+        </div>
+
+        <div className="pb-2 text-xs text-muted-foreground">{timeAgo(item.createdAt)}</div>
       </div>
     </article>
   );

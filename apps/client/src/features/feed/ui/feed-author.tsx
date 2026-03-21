@@ -2,9 +2,9 @@ import { ImageOff } from 'lucide-react';
 import type { FeedItem } from '@bragram/schemas/feed';
 import Link from 'next/link';
 
-type FeedAuthorProps = Pick<FeedItem, 'pet' | 'owner' | 'createdAt'>;
+type FeedAuthorProps = Pick<FeedItem, 'pet' | 'owner'>;
 
-export function FeedAuthor({ pet, owner, createdAt }: FeedAuthorProps) {
+export function FeedAuthor({ pet, owner }: FeedAuthorProps) {
   return (
     <div className="flex items-center p-4">
       <Link href={`/community/user/${owner.id}`} className="flex items-center gap-2">
@@ -28,9 +28,6 @@ export function FeedAuthor({ pet, owner, createdAt }: FeedAuthorProps) {
           <span className="text-xs text-muted-foreground">{pet.name}</span>
         </div>
       </Link>
-      <span className="ml-auto text-xs text-muted-foreground">
-        {new Date(createdAt).toLocaleDateString('ko-KR')}
-      </span>
     </div>
   );
 }
