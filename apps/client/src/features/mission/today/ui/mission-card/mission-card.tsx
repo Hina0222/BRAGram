@@ -22,7 +22,7 @@ function MissionCard() {
   }
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-primary p-6 shadow-sm">
+    <section className="relative m-4 overflow-hidden rounded-2xl bg-primary p-6 shadow-sm">
       <div className="relative z-10 flex flex-col gap-4">
         {/* 헤더 뱃지 */}
         <div className="flex flex-wrap items-center gap-2">

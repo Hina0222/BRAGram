@@ -14,7 +14,7 @@ function UserProfile({ userId }: UserProfileProps) {
   const { data: profile } = useGetUserProfileSuspenseQuery(userId);
 
   return (
-    <section className="px-5 pb-6">
+    <section className="mt-4 px-5 pb-6">
       <div className="flex items-center gap-6">
         {/* 아바타 */}
         <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[oklch(0.72_0.18_42/40%)] bg-[oklch(0.268_0.007_34.298)] text-4xl">

@@ -24,7 +24,7 @@ export default function CommunityPage() {
   return (
     <div className="pb-20">
       <TitleHeader title={'커뮤니티'} />
-      <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5">
+      <div className="mt-4 flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5">
         <Search size={16} className="flex-shrink-0 text-muted-foreground" />
         <input
           type="text"

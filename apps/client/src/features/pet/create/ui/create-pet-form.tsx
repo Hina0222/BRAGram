@@ -1,7 +1,6 @@
 'use client';
 
 import { StepPetType, StepBasicInfo, StepPhoto } from '@/features/pet/create/ui';
-import { ChevronLeft } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { FormProvider } from 'react-hook-form';
 import { Button } from '@/shared/ui';
@@ -17,20 +16,8 @@ export function CreatePetForm({ redirectTo }: CreatePetFormProps) {
 
   return (
     <>
-      {/* 상단 헤더 */}
-      <header className="flex items-center px-5 pt-12 pb-4">
-        {step > 1 && (
-          <button
-            onClick={handleBack}
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ChevronLeft size={24} />
-          </button>
-        )}
-      </header>
-
       {/* 진행 바 */}
-      <div className="mb-8 flex gap-1.5 px-5">
+      <div className="mt-4 mb-8 flex gap-1.5 px-5">
         {Array.from({ length: TOTAL_STEPS }, (_, i) => (
           <div
             key={i}
@@ -53,10 +40,20 @@ export function CreatePetForm({ redirectTo }: CreatePetFormProps) {
       </FormProvider>
 
       {/* 하단 버튼 */}
-      <div className="px-5 pt-4 pb-10">
+      <div className="flex gap-4 px-5 pt-4 pb-10">
+        {step > 1 && (
+          <Button
+            type="button"
+            className="bg-brand hover:bg-brand-dark h-13 flex-1 rounded-2xl text-base font-semibold text-primary-foreground"
+            onClick={handleBack}
+            disabled={!canNext()}
+          >
+            이전
+          </Button>
+        )}
         <Button
           type="button"
-          className="bg-brand hover:bg-brand-dark h-13 w-full rounded-2xl text-base font-semibold text-primary-foreground"
+          className="bg-brand hover:bg-brand-dark h-13 flex-1 rounded-2xl text-base font-semibold text-primary-foreground"
           onClick={handleButtonClick}
           disabled={!canNext()}
         >

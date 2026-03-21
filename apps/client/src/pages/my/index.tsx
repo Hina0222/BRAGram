@@ -6,6 +6,7 @@ import { BottomNav } from '@/widgets/bottom-nav';
 import { useMeQuery } from '@/features/user/me/api/useMeQuery';
 import { UserFeedGrid } from '@/features/feed/user-feed/ui';
 import { MyPetList } from '@/widgets/pet';
+import { TitleHeader } from '@/widgets/header';
 
 export default function MyPage() {
   const { data: user } = useMeQuery();
@@ -14,19 +15,20 @@ export default function MyPage() {
 
   return (
     <div className="pb-20">
-      {/* 헤더 */}
-      <header className="flex items-center justify-between px-5 pt-12 pb-4">
-        <h1 className="text-base font-semibold text-foreground">{displayName}</h1>
-        <Link
-          href="/my/settings"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <Settings size={22} />
-        </Link>
-      </header>
+      <TitleHeader
+        title="내 정보"
+        right={
+          <Link
+            href="/my/settings"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Settings size={22} />
+          </Link>
+        }
+      />
 
       {/* 프로필 섹션 */}
-      <section className="px-5 pb-6">
+      <section className="mt-4 px-5 pb-6">
         <div className="flex items-center gap-6">
           {/* 아바타 */}
           <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[oklch(0.72_0.18_42/40%)] bg-[oklch(0.268_0.007_34.298)] text-4xl">

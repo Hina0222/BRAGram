@@ -7,8 +7,8 @@ import { getTodayMissionQueryOptions } from '@/features/mission/today/api/useGet
 
 export default async function HomePage() {
   return (
-    <div className="pb-24">
-      <TitleHeader title="홈" />
+    <div className="pb-20">
+      <TitleHeader title="BRAGram" />
       <ServerFetchBoundary queryOptions={getTodayMissionQueryOptions()}>
         <MissionCard />
         <FeedList />

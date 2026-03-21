@@ -22,10 +22,8 @@ export function FeedAuthor({ pet, owner }: FeedAuthorProps) {
           )}
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-bold text-foreground hover:underline">
-            {owner.nickname}
-          </span>
-          <span className="text-xs text-muted-foreground">{pet.name}</span>
+          <span className="text-sm font-bold text-foreground hover:underline">{pet.name}</span>
+          <span className="text-xs text-muted-foreground">{owner.nickname}</span>
         </div>
       </Link>
     </div>

@@ -71,7 +71,7 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
   };
 
   return (
-    <form onSubmit={onSubmit(missionId)} className="flex flex-1 flex-col gap-5 px-5">
+    <form onSubmit={onSubmit(missionId)} className="mt-4 flex flex-1 flex-col gap-5 px-5">
       <FormField label="인증 사진" required error={errors.images?.message as string | undefined}>
         <div className="grid grid-cols-3 gap-2">
           {previewUrls.map((url, i) => (
