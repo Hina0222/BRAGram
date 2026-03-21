@@ -11,13 +11,11 @@ export default function SigninPage() {
       <div className="flex flex-1 flex-col items-center justify-center gap-10 px-8">
         {/* 로고 */}
         <div className="flex flex-col items-center gap-4">
-          <div className="flex h-20 w-20 items-center justify-center rounded-[28px] bg-[oklch(0.268_0.007_34.298)] text-5xl shadow-lg">
+          <div className="flex h-20 w-20 items-center justify-center rounded-[28px] bg-secondary text-5xl shadow-lg">
             🐾
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-[oklch(0.72_0.18_42)]">
-              BRAGram
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight text-primary">BRAGram</h1>
             <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               반려동물과 함께하는
               <br />
@@ -33,10 +31,7 @@ export default function SigninPage() {
             { emoji: '📸', text: '반려동물 일상을 피드로 공유' },
             { emoji: '🏆', text: '랭킹으로 집사들과 경쟁' },
           ].map(({ emoji, text }) => (
-            <div
-              key={text}
-              className="flex items-center gap-3 rounded-xl bg-[oklch(0.268_0.007_34.298)] px-4 py-3"
-            >
+            <div key={text} className="flex items-center gap-3 rounded-xl bg-secondary px-4 py-3">
               <span className="text-xl">{emoji}</span>
               <span className="text-sm text-foreground">{text}</span>
             </div>

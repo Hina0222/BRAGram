@@ -29,22 +29,24 @@ function PetDetail({ id }: PetDetailProps) {
       <InfoRow label="총 점수" value={String(pet.score)} />
       <InfoRow label="주간 점수" value={String(pet.weeklyScore)} />
       <InfoRow label="월간 점수" value={String(pet.monthlyScore)} />
+
       <button
         onClick={e => {
           e.preventDefault();
           e.stopPropagation();
           deletePet(pet.id);
         }}
-        className="cursor-pointer text-muted-foreground transition-colors hover:text-destructive"
+        className="mt-1 flex items-center justify-center gap-1.5 rounded-xl border border-destructive/40 py-2 text-xs font-medium text-destructive transition-colors hover:bg-destructive/5 disabled:opacity-50"
       >
-        <Trash2 size={18} />
+        <Trash2 size={13} />
+        삭제하기
       </button>
       {!pet.isActive && (
         <Button
           variant="outline"
           onClick={() => activatePet(id)}
           disabled={isPending}
-          className="mt-6 w-full"
+          className="mt-2 w-full"
           size="lg"
         >
           {isPending ? '처리 중...' : '대표 펫으로 설정'}

@@ -38,7 +38,7 @@ export function ProfileSetupForm() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="border-brand/50 hover:border-brand relative mt-4 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-dashed bg-card transition-colors"
+            className="relative mt-4 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-primary/50 bg-card transition-colors hover:border-primary"
           >
             {previewUrl ? (
               <img src={previewUrl} alt="프로필 사진" className="h-full w-full object-cover" />
@@ -67,7 +67,7 @@ export function ProfileSetupForm() {
               {...register('nickname')}
               placeholder="닉네임을 입력해주세요"
               maxLength={20}
-              className="focus:border-brand h-12 w-full rounded-xl border border-border bg-card px-4 text-base text-foreground placeholder:text-muted-foreground focus:outline-none"
+              className="h-12 w-full rounded-xl border border-border bg-card px-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
             />
             {formState.errors.nickname && (
               <p className="mt-1 text-xs text-destructive">{formState.errors.nickname.message}</p>
@@ -79,7 +79,7 @@ export function ProfileSetupForm() {
       <div className="px-5 pt-4 pb-10">
         <Button
           type="button"
-          className="bg-brand hover:bg-brand-dark h-13 w-full rounded-2xl text-base font-semibold text-primary-foreground"
+          className="h-13 w-full rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
           onClick={onSubmit}
           disabled={!canSubmit}
         >

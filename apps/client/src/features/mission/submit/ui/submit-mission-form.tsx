@@ -90,7 +90,7 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex aspect-square items-center justify-center rounded-xl border-2 border-dashed border-[oklch(0.72_0.18_42/50%)] bg-card transition-colors hover:border-[oklch(0.72_0.18_42)]"
+              className="flex aspect-square items-center justify-center rounded-xl border-2 border-dashed border-primary/50 bg-card transition-colors hover:border-primary"
             >
               <div className="flex flex-col items-center gap-1 text-muted-foreground">
                 <ImagePlus size={24} />
@@ -115,7 +115,7 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
           placeholder="오늘의 미션을 짧게 기록해보세요..."
           maxLength={150}
           rows={3}
-          className="w-full resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-[oklch(0.72_0.18_42)] focus:outline-none"
+          className="w-full resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
         />
       </FormField>
 
@@ -124,11 +124,11 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
           control={control}
           name="hashtags"
           render={() => (
-            <div className="flex min-h-11 flex-wrap gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-[oklch(0.72_0.18_42)]">
+            <div className="flex min-h-11 flex-wrap gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary">
               {hashtags.map(tag => (
                 <span
                   key={tag}
-                  className="flex items-center gap-1 rounded-full bg-[oklch(0.72_0.18_42/12%)] px-2.5 py-1 text-xs font-medium text-[oklch(0.72_0.18_42)]"
+                  className="flex items-center gap-1 rounded-full bg-primary/12 px-2.5 py-1 text-xs font-medium text-primary"
                 >
                   #{tag}
                   <button type="button" onClick={() => removeHashtag(tag)}>
@@ -156,7 +156,7 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
         <Button
           type="submit"
           disabled={isPending}
-          className="h-13 w-full rounded-2xl bg-[oklch(0.72_0.18_42)] text-base font-semibold text-[oklch(0.985_0.001_106.423)] hover:bg-[oklch(0.65_0.18_42)] disabled:opacity-40"
+          className="h-13 w-full rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/80 disabled:opacity-40"
         >
           {isPending ? '제출 중...' : '인증 완료'}
         </Button>
@@ -180,7 +180,7 @@ function FormField({
     <div className="flex flex-col gap-1.5">
       <p className="text-sm font-medium text-foreground">
         {label}
-        {required && <span className="ml-1 text-[oklch(0.72_0.18_42)]">*</span>}
+        {required && <span className="ml-1 text-primary">*</span>}
       </p>
       {children}
       {error && <p className="text-xs text-destructive">{error}</p>}

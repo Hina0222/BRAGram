@@ -23,7 +23,7 @@ export function CreatePetForm({ redirectTo }: CreatePetFormProps) {
             key={i}
             className={cn(
               'h-1 flex-1 rounded-full transition-colors duration-300',
-              i < step ? 'bg-brand' : 'bg-border'
+              i < step ? 'bg-primary' : 'bg-border'
             )}
           />
         ))}
@@ -44,16 +44,15 @@ export function CreatePetForm({ redirectTo }: CreatePetFormProps) {
         {step > 1 && (
           <Button
             type="button"
-            className="bg-brand hover:bg-brand-dark h-13 flex-1 rounded-2xl text-base font-semibold text-primary-foreground"
+            className="h-13 flex-1 rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
             onClick={handleBack}
-            disabled={!canNext()}
           >
             이전
           </Button>
         )}
         <Button
           type="button"
-          className="bg-brand hover:bg-brand-dark h-13 flex-1 rounded-2xl text-base font-semibold text-primary-foreground"
+          className="h-13 flex-1 rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
           onClick={handleButtonClick}
           disabled={!canNext()}
         >

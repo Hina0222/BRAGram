@@ -33,8 +33,8 @@ export function StepPetType() {
                   className={cn(
                     'flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border-2 py-10',
                     field.value === type
-                      ? 'border-brand bg-brand/12'
-                      : 'hover:border-brand/50 border-border bg-card'
+                      ? 'border-primary bg-primary/12'
+                      : 'border-border bg-card hover:border-primary/50'
                   )}
                 >
                   <span className="text-5xl">{emoji}</span>

@@ -17,7 +17,7 @@ export function RankingListItem({ item }: RankingItemProps) {
       <span className="w-6 text-center text-sm font-bold text-muted-foreground">{item.rank}</span>
 
       {/* 펫 이미지 */}
-      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[oklch(0.268_0.007_34.298)] text-xl">
+      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-secondary text-xl">
         {item.petImageUrl ? (
           <img
             src={item.petImageUrl}
@@ -46,14 +46,12 @@ export function RankingListItem({ item }: RankingItemProps) {
             <p className="text-xs text-muted-foreground">{item.ownerNickname}</p>
           </div>
         </div>
-        <span className="rounded-full bg-[oklch(0.268_0.007_34.298)] px-2 py-0.5 text-[10px] text-muted-foreground">
+        <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">
           {item.petType === 'dog' ? '강아지' : '고양이'}
         </span>
       </div>
 
-      <span className="text-sm font-bold text-[oklch(0.72_0.18_42)]">
-        {item.score.toLocaleString()}P
-      </span>
+      <span className="text-sm font-bold text-primary">{item.score.toLocaleString()}P</span>
     </div>
   );
 }

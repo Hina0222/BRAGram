@@ -29,7 +29,7 @@ export function FollowButton({ userId, isFollowing }: FollowButtonProps) {
       className={
         isFollowing
           ? 'rounded-lg border border-border px-5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50'
-          : 'rounded-lg bg-[oklch(0.72_0.18_42)] px-5 py-1.5 text-sm font-medium text-white transition-colors hover:opacity-90 disabled:opacity-50'
+          : 'rounded-lg bg-primary px-5 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 disabled:opacity-50'
       }
     >
       {isFollowing ? '팔로잉' : '팔로우'}

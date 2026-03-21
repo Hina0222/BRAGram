@@ -31,7 +31,7 @@ export default function MyPage() {
       <section className="mt-4 px-5 pb-6">
         <div className="flex items-center gap-6">
           {/* 아바타 */}
-          <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[oklch(0.72_0.18_42/40%)] bg-[oklch(0.268_0.007_34.298)] text-4xl">
+          <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-primary/40 bg-secondary text-4xl">
             {user?.profileImage ? (
               <img
                 src={user.profileImage}
@@ -70,7 +70,7 @@ export default function MyPage() {
         <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-1">
           <MyPetList />
           <Link href="/my/pets/new" className="flex flex-shrink-0 flex-col items-center gap-1.5">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-[oklch(0.72_0.18_42/50%)]">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-primary/50">
               <span className="text-xl">+</span>
             </div>
             <span className="text-xs text-muted-foreground">추가</span>

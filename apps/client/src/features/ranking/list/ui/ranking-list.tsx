@@ -44,7 +44,7 @@ function PodiumItem({ item, grad, height, medal, isFirst = false }: PodiumItemPr
       {isFirst && <Trophy size={14} className="text-[oklch(0.85_0.18_85)]" />}
       <div
         className={cn(
-          'relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 bg-[oklch(0.268_0.007_34.298)] text-2xl',
+          'relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 bg-secondary text-2xl',
           isFirst ? 'border-[oklch(0.85_0.18_85)]' : 'border-border'
         )}
       >

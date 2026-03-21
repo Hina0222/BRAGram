@@ -43,7 +43,7 @@ export default function MySettingsPage() {
 
       {/* 프로필 요약 */}
       <div className="mx-5 mb-6 flex items-center gap-4 rounded-2xl border border-border bg-card px-4 py-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[oklch(0.268_0.007_34.298)] text-3xl">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-3xl">
           🐾
         </div>
         <div>
@@ -66,7 +66,7 @@ export default function MySettingsPage() {
                 <button
                   key={item.action}
                   onClick={() => item.href && router.push(item.href)}
-                  className={`flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[oklch(0.268_0.007_34.298)] ${
+                  className={`flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-secondary ${
                     idx < section.items.length - 1 ? 'border-b border-border' : ''
                   }`}
                 >
@@ -85,7 +85,7 @@ export default function MySettingsPage() {
             <button
               onClick={() => logout()}
               disabled={isPending}
-              className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[oklch(0.268_0.007_34.298)] disabled:opacity-50"
+              className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-secondary disabled:opacity-50"
             >
               <LogOut size={18} className="flex-shrink-0 text-destructive" />
               <span className="flex-1 text-sm text-destructive">

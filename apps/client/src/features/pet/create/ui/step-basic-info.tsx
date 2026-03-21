@@ -28,7 +28,7 @@ export function StepBasicInfo() {
         {/* 이름 */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-foreground">
-            이름 <span className="text-brand">*</span>
+            이름 <span className="text-primary">*</span>
           </label>
           <input
             {...register('name')}
@@ -38,7 +38,7 @@ export function StepBasicInfo() {
               'h-12 w-full rounded-xl border bg-card px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:outline-none',
               errors.name
                 ? 'border-destructive focus:border-destructive'
-                : 'focus:border-brand border-border'
+                : 'border-border focus:border-primary'
             )}
           />
           {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
@@ -57,7 +57,7 @@ export function StepBasicInfo() {
               'h-12 w-full rounded-xl border bg-card px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:outline-none',
               errors.breed
                 ? 'border-destructive focus:border-destructive'
-                : 'focus:border-brand border-border'
+                : 'border-border focus:border-primary'
             )}
           />
           {errors.breed && <p className="text-xs text-destructive">{errors.breed.message}</p>}
@@ -81,7 +81,7 @@ export function StepBasicInfo() {
                     className={cn(
                       'h-12 flex-1 rounded-xl border-2 text-sm font-medium transition-all',
                       field.value === val
-                        ? 'border-brand bg-brand/12 text-brand'
+                        ? 'border-primary bg-primary/12 text-primary'
                         : 'border-border bg-card text-foreground'
                     )}
                   >
@@ -105,7 +105,7 @@ export function StepBasicInfo() {
               'h-12 w-full rounded-xl border bg-card px-4 text-foreground transition-colors focus:outline-none',
               errors.birthDate
                 ? 'border-destructive focus:border-destructive'
-                : 'focus:border-brand border-border'
+                : 'border-border focus:border-primary'
             )}
           />
           {errors.birthDate && (
@@ -127,7 +127,7 @@ export function StepBasicInfo() {
               'w-full resize-none rounded-xl border bg-card px-4 py-3 text-foreground transition-colors placeholder:text-muted-foreground focus:outline-none',
               errors.bio
                 ? 'border-destructive focus:border-destructive'
-                : 'focus:border-brand border-border'
+                : 'border-border focus:border-primary'
             )}
           />
           {errors.bio && <p className="text-xs text-destructive">{errors.bio.message}</p>}

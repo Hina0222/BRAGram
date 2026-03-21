@@ -11,7 +11,7 @@ import { cn } from '@/shared/lib/utils';
 const GENDER_LABEL = { male: '수컷', female: '암컷' } as const;
 
 const inputCls =
-  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-[oklch(0.72_0.18_42)]';
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary';
 
 interface EditPetFormProps {
   id: number;
@@ -46,7 +46,7 @@ function EditPetForm({ id, onSuccess, onCancel }: EditPetFormProps) {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="border-brand/50 hover:border-brand relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-dashed bg-card transition-colors"
+          className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-primary/50 bg-card transition-colors hover:border-primary"
         >
           {previewUrl ? (
             <img src={previewUrl} alt="펫 사진" className="h-full w-full object-cover" />
@@ -97,7 +97,7 @@ function EditPetForm({ id, onSuccess, onCancel }: EditPetFormProps) {
                   className={cn(
                     'flex-1 rounded-lg border py-2 text-sm font-medium transition-colors',
                     field.value === g
-                      ? 'border-[oklch(0.72_0.18_42)] bg-[oklch(0.72_0.18_42/12%)] text-[oklch(0.72_0.18_42)]'
+                      ? 'border-primary bg-primary/12 text-primary'
                       : 'border-border bg-card text-muted-foreground hover:bg-accent'
                   )}
                 >

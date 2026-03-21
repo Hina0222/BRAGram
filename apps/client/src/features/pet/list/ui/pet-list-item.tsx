@@ -19,7 +19,7 @@ function PetListItem({ pet, href }: PetListItemProps) {
     <li>
       <Link href={href}>
         <div className="flex flex-shrink-0 flex-col items-center gap-1.5">
-          <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-[oklch(0.72_0.18_42/50%)] bg-card text-2xl">
+          <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-primary/50 bg-card text-2xl">
             {pet.imageUrl ? (
               <img
                 src={pet.imageUrl}
