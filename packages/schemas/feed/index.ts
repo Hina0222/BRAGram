@@ -16,6 +16,7 @@ export const FeedItemSchema = z.object({
   likeCount: z.number(),
   commentCount: z.number(),
   isLiked: z.boolean(),
+  comment: z.string().nullable(),
 });
 
 export const FeedListResponseSchema = z.object({
