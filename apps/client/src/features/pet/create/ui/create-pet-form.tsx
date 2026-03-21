@@ -56,7 +56,7 @@ export function CreatePetForm({ redirectTo }: CreatePetFormProps) {
       <div className="px-5 pt-4 pb-10">
         <Button
           type="button"
-          className="h-13 w-full rounded-2xl bg-brand text-base font-semibold text-primary-foreground hover:bg-brand-dark"
+          className="bg-brand hover:bg-brand-dark h-13 w-full rounded-2xl text-base font-semibold text-primary-foreground"
           onClick={handleButtonClick}
           disabled={!canNext()}
         >

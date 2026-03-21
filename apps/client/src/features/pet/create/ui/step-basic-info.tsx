@@ -38,7 +38,7 @@ export function StepBasicInfo() {
               'h-12 w-full rounded-xl border bg-card px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:outline-none',
               errors.name
                 ? 'border-destructive focus:border-destructive'
-                : 'border-border focus:border-brand'
+                : 'focus:border-brand border-border'
             )}
           />
           {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
@@ -57,7 +57,7 @@ export function StepBasicInfo() {
               'h-12 w-full rounded-xl border bg-card px-4 text-foreground transition-colors placeholder:text-muted-foreground focus:outline-none',
               errors.breed
                 ? 'border-destructive focus:border-destructive'
-                : 'border-border focus:border-brand'
+                : 'focus:border-brand border-border'
             )}
           />
           {errors.breed && <p className="text-xs text-destructive">{errors.breed.message}</p>}
@@ -105,7 +105,7 @@ export function StepBasicInfo() {
               'h-12 w-full rounded-xl border bg-card px-4 text-foreground transition-colors focus:outline-none',
               errors.birthDate
                 ? 'border-destructive focus:border-destructive'
-                : 'border-border focus:border-brand'
+                : 'focus:border-brand border-border'
             )}
           />
           {errors.birthDate && (
@@ -127,7 +127,7 @@ export function StepBasicInfo() {
               'w-full resize-none rounded-xl border bg-card px-4 py-3 text-foreground transition-colors placeholder:text-muted-foreground focus:outline-none',
               errors.bio
                 ? 'border-destructive focus:border-destructive'
-                : 'border-border focus:border-brand'
+                : 'focus:border-brand border-border'
             )}
           />
           {errors.bio && <p className="text-xs text-destructive">{errors.bio.message}</p>}

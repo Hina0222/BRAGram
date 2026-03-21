@@ -36,7 +36,7 @@ export function StepPhoto() {
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
-        className="relative mt-4 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-brand/50 bg-card transition-colors hover:border-brand"
+        className="border-brand/50 hover:border-brand relative mt-4 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-dashed bg-card transition-colors"
       >
         {previewUrl ? (
           <img src={previewUrl} alt="펫 사진" className="h-full w-full object-cover" />

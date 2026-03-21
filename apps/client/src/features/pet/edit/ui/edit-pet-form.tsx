@@ -46,7 +46,7 @@ function EditPetForm({ id, onSuccess, onCancel }: EditPetFormProps) {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-brand/50 bg-card transition-colors hover:border-brand"
+          className="border-brand/50 hover:border-brand relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-dashed bg-card transition-colors"
         >
           {previewUrl ? (
             <img src={previewUrl} alt="펫 사진" className="h-full w-full object-cover" />
