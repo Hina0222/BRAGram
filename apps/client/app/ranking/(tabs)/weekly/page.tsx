@@ -1,1 +1,1 @@
-export { default } from '../../../../src/pages/ranking/(tabs)/weekly';
+export { default } from '@/pages/ranking/(tabs)/weekly';

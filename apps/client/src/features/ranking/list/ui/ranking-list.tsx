@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import { cn } from '@/shared/lib/utils';
 import type { RankingItem, RankingQuery } from '@bragram/schemas/ranking';
-import { useGetRankingsSuspenseInfiniteQuery } from '../api/useGetRankingsInfiniteQuery';
+import { useGetRankingsInfiniteQuery } from '../api/useGetRankingsInfiniteQuery';
 import { RankingListItem } from './ranking-item';
 import { RankingListSkeleton } from './ranking-list-skeleton';
 import { RankingListError } from './ranking-list-error';
@@ -84,7 +84,7 @@ interface RankingListProps {
 
 function RankingList({ type = 'all' }: RankingListProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetRankingsSuspenseInfiniteQuery(type);
+    useGetRankingsInfiniteQuery(type);
 
   const { ref, inView } = useInView();
 
@@ -93,6 +93,8 @@ function RankingList({ type = 'all' }: RankingListProps) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
+
+  if (!data) return null;
 
   const allItems = data.pages.flatMap(page => page.data);
   const top3 = allItems.slice(0, 3);

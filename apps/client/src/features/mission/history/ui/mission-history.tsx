@@ -11,7 +11,6 @@ import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import { useInView } from 'react-intersection-observer';
 
 function MissionHistory() {
-  // @tanstack/react-virtual 나중에
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useGetMissionHistorySuspenseInfiniteQuery();
   const { ref, inView } = useInView();
