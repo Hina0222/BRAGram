@@ -112,6 +112,14 @@ export const API_ROUTES = {
       URL: (id: number) => `/users/${id}/feeds`,
       METHOD: 'GET',
     },
+    GET_PUBLIC_PET: {
+      URL: (userId: number, petId: number) => `/users/${userId}/pets/${petId}`,
+      METHOD: 'GET',
+    },
+    GET_PET_SUBMISSIONS: {
+      URL: (userId: number, petId: number) => `/users/${userId}/pets/${petId}/submissions`,
+      METHOD: 'GET',
+    },
     FOLLOW: {
       URL: (id: number) => `/users/${id}/follow`,
       METHOD: 'POST',

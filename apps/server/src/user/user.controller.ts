@@ -22,6 +22,8 @@ import {
   type UserProfileResponse,
 } from '@bragram/schemas/user';
 import type { FeedListResponse } from '@bragram/schemas/feed';
+import type { PetResponse } from '@bragram/schemas/pet';
+import type { PetSubmissionHistoryResponse } from '@bragram/schemas/mission';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -72,6 +74,30 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<UserProfileResponse> {
     return this.userService.getPublicProfile(req.user.id, id);
+  }
+
+  @Get(':id/pets/:petId')
+  getPublicPet(
+    @Param('id', ParseIntPipe) userId: number,
+    @Param('petId', ParseIntPipe) petId: number,
+  ): Promise<PetResponse> {
+    return this.userService.getPublicPet(userId, petId);
+  }
+
+  @Get(':id/pets/:petId/submissions')
+  getPetSubmissions(
+    @Param('id', ParseIntPipe) userId: number,
+    @Param('petId', ParseIntPipe) petId: number,
+    @Query() query: Record<string, string>,
+  ): Promise<PetSubmissionHistoryResponse> {
+    const limit = query.limit ? Number(query.limit) : 20;
+    const cursor = query.cursor ? Number(query.cursor) : undefined;
+    return this.userService.getPetPublicSubmissions(
+      userId,
+      petId,
+      limit,
+      cursor,
+    );
   }
 
   @Get(':id/feeds')

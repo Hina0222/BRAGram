@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function timeAgo(date: string) {
+export function timeAgo(date: string | Date) {
   const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
 
   if (seconds < 60) return `${seconds}초 전`;

@@ -24,6 +24,8 @@ import type {
   UserProfileResponse,
 } from '@bragram/schemas/user';
 import type { FeedItem, FeedListResponse } from '@bragram/schemas/feed';
+import type { PetResponse } from '@bragram/schemas/pet';
+import type { PetSubmissionHistoryResponse } from '@bragram/schemas/mission';
 
 interface KakaoProfile {
   kakaoId: string;
@@ -248,6 +250,81 @@ export class UserService {
 
     return {
       data: feedItems,
+      hasNext,
+      cursor: hasNext && lastItem ? lastItem.id : null,
+    };
+  }
+
+  async getPublicPet(userId: number, petId: number): Promise<PetResponse> {
+    const [pet] = await this.db
+      .select()
+      .from(pets)
+      .where(and(eq(pets.id, petId), eq(pets.userId, userId)));
+
+    if (!pet) {
+      throw new NotFoundException('펫을 찾을 수 없습니다.');
+    }
+
+    return pet;
+  }
+
+  async getPetPublicSubmissions(
+    userId: number,
+    petId: number,
+    limit: number,
+    cursor?: number,
+  ): Promise<PetSubmissionHistoryResponse> {
+    const [pet] = await this.db
+      .select({ id: pets.id })
+      .from(pets)
+      .where(and(eq(pets.id, petId), eq(pets.userId, userId)))
+      .limit(1);
+
+    if (!pet) {
+      throw new NotFoundException('펫을 찾을 수 없습니다.');
+    }
+
+    const rows = await this.db
+      .select({
+        id: missionSubmissions.id,
+        missionId: missionSubmissions.missionId,
+        imageUrls: missionSubmissions.imageUrls,
+        comment: missionSubmissions.comment,
+        hashtags: missionSubmissions.hashtags,
+        likeCount: missionSubmissions.likeCount,
+        createdAt: missionSubmissions.createdAt,
+        missionTitle: missions.title,
+        missionScheduledAt: missions.scheduledAt,
+      })
+      .from(missionSubmissions)
+      .innerJoin(missions, eq(missionSubmissions.missionId, missions.id))
+      .where(
+        and(
+          eq(missionSubmissions.petId, petId),
+          cursor ? lt(missionSubmissions.id, cursor) : undefined,
+        ),
+      )
+      .orderBy(desc(missionSubmissions.id))
+      .limit(limit + 1);
+
+    const hasNext = rows.length > limit;
+    const data = hasNext ? rows.slice(0, limit) : rows;
+    const lastItem = data[data.length - 1];
+
+    return {
+      data: data.map((r) => ({
+        id: r.id,
+        missionId: r.missionId,
+        mission: {
+          title: r.missionTitle,
+          scheduledAt: r.missionScheduledAt,
+        },
+        imageUrls: r.imageUrls,
+        comment: r.comment ?? null,
+        hashtags: r.hashtags ?? null,
+        likeCount: r.likeCount,
+        createdAt: r.createdAt,
+      })),
       hasNext,
       cursor: hasNext && lastItem ? lastItem.id : null,
     };

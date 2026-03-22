@@ -57,9 +57,31 @@ export const SubmissionHistoryResponseSchema = z.object({
   cursor: z.number().nullable(),
 });
 
+export const PublicSubmissionItemSchema = z.object({
+  id: z.number(),
+  missionId: z.number(),
+  mission: z.object({
+    title: z.string(),
+    scheduledAt: z.string(),
+  }),
+  imageUrls: z.array(z.string()),
+  comment: z.string().nullable(),
+  hashtags: z.array(z.string()).nullable(),
+  likeCount: z.number(),
+  createdAt: z.date(),
+});
+
+export const PetSubmissionHistoryResponseSchema = z.object({
+  data: z.array(PublicSubmissionItemSchema),
+  hasNext: z.boolean(),
+  cursor: z.number().nullable(),
+});
+
 export type CreateSubmissionRequest = z.infer<typeof CreateSubmissionSchema>;
 export type SubmissionHistoryQuery = z.infer<typeof SubmissionHistoryQuerySchema>;
 export type MissionResponse = z.infer<typeof MissionResponseSchema>;
 export type SubmissionResponse = z.infer<typeof SubmissionResponseSchema>;
 export type TodayMissionResponse = z.infer<typeof TodayMissionResponseSchema>;
 export type SubmissionHistoryResponse = z.infer<typeof SubmissionHistoryResponseSchema>;
+export type PublicSubmissionItem = z.infer<typeof PublicSubmissionItemSchema>;
+export type PetSubmissionHistoryResponse = z.infer<typeof PetSubmissionHistoryResponseSchema>;
