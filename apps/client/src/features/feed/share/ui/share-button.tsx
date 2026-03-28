@@ -9,11 +9,9 @@ interface ShareButtonProps {
 }
 
 export function ShareButton({ feedId }: ShareButtonProps) {
-  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/feed/${feedId}`;
-
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(`${window.location.origin}/feed/${feedId}`);
       toast.success('링크가 복사되었습니다');
     } catch {
       toast.error('링크 복사에 실패했습니다');
