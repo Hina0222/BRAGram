@@ -2,6 +2,7 @@
 
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import { LikeButton } from '@/features/like/ui';
+import { ShareButton } from '@/features/feed/share/ui';
 import { FeedAuthor } from '@/features/feed/ui';
 import { FeedDetailSkeleton, FeedDetailError } from '@/features/feed/detail/ui';
 import { useGetFeedSuspenseQuery } from '@/features/feed/detail/api/useGetFeedQuery';
@@ -64,13 +65,14 @@ function FeedDetail({ id }: FeedDetailProps) {
           ))}
         </div>
 
-        {/* 좋아요 */}
+        {/* 좋아요 / 공유 */}
         <div className="flex items-center gap-1">
           <LikeButton
             submissionId={item.id}
             initialLikeCount={item.likeCount}
             initialIsLiked={item.isLiked}
           />
+          <ShareButton feedId={item.id} />
         </div>
 
         <div className="pb-2 text-xs text-muted-foreground">{timeAgo(item.createdAt)}</div>

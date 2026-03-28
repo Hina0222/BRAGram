@@ -4,6 +4,7 @@ import { memo } from 'react';
 import Link from 'next/link';
 import { MessageCircle } from 'lucide-react';
 import { LikeButton } from '@/features/like/ui';
+import { ShareButton } from '@/features/feed/share/ui';
 import { FeedAuthor } from '@/features/feed/ui';
 import type { FeedItem as FeedItemType } from '@bragram/schemas/feed';
 import {
@@ -49,7 +50,7 @@ export const FeedItem = memo(function FeedItem({ item }: FeedItemProps) {
         )}
       </Carousel>
 
-      {/* 좋아요 / 댓글 */}
+      {/* 좋아요 / 댓글 / 공유 */}
       <div className="flex items-center justify-between px-4 py-2">
         <div className="flex items-center gap-1">
           <LikeButton
@@ -65,6 +66,7 @@ export const FeedItem = memo(function FeedItem({ item }: FeedItemProps) {
             <span>{item.commentCount}</span>
           </Link>
         </div>
+        <ShareButton feedId={item.id} />
       </div>
 
       {/* 제출 코멘트 */}
