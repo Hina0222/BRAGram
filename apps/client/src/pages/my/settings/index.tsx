@@ -1,32 +1,45 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Bell, Shield, HelpCircle, LogOut, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMeQuery } from '@/features/user/me/api/useMeQuery';
 import { useLogoutMutation } from '@/features/user/me/api/useLogoutMutation';
+import { useDeleteAccountMutation } from '@/features/user/me/api/useDeleteAccountMutation';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Button,
+} from '@/shared/ui';
 
 const SECTIONS = [
   {
     title: '계정',
     items: [{ icon: User, label: '프로필 편집', action: 'profile', href: '/my/settings/profile' }],
   },
-  {
-    title: '알림',
-    items: [{ icon: Bell, label: '알림 설정', action: 'notifications', href: '' }],
-  },
-  {
-    title: '기타',
-    items: [
-      { icon: Shield, label: '개인정보처리방침', action: 'privacy', href: '' },
-      { icon: HelpCircle, label: '고객센터', action: 'help', href: '' },
-    ],
-  },
+  // {
+  //   title: '알림',
+  //   items: [{ icon: Bell, label: '알림 설정', action: 'notifications', href: '' }],
+  // },
+  // {
+  //   title: '기타',
+  //   items: [
+  //     { icon: Shield, label: '개인정보처리방침', action: 'privacy', href: '' },
+  //     { icon: HelpCircle, label: '고객센터', action: 'help', href: '' },
+  //   ],
+  // },
 ];
 
 export default function MySettingsPage() {
   const router = useRouter();
   const { data: user } = useMeQuery();
   const { mutate: logout, isPending } = useLogoutMutation();
+  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccountMutation();
 
   return (
     <>
@@ -94,6 +107,38 @@ export default function MySettingsPage() {
             </button>
           </div>
         </div>
+
+        {/* 탈퇴 */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={isDeleting}
+              className="ml-auto w-fit text-xs text-muted-foreground hover:bg-transparent hover:text-muted-foreground"
+            >
+              {isDeleting ? '탈퇴 중...' : '계정 탈퇴'}
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>계정 탈퇴</DialogTitle>
+              <DialogDescription>
+                탈퇴하시겠습니까? 모든 데이터가 영구적으로 삭제됩니다.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="gap-2">
+              <DialogClose asChild>
+                <Button variant="outline" disabled={isDeleting}>
+                  취소
+                </Button>
+              </DialogClose>
+              <Button variant="destructive" onClick={() => deleteAccount()} disabled={isDeleting}>
+                {isDeleting ? '탈퇴 중...' : '탈퇴'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* 버전 정보 */}
         <p className="pb-8 text-center text-xs text-muted-foreground">BRAGram v0.1.0</p>

@@ -90,6 +90,10 @@ export const API_ROUTES = {
       URL: '/auth/logout',
       METHOD: 'POST',
     },
+    WITHDRAW: {
+      URL: '/auth/withdraw',
+      METHOD: 'DELETE',
+    },
   },
   USERS: {
     GET_ME: {

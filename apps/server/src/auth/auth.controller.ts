@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
   Req,
   Res,
   UseGuards,
@@ -10,7 +11,9 @@ import {
 import type { Response, Request as ExpressRequest } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { KakaoAuthGuard } from './guards/kakao-auth.guard';
+import type { AuthenticatedRequest } from '../common/types/authenticated-request.type';
 
 const ACCESS_TOKEN_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -83,5 +86,16 @@ export class AuthController {
 
     res.cookie('access_token', accessToken, ACCESS_TOKEN_COOKIE_OPTIONS);
     res.cookie('refreshToken', newRefreshToken, REFRESH_TOKEN_COOKIE_OPTIONS);
+  }
+
+  @Delete('withdraw')
+  @UseGuards(JwtAuthGuard)
+  async withdraw(
+    @Req() req: AuthenticatedRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    await this.authService.withdrawUser(req.user.id);
+    res.clearCookie('access_token', ACCESS_TOKEN_COOKIE_OPTIONS);
+    res.clearCookie('refreshToken', REFRESH_TOKEN_COOKIE_OPTIONS);
   }
 }

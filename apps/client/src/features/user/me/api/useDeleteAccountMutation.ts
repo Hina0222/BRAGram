@@ -1,21 +1,19 @@
-'use client';
-
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/shared/api';
-import { getQueryClient } from '@/shared/api/get-query-client';
+import { apiClient } from '@/shared/api/api-client';
 import { API_ROUTES } from '@/shared/api/api-routes.constants';
+import { getQueryClient } from '@/shared/api';
 
-export const logout = async () => {
-  return apiClient.post(API_ROUTES.AUTH.LOGOUT.URL);
+export const withdraw = async () => {
+  return apiClient.delete(API_ROUTES.AUTH.WITHDRAW.URL);
 };
 
-export function useLogoutMutation() {
+export function useDeleteAccountMutation() {
   const router = useRouter();
   const queryClient = getQueryClient();
 
   return useMutation({
-    mutationFn: logout,
+    mutationFn: withdraw,
     onSettled: () => {
       queryClient.clear();
       router.replace('/signin');

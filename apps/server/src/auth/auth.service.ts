@@ -66,6 +66,30 @@ export class AuthService {
     await this.userService.updateRefreshToken(user.id, null);
   }
 
+  async withdrawUser(userId: number) {
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
+
+    // Kakao unlink (실패해도 탈퇴 진행)
+    try {
+      const adminKey = this.configService.get<string>('KAKAO_ADMIN_KEY');
+      await fetch('https://kapi.kakao.com/v1/user/unlink', {
+        method: 'POST',
+        headers: {
+          Authorization: `KakaoAK ${adminKey}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `target_id_type=user_id&target_id=${user.kakaoId}`,
+      });
+    } catch (e) {
+      console.error('Kakao unlink failed:', e);
+    }
+
+    await this.userService.deleteMe(userId);
+  }
+
   private async generateTokens(userId: number, kakaoId: string) {
     const payload = { sub: userId, kakaoId };
 

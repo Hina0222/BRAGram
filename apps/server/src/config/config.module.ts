@@ -23,6 +23,7 @@ const envSchema = z.object({
   KAKAO_CLIENT_ID: z.string(),
   KAKAO_CLIENT_SECRET: z.string(),
   KAKAO_REDIRECT_URI: z.string(),
+  KAKAO_ADMIN_KEY: z.string(),
 
   // JWT
   JWT_SECRET: z.string(),

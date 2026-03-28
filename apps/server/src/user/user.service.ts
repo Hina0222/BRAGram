@@ -383,4 +383,17 @@ export class UserService {
       profileImage: updated.profileImage ?? null,
     };
   }
+
+  async deleteMe(userId: number) {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new NotFoundException('사용자를 찾을 수 없습니다.');
+    }
+
+    if (user.profileImage) {
+      await this.awsService.deleteImage(user.profileImage);
+    }
+
+    await this.db.delete(users).where(eq(users.id, userId));
+  }
 }
