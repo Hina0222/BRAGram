@@ -1,7 +1,17 @@
 'use client';
 
 import { ImageOff, Trash2 } from 'lucide-react';
-import { Button } from '@/shared/ui';
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/shared/ui';
 import { useDeleteCommentMutation } from '@/features/comment/delete/api/useDeleteCommentMutation';
 import type { CommentItem as CommentItemType } from '@bragram/schemas/comment';
 import Link from 'next/link';
@@ -15,11 +25,6 @@ interface CommentItemProps {
 
 export function CommentItem({ comment, submissionId, isOwner }: CommentItemProps) {
   const { mutate: deleteComment, isPending } = useDeleteCommentMutation(submissionId);
-
-  const handleDelete = () => {
-    if (!confirm('댓글을 삭제하시겠습니까?')) return;
-    deleteComment(comment.id);
-  };
 
   return (
     <div className="flex gap-2.5">
@@ -49,15 +54,38 @@ export function CommentItem({ comment, submissionId, isOwner }: CommentItemProps
         <span className="text-xs text-muted-foreground">{timeAgo(comment.createdAt)}</span>
       </div>
       {isOwner && (
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          disabled={isPending}
-          onClick={handleDelete}
-          className="shrink-0 text-muted-foreground hover:text-destructive"
-        >
-          <Trash2 size={14} />
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              disabled={isPending}
+              className="shrink-0 text-muted-foreground hover:text-destructive"
+            >
+              <Trash2 size={14} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>댓글 삭제</DialogTitle>
+              <DialogDescription>댓글을 삭제하시겠습니까?</DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="gap-2">
+              <DialogClose asChild>
+                <Button variant="outline" disabled={isPending}>
+                  취소
+                </Button>
+              </DialogClose>
+              <Button
+                variant="destructive"
+                onClick={() => deleteComment(comment.id)}
+                disabled={isPending}
+              >
+                {isPending ? '삭제 중...' : '삭제'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );

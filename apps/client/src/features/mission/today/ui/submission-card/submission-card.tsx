@@ -15,6 +15,14 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/shared/ui';
 
 function SubmissionCard() {
@@ -29,11 +37,6 @@ function SubmissionCard() {
       </div>
     );
   }
-
-  const handleDelete = () => {
-    if (!confirm('제출을 삭제하시겠습니까?')) return;
-    mutate({ missionId: submission.missionId, submissionId: submission.id });
-  };
 
   return (
     <div className="overflow-hidden rounded-2xl bg-card shadow-sm">
@@ -68,16 +71,43 @@ function SubmissionCard() {
             ))}
           </div>
         )}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleDelete}
-          disabled={isPending}
-          className="mt-1 w-full border-destructive/40 text-destructive hover:bg-destructive/5 hover:text-destructive"
-        >
-          <Trash2 size={13} />
-          {isPending ? '삭제 중...' : '제출 삭제'}
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={isPending}
+              className="mt-1 w-full border-destructive/40 text-destructive hover:bg-destructive/5 hover:text-destructive"
+            >
+              <Trash2 size={13} />
+              제출 삭제
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>제출 삭제</DialogTitle>
+              <DialogDescription>
+                제출을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="gap-2">
+              <DialogClose asChild>
+                <Button variant="outline" disabled={isPending}>
+                  취소
+                </Button>
+              </DialogClose>
+              <Button
+                variant="destructive"
+                onClick={() =>
+                  mutate({ missionId: submission.missionId, submissionId: submission.id })
+                }
+                disabled={isPending}
+              >
+                {isPending ? '삭제 중...' : '삭제'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
