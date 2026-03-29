@@ -8,6 +8,7 @@ import {
   ProfileSetupFormSchema,
   type ProfileSetupFormValues,
 } from '@/features/user/profile/model/schema';
+import { apiClient } from '@/shared/api/api-client';
 
 export function useProfileSetupForm() {
   const router = useRouter();
@@ -27,7 +28,8 @@ export function useProfileSetupForm() {
 
   const onSubmit = methods.handleSubmit((data: ProfileSetupFormValues) => {
     mutate(data, {
-      onSuccess: () => {
+      onSuccess: async () => {
+        await apiClient.post('/auth/refresh');
         router.push('/onboarding/pet');
       },
       onError: (error: Error) => {

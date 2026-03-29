@@ -19,7 +19,11 @@ export class AuthService {
   ) {}
 
   async login(user: User) {
-    const tokens = await this.generateTokens(user.id, user.kakaoId);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.kakaoId,
+      user.nickname !== null,
+    );
     const hashed = await bcrypt.hash(tokens.refreshToken, 10);
     await this.userService.updateRefreshToken(user.id, hashed);
     return tokens;
@@ -41,7 +45,11 @@ export class AuthService {
     const matches = await bcrypt.compare(refreshToken, user.refreshToken);
     if (!matches) throw new UnauthorizedException();
 
-    const tokens = await this.generateTokens(user.id, user.kakaoId);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.kakaoId,
+      user.nickname !== null,
+    );
     const hashed = await bcrypt.hash(tokens.refreshToken, 10);
     await this.userService.updateRefreshToken(user.id, hashed);
     return tokens;
@@ -90,15 +98,20 @@ export class AuthService {
     await this.userService.deleteMe(userId);
   }
 
-  private async generateTokens(userId: number, kakaoId: string) {
-    const payload = { sub: userId, kakaoId };
+  private async generateTokens(
+    userId: number,
+    kakaoId: string,
+    hasNickname: boolean,
+  ) {
+    const accessPayload = { sub: userId, kakaoId, hasNickname };
+    const refreshPayload = { sub: userId, kakaoId };
 
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, {
+      this.jwtService.signAsync(accessPayload, {
         secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '1h',
       }),
-      this.jwtService.signAsync(payload, {
+      this.jwtService.signAsync(refreshPayload, {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
         expiresIn: '30d',
       }),
