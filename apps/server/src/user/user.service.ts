@@ -20,7 +20,9 @@ import { AwsService, IMAGE_PRESET } from '../aws/aws.service';
 import type { ProfileUpdateRequest } from '@bragram/schemas/user';
 import type {
   UserSearchQuery,
+  SearchResponse,
   UserSearchResponse,
+  PetSearchResponse,
   UserProfileResponse,
 } from '@bragram/schemas/user';
 import type { FeedItem, FeedListResponse } from '@bragram/schemas/feed';
@@ -79,6 +81,17 @@ export class UserService {
   async searchUsers(
     requesterId: number,
     query: UserSearchQuery,
+  ): Promise<SearchResponse> {
+    switch (query.type) {
+      case 'user':
+        return this.searchByUser(query);
+      case 'pet':
+        return this.searchByPet(query);
+    }
+  }
+
+  private async searchByUser(
+    query: UserSearchQuery,
   ): Promise<UserSearchResponse> {
     const { q, cursor, limit } = query;
 
@@ -102,10 +115,56 @@ export class UserService {
     const lastItem = data[data.length - 1];
 
     return {
+      type: 'user',
       data: data.map((r) => ({
         id: r.id,
         nickname: r.nickname!,
         profileImage: r.profileImage ?? null,
+      })),
+      hasNext,
+      cursor: hasNext && lastItem ? lastItem.id : null,
+    };
+  }
+
+  private async searchByPet(
+    query: UserSearchQuery,
+  ): Promise<PetSearchResponse> {
+    const { q, cursor, limit } = query;
+
+    const rows = await this.db
+      .select({
+        id: pets.id,
+        name: pets.name,
+        type: pets.type,
+        breed: pets.breed,
+        imageUrl: pets.imageUrl,
+        ownerId: users.id,
+        ownerNickname: users.nickname,
+      })
+      .from(pets)
+      .innerJoin(users, eq(pets.userId, users.id))
+      .where(
+        cursor
+          ? and(ilike(pets.name, `%${q}%`), gt(pets.id, cursor))
+          : ilike(pets.name, `%${q}%`),
+      )
+      .orderBy(pets.id)
+      .limit(limit + 1);
+
+    const hasNext = rows.length > limit;
+    const data = hasNext ? rows.slice(0, limit) : rows;
+    const lastItem = data[data.length - 1];
+
+    return {
+      type: 'pet',
+      data: data.map((r) => ({
+        id: r.id,
+        name: r.name,
+        type: r.type,
+        breed: r.breed ?? null,
+        imageUrl: r.imageUrl ?? null,
+        ownerId: r.ownerId,
+        ownerNickname: r.ownerNickname ?? '',
       })),
       hasNext,
       cursor: hasNext && lastItem ? lastItem.id : null,

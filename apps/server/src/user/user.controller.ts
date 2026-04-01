@@ -18,7 +18,7 @@ import type { AuthenticatedRequest } from '../common/types/authenticated-request
 import { ProfileUpdateSchema } from '@bragram/schemas/user';
 import {
   UserSearchQuerySchema,
-  type UserSearchResponse,
+  type SearchResponse,
   type UserProfileResponse,
 } from '@bragram/schemas/user';
 import type { FeedListResponse } from '@bragram/schemas/feed';
@@ -60,7 +60,7 @@ export class UserController {
   searchUsers(
     @Req() req: AuthenticatedRequest,
     @Query() query: Record<string, string>,
-  ): Promise<UserSearchResponse> {
+  ): Promise<SearchResponse> {
     const parsed = UserSearchQuerySchema.safeParse(query);
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.issues);
