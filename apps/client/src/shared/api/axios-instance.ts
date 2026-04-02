@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getQueryClient } from '@/shared/api/get-query-client';
 import { userQueryKeys } from '@/entities/user/model/user.query-key';
+import { ApiError } from '@/shared/api/api-error';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -74,10 +75,10 @@ export const httpMethod = async <Data>(
     return response.data?.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const errorMessage =
+      const message =
         error.response?.data?.error?.message || error.message || '네트워크 요청에 실패했습니다';
-      throw new Error(errorMessage);
+      throw new ApiError(error.response?.status, message);
     }
-    throw new Error('알 수 없는 오류가 발생했습니다');
+    throw new ApiError(undefined, '알 수 없는 오류가 발생했습니다');
   }
 };
