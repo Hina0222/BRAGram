@@ -70,7 +70,12 @@
     "edit": "프로필 편집",
     "changePhoto": "사진 변경",
     "nickname": "닉네임",
-    "loadError": "프로필을 불러오지 못했습니다."
+    "loadError": "프로필을 불러오지 못했습니다.",
+    "followers": "팔로워",
+    "following": "팔로잉",
+    "bio": "반려동물과 함께하는 일상 🐾",
+    "saving": "저장 중...",
+    "save": "저장"
   },
   "mission": {
     "title": "미션",
@@ -145,7 +150,8 @@
     "profileLoadError": "펫 프로필 정보를 불러오지 못했어요.",
     "listLoadError": "목록을 불러오지 못했어요.",
     "noMissionHistory": "아직 미션 이력이 없습니다.",
-    "missionHistoryLoadError": "미션 이력을 불러오는 데 실패했습니다."
+    "missionHistoryLoadError": "미션 이력을 불러오는 데 실패했습니다.",
+    "optional": "(선택)"
   },
   "ranking": {
     "title": "랭킹",
@@ -153,7 +159,8 @@
     "weekly": "주간",
     "monthly": "월간",
     "noData": "아직 랭킹 데이터가 없습니다.",
-    "loadError": "랭킹을 불러오지 못했습니다."
+    "loadError": "랭킹을 불러오지 못했습니다.",
+    "rankSuffix": "위"
   },
   "comment": {
     "firstComment": "첫 댓글을 남겨보세요.",

@@ -70,7 +70,12 @@
     "edit": "Edit Profile",
     "changePhoto": "Change Photo",
     "nickname": "Nickname",
-    "loadError": "Failed to load profile."
+    "loadError": "Failed to load profile.",
+    "followers": "Followers",
+    "following": "Following",
+    "bio": "Daily life with my pet 🐾",
+    "saving": "Saving...",
+    "save": "Save"
   },
   "mission": {
     "title": "Mission",
@@ -145,7 +150,8 @@
     "profileLoadError": "Failed to load pet profile.",
     "listLoadError": "Failed to load list.",
     "noMissionHistory": "No mission history yet.",
-    "missionHistoryLoadError": "Failed to load mission history."
+    "missionHistoryLoadError": "Failed to load mission history.",
+    "optional": "(Optional)"
   },
   "ranking": {
     "title": "Ranking",
@@ -153,7 +159,8 @@
     "weekly": "Weekly",
     "monthly": "Monthly",
     "noData": "No ranking data yet.",
-    "loadError": "Failed to load rankings."
+    "loadError": "Failed to load rankings.",
+    "rankSuffix": ""
   },
   "comment": {
     "firstComment": "Be the first to comment.",
