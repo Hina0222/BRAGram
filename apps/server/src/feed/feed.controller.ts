@@ -1,11 +1,15 @@
 import {
   Controller,
   Get,
+  Delete,
   Param,
   Query,
   UseGuards,
   Req,
   BadRequestException,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { FeedService } from './feed.service';
@@ -39,5 +43,14 @@ export class FeedController {
     @Param('id') id: string,
   ): Promise<FeedItem> {
     return this.feedService.findOneFeed(req.user.id, +id);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteFeed(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<void> {
+    return this.feedService.deleteFeed(req.user.id, id);
   }
 }
