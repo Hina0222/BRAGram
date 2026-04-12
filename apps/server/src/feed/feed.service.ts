@@ -152,4 +152,25 @@ export class FeedService {
       isLiked: likedRows.length > 0,
     };
   }
+
+  async deleteFeed(userId: number, submissionId: number): Promise<void> {
+    const [submission] = await this.db
+      .select({
+        id: missionSubmissions.id,
+        petId: missionSubmissions.petId,
+      })
+      .from(missionSubmissions)
+      .innerJoin(pets, eq(missionSubmissions.petId, pets.id))
+      .where(
+        and(eq(missionSubmissions.id, submissionId), eq(pets.userId, userId)),
+      );
+
+    if (!submission) {
+      throw new Error('피드를 찾을 수 없거나 삭제 권한이 없습니다.');
+    }
+
+    await this.db
+      .delete(missionSubmissions)
+      .where(eq(missionSubmissions.id, submissionId));
+  }
 }
