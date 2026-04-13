@@ -16,7 +16,8 @@
     "dog": "Dog",
     "cat": "Cat",
     "male": "Male",
-    "female": "Female"
+    "female": "Female",
+    "skip": "Skip"
   },
   "nav": {
     "home": "Home",
