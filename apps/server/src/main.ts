@@ -11,7 +11,11 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   app.enableCors({
-    origin: process.env.CLIENT_URL || 'https://dragram.site',
+    origin: [
+      'https://pawboo.site',
+      'https://www.pawboo.site',
+      'http://localhost:3001',
+    ],
     credentials: true,
   });
 

@@ -21,6 +21,7 @@ const ACCESS_TOKEN_COOKIE_OPTIONS = {
   sameSite: 'lax' as const,
   maxAge: 60 * 60 * 1000,
   path: '/',
+  domain: process.env.NODE_ENV === 'production' ? '.pawboo.site' : undefined,
 };
 
 const REFRESH_TOKEN_COOKIE_OPTIONS = {
@@ -28,6 +29,7 @@ const REFRESH_TOKEN_COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax' as const,
   maxAge: 30 * 24 * 60 * 60 * 1000,
+  domain: process.env.NODE_ENV === 'production' ? '.pawboo.site' : undefined,
 };
 
 @Controller('auth')
