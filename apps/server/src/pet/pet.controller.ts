@@ -5,6 +5,7 @@ import {
   Patch,
   Delete,
   Param,
+  Query,
   Body,
   ParseIntPipe,
   UseGuards,
@@ -21,7 +22,9 @@ import type { AuthenticatedRequest } from '../common/types/authenticated-request
 import {
   CreatePetSchema,
   UpdatePetSchema,
-  PetResponse,
+  PetSearchQuerySchema,
+  type PetResponse,
+  type PetSearchResponse,
 } from '@pawboo/schemas/pet';
 
 @UseGuards(JwtAuthGuard)
@@ -40,13 +43,23 @@ export class PetController {
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.issues);
     }
-
     return this.petService.create(req.user.id, parsed.data, file?.buffer);
   }
 
   @Get()
   findAll(@Req() req: AuthenticatedRequest): Promise<PetResponse[]> {
     return this.petService.findAllByUser(req.user.id);
+  }
+
+  @Get('search')
+  searchPets(
+    @Query() query: Record<string, string>,
+  ): Promise<PetSearchResponse> {
+    const parsed = PetSearchQuerySchema.safeParse(query);
+    if (!parsed.success) {
+      throw new BadRequestException(parsed.error.issues);
+    }
+    return this.petService.search(parsed.data);
   }
 
   @Get(':id')
@@ -69,7 +82,6 @@ export class PetController {
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.issues);
     }
-
     return this.petService.update(req.user.id, id, parsed.data, file?.buffer);
   }
 
@@ -82,11 +94,11 @@ export class PetController {
     return this.petService.remove(req.user.id, id);
   }
 
-  @Patch(':id/activate')
-  activate(
+  @Patch(':id/representative')
+  setRepresentative(
     @Req() req: AuthenticatedRequest,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<PetResponse> {
-    return this.petService.activate(req.user.id, id);
+    return this.petService.setRepresentative(req.user.id, id);
   }
 }
