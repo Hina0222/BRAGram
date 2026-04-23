@@ -57,6 +57,7 @@ describe('PostService', () => {
     createPost: jest.fn(),
     findByMissionIdAndPetId: jest.fn(),
     findPosts: jest.fn(),
+    findLikedPosts: jest.fn(),
     findOnePost: jest.fn(),
     findPostWithOwner: jest.fn(),
     deletePost: jest.fn(),
@@ -250,6 +251,71 @@ describe('PostService', () => {
 
       expect(result.data).toHaveLength(1);
       expect(postRepository.findPosts).toHaveBeenCalledWith(1, {}, mockPet.id);
+    });
+  });
+
+  describe('findLikedPosts', () => {
+    const mockFindLikedPostsResult = {
+      rows: [{ ...mockPostRow, likeCursorId: 10 }],
+      likedSet: new Set<number>([1]),
+      likeCountMap: new Map([[1, 3]]),
+      hasNext: false,
+      cursor: null,
+    };
+
+    it('좋아요한 포스트 정상 조회 - isLiked 항상 true', async () => {
+      postRepository.findLikedPosts.mockResolvedValue(mockFindLikedPostsResult);
+
+      const result = await service.findLikedPosts(1, {});
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].isLiked).toBe(true);
+      expect(result.data[0].likeCount).toBe(3);
+      expect(result.hasNext).toBe(false);
+      expect(postRepository.findLikedPosts).toHaveBeenCalledWith(1, undefined);
+    });
+
+    it('cursor 전달', async () => {
+      postRepository.findLikedPosts.mockResolvedValue(mockFindLikedPostsResult);
+
+      await service.findLikedPosts(1, { cursor: 5 });
+
+      expect(postRepository.findLikedPosts).toHaveBeenCalledWith(1, 5);
+    });
+
+    it('결과 없으면 빈 배열 반환', async () => {
+      postRepository.findLikedPosts.mockResolvedValue({
+        rows: [],
+        likedSet: new Set(),
+        likeCountMap: new Map(),
+        hasNext: false,
+        cursor: null,
+      });
+
+      const result = await service.findLikedPosts(1, {});
+
+      expect(result.data).toHaveLength(0);
+      expect(result.hasNext).toBe(false);
+      expect(result.cursor).toBeNull();
+    });
+
+    it('hasNext true이면 cursor 반환', async () => {
+      const row2 = { ...mockPostRow, id: 2, likeCursorId: 9 };
+      postRepository.findLikedPosts.mockResolvedValue({
+        rows: [{ ...mockPostRow, likeCursorId: 10 }, row2],
+        likedSet: new Set([1, 2]),
+        likeCountMap: new Map([
+          [1, 1],
+          [2, 2],
+        ]),
+        hasNext: true,
+        cursor: 9,
+      });
+
+      const result = await service.findLikedPosts(1, {});
+
+      expect(result.hasNext).toBe(true);
+      expect(result.cursor).toBe(9);
     });
   });
 

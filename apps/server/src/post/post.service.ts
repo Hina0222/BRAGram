@@ -135,6 +135,15 @@ export class PostService {
     );
   }
 
+  async findLikedPosts(
+    userId: number,
+    query: PostQuery,
+  ): Promise<PostListResponse> {
+    return this.toPostListResponse(
+      await this.postRepository.findLikedPosts(userId, query.cursor),
+    );
+  }
+
   async deletePost(userId: number, postId: number): Promise<void> {
     const post = await this.postRepository.findPostWithOwner(postId, userId);
     if (!post) {
