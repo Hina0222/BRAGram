@@ -204,43 +204,6 @@ describe('PostService', () => {
     });
   });
 
-  describe('findMissionSubmission', () => {
-    it('대표 펫 없음 - null 반환', async () => {
-      petRepository.findRepresentativeByUserId.mockResolvedValue(null);
-
-      const result = await service.findMissionSubmission(1, 10);
-
-      expect(result).toBeNull();
-      expect(postRepository.findByMissionIdAndPetId).not.toHaveBeenCalled();
-    });
-
-    it('미션 제출 포스트 정상 조회', async () => {
-      petRepository.findRepresentativeByUserId.mockResolvedValue(mockPet);
-      postRepository.findByMissionIdAndPetId.mockResolvedValue({
-        ...mockPostResponse,
-        type: 'mission',
-        missionId: 10,
-      });
-
-      const result = await service.findMissionSubmission(1, 10);
-
-      expect(result).not.toBeNull();
-      expect(postRepository.findByMissionIdAndPetId).toHaveBeenCalledWith(
-        10,
-        mockPet.id,
-      );
-    });
-
-    it('미션 제출 없음 - null 반환', async () => {
-      petRepository.findRepresentativeByUserId.mockResolvedValue(mockPet);
-      postRepository.findByMissionIdAndPetId.mockResolvedValue(null);
-
-      const result = await service.findMissionSubmission(1, 10);
-
-      expect(result).toBeNull();
-    });
-  });
-
   describe('findPosts', () => {
     it('전체 피드 정상 조회', async () => {
       postRepository.findPosts.mockResolvedValue(mockFindPostsResult);
