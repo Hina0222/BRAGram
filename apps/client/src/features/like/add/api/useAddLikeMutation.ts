@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import type { LikeResponse } from '@pawboo/schemas/like';
 
 export const addLike = async (submissionId: number): Promise<LikeResponse> => {
-  return apiClient.post<LikeResponse>(API_ROUTES.FEEDS.ADD_LIKE.URL(submissionId));
+  return apiClient.post<LikeResponse>(API_ROUTES.POSTS.ADD_LIKE.URL(submissionId));
 };
 
 export const addLikeMutationOptions = () => {

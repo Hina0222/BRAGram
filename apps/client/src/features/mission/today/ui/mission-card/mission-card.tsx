@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle2, ImageOff, Star } from 'lucide-react';
+import { CheckCircle2, ImageOff } from 'lucide-react';
 import { Link } from '@/app/i18n/navigation';
 import { useGetTodayMissionSuspenseQuery } from '@/features/mission/today/api/useGetTodayMissionQuery';
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
@@ -10,9 +10,9 @@ import { useTranslations } from 'next-intl';
 function MissionCard() {
   const t = useTranslations('mission');
   const { data } = useGetTodayMissionSuspenseQuery();
-  const { mission, submission } = data;
+  const { mission, submitted } = data;
 
-  const isDone = !!submission;
+  const isDone = submitted;
 
   if (!mission) {
     return (
@@ -30,11 +30,6 @@ function MissionCard() {
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded bg-white/20 px-2 py-1 text-[10px] font-bold tracking-wider text-primary-foreground uppercase">
             TODAY&#39;S MISSION
-          </span>
-          <span className="flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-xs font-medium text-primary-foreground">
-            <Star size={11} fill="currentColor" />
-            {mission.baseScore}
-            {t('points')}
           </span>
           {isDone && (
             <span className="flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-xs font-medium text-primary-foreground">

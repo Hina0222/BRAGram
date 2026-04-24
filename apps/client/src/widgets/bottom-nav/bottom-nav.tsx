@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from '@/app/i18n/navigation';
-import { Home, Target, Trophy, Users, User } from 'lucide-react';
+import { Home, Target, Search, User } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
 
@@ -13,8 +13,7 @@ export function BottomNav() {
   const tabs = [
     { href: '/', icon: Home, label: t('home') },
     { href: '/mission', icon: Target, label: t('mission') },
-    { href: '/ranking', icon: Trophy, label: t('ranking') },
-    { href: '/community', icon: Users, label: t('community') },
+    { href: '/search', icon: Search, label: t('search') },
     { href: '/my', icon: User, label: t('my') },
   ] as const;
 

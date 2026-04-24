@@ -21,8 +21,46 @@ export const API_ROUTES = {
       METHOD: 'PATCH',
     },
     ACTIVATE_PET: {
-      URL: (id: number) => `/pets/${id}/activate`,
+      URL: (id: number) => `/pets/${id}/representative`,
       METHOD: 'PATCH',
+    },
+    SEARCH_PETS: {
+      URL: '/pets/search',
+      METHOD: 'GET',
+    },
+  },
+  POSTS: {
+    GET_POSTS: {
+      URL: '/posts',
+      METHOD: 'GET',
+    },
+    GET_POST: {
+      URL: (id: number) => `/posts/${id}`,
+      METHOD: 'GET',
+    },
+    DELETE_POST: {
+      URL: (id: number) => `/posts/${id}`,
+      METHOD: 'DELETE',
+    },
+    GET_MY_POSTS: {
+      URL: '/posts/me',
+      METHOD: 'GET',
+    },
+    GET_PET_POSTS: {
+      URL: (petId: number) => `/posts/pets/${petId}`,
+      METHOD: 'GET',
+    },
+    GET_LIKED_POSTS: {
+      URL: '/posts/liked',
+      METHOD: 'GET',
+    },
+    ADD_LIKE: {
+      URL: (postId: number) => `/posts/${postId}/likes`,
+      METHOD: 'POST',
+    },
+    REMOVE_LIKE: {
+      URL: (postId: number) => `/posts/${postId}/likes`,
+      METHOD: 'DELETE',
     },
   },
   MISSIONS: {
@@ -42,47 +80,6 @@ export const API_ROUTES = {
       URL: (missionId: number, submissionId: number) =>
         `/missions/${missionId}/submissions/${submissionId}`,
       METHOD: 'DELETE',
-    },
-  },
-  FEEDS: {
-    GET_FEED: {
-      URL: (id: number) => `/feeds/${id}`,
-      METHOD: 'GET',
-    },
-    GET_FEEDS: {
-      URL: '/feeds',
-      METHOD: 'GET',
-    },
-    ADD_LIKE: {
-      URL: (submissionId: number) => `/feeds/${submissionId}/likes`,
-      METHOD: 'POST',
-    },
-    REMOVE_LIKE: {
-      URL: (submissionId: number) => `/feeds/${submissionId}/likes`,
-      METHOD: 'DELETE',
-    },
-    GET_COMMENTS: {
-      URL: (submissionId: number) => `/feeds/${submissionId}/comments`,
-      METHOD: 'GET',
-    },
-    CREATE_COMMENT: {
-      URL: (submissionId: number) => `/feeds/${submissionId}/comments`,
-      METHOD: 'POST',
-    },
-    DELETE_COMMENT: {
-      URL: (submissionId: number, commentId: number) =>
-        `/feeds/${submissionId}/comments/${commentId}`,
-      METHOD: 'DELETE',
-    },
-    DELETE_FEED: {
-      URL: (id: number) => `/feeds/${id}`,
-      METHOD: 'DELETE',
-    },
-  },
-  RANKINGS: {
-    GET_RANKINGS: {
-      URL: '/rankings',
-      METHOD: 'GET',
     },
   },
   AUTH: {
@@ -107,34 +104,6 @@ export const API_ROUTES = {
     UPDATE_ME: {
       URL: '/users/me',
       METHOD: 'PATCH',
-    },
-    SEARCH: {
-      URL: '/users/search',
-      METHOD: 'GET',
-    },
-    GET_PROFILE: {
-      URL: (id: number) => `/users/${id}`,
-      METHOD: 'GET',
-    },
-    GET_USER_FEEDS: {
-      URL: (id: number) => `/users/${id}/feeds`,
-      METHOD: 'GET',
-    },
-    GET_PUBLIC_PET: {
-      URL: (userId: number, petId: number) => `/users/${userId}/pets/${petId}`,
-      METHOD: 'GET',
-    },
-    GET_PET_SUBMISSIONS: {
-      URL: (userId: number, petId: number) => `/users/${userId}/pets/${petId}/submissions`,
-      METHOD: 'GET',
-    },
-    FOLLOW: {
-      URL: (id: number) => `/users/${id}/follow`,
-      METHOD: 'POST',
-    },
-    UNFOLLOW: {
-      URL: (id: number) => `/users/${id}/follow`,
-      METHOD: 'DELETE',
     },
   },
 } as const;

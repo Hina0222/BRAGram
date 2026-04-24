@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Controller } from 'react-hook-form';
 import { Camera } from 'lucide-react';
 import { useUpdatePetForm } from '@/features/pet/edit/hooks/useUpdatePetForm';
 import { useGetPetQuery } from '@/features/pet/detail/api/useGetPetQuery';
@@ -25,7 +24,6 @@ function EditPetForm({ id, onSuccess, onCancel }: EditPetFormProps) {
   const { methods, onSubmit, isPending } = useUpdatePetForm(pet!, onSuccess);
   const {
     register,
-    control,
     setValue,
     formState: { errors },
   } = methods;
@@ -68,57 +66,15 @@ function EditPetForm({ id, onSuccess, onCancel }: EditPetFormProps) {
         />
       </div>
 
-      <FormField label={t('name')} error={errors.name?.message}>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-foreground">{t('name')}</label>
         <input
           {...register('name')}
           placeholder={t('enterName')}
           className={cn(inputCls, errors.name && 'border-destructive')}
         />
-      </FormField>
-
-      <FormField label={t('breed')} error={errors.breed?.message}>
-        <input {...register('breed')} placeholder={t('enterBreed')} className={inputCls} />
-      </FormField>
-
-      <FormField label={t('birthDate')} error={errors.birthDate?.message}>
-        <input type="date" {...register('birthDate')} className={inputCls} />
-      </FormField>
-
-      <FormField label={t('gender')}>
-        <Controller
-          control={control}
-          name="gender"
-          render={({ field }) => (
-            <div className="flex gap-2">
-              {(['male', 'female'] as const).map(g => (
-                <button
-                  type="button"
-                  key={g}
-                  onClick={() => field.onChange(field.value === g ? undefined : g)}
-                  className={cn(
-                    'flex-1 rounded-lg border py-2 text-sm font-medium transition-colors',
-                    field.value === g
-                      ? 'border-primary bg-primary/12 text-primary'
-                      : 'border-border bg-card text-muted-foreground hover:bg-accent'
-                  )}
-                >
-                  {tc(g)}
-                </button>
-              ))}
-            </div>
-          )}
-        />
-      </FormField>
-
-      <FormField label={t('introduction')} error={errors.bio?.message}>
-        <textarea
-          {...register('bio')}
-          placeholder={t('introPlaceholder')}
-          maxLength={60}
-          rows={3}
-          className={cn(inputCls, 'resize-none')}
-        />
-      </FormField>
+        {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+      </div>
 
       <div className="mt-4 flex gap-3">
         <Button type="button" variant="outline" onClick={onCancel} className="flex-1" size="lg">
@@ -129,24 +85,6 @@ function EditPetForm({ id, onSuccess, onCancel }: EditPetFormProps) {
         </Button>
       </div>
     </form>
-  );
-}
-
-function FormField({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-foreground">{label}</label>
-      {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
-    </div>
   );
 }
 

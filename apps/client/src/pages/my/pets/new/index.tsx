@@ -5,7 +5,7 @@ export default function NewPetPage() {
   return (
     <>
       <BackHeader title="펫 생성" />
-      <CreatePetForm redirectTo="/my" />
+      <CreatePetForm />
     </>
   );
 }

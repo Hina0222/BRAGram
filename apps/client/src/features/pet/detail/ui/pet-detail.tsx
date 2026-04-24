@@ -6,7 +6,6 @@ import { useGetPetSuspenseQuery } from '@/features/pet/detail/api/useGetPetQuery
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import { PetDetailError, PetDetailSkeleton } from '@/features/pet/detail/ui';
 import { Trash2 } from 'lucide-react';
-import React from 'react';
 import { useDeletePetMutation } from '@/features/pet/delete/api/useDeletePetMutation';
 import { useTranslations } from 'next-intl';
 
@@ -23,14 +22,6 @@ function PetDetail({ id }: PetDetailProps) {
 
   return (
     <section className="flex flex-col gap-px px-5">
-      <InfoRow label={t('breed')} value={pet.breed} />
-      <InfoRow label={t('birthDate')} value={pet.birthDate} />
-      <InfoRow label={t('gender')} value={pet.gender ? tc(pet.gender) : null} />
-      <InfoRow label={t('introduction')} value={pet.bio} />
-      <InfoRow label={t('totalScore')} value={String(pet.score)} />
-      <InfoRow label={t('weeklyScore')} value={String(pet.weeklyScore)} />
-      <InfoRow label={t('monthlyScore')} value={String(pet.monthlyScore)} />
-
       <Button
         variant="outline"
         size="sm"
@@ -44,7 +35,7 @@ function PetDetail({ id }: PetDetailProps) {
         <Trash2 size={13} />
         {t('deleteButton')}
       </Button>
-      {!pet.isActive && (
+      {!pet.isRepresentative && (
         <Button
           variant="outline"
           onClick={() => activatePet(id)}
@@ -56,15 +47,6 @@ function PetDetail({ id }: PetDetailProps) {
         </Button>
       )}
     </section>
-  );
-}
-
-function InfoRow({ label, value }: { label: string; value: string | null | undefined }) {
-  return (
-    <div className="flex items-center justify-between border-b border-border py-3 last:border-0">
-      <span className="text-sm text-muted-foreground">{label}</span>
-      <span className="text-sm text-foreground">{value ?? '-'}</span>
-    </div>
   );
 }
 

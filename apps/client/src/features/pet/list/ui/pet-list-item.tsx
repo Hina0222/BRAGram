@@ -3,14 +3,10 @@
 import React from 'react';
 import type { PetResponse } from '@pawboo/schemas/pet';
 import { Link } from '@/app/i18n/navigation';
-
-const PET_EMOJI: Record<string, string> = {
-  dog: '🐶',
-  cat: '🐱',
-};
+import { ImageOff } from 'lucide-react';
 
 interface PetListItemProps {
-  pet: Pick<PetResponse, 'id' | 'name' | 'imageUrl' | 'type'>;
+  pet: Pick<PetResponse, 'id' | 'name' | 'imageUrl'>;
   href: string;
 }
 
@@ -19,7 +15,7 @@ function PetListItem({ pet, href }: PetListItemProps) {
     <li>
       <Link href={href}>
         <div className="flex flex-shrink-0 flex-col items-center gap-1.5">
-          <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-primary/50 bg-card text-2xl">
+          <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-primary/50 bg-card">
             {pet.imageUrl ? (
               <img
                 src={pet.imageUrl}
@@ -27,7 +23,7 @@ function PetListItem({ pet, href }: PetListItemProps) {
                 className="absolute inset-0 h-full w-full object-cover"
               />
             ) : (
-              (PET_EMOJI[pet.type] ?? '🐾')
+              <ImageOff size={20} className="text-muted-foreground" />
             )}
           </div>
           <span className="text-xs text-muted-foreground">{pet.name}</span>

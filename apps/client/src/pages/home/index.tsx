@@ -1,6 +1,6 @@
 import { BottomNav } from '@/widgets/bottom-nav';
 import { TitleHeader } from '@/widgets/header';
-import { FeedList } from '@/features/feed/list/ui';
+import { PostList } from '@/features/post/list/ui';
 import { ServerFetchBoundary } from '@/shared/boundary/server-fetch-boundary';
 import { MissionCard } from '@/features/mission/today/ui/mission-card';
 import { getTodayMissionQueryOptions } from '@/features/mission/today/api/useGetTodayMissionQuery';
@@ -11,8 +11,8 @@ export default async function HomePage() {
       <TitleHeader title="Pawboo" />
       <ServerFetchBoundary queryOptions={getTodayMissionQueryOptions()}>
         <MissionCard />
-        <FeedList />
       </ServerFetchBoundary>
+      <PostList />
       <BottomNav />
     </div>
   );

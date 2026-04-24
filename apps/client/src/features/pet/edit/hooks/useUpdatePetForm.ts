@@ -13,10 +13,6 @@ export function useUpdatePetForm(pet: PetResponse, onSuccess: () => void) {
     resolver: zodResolver(UpdatePetFormSchema),
     defaultValues: {
       name: pet.name,
-      breed: pet.breed ?? '',
-      birthDate: pet.birthDate ?? '',
-      bio: pet.bio ?? '',
-      gender: pet.gender ?? undefined,
     },
   });
 

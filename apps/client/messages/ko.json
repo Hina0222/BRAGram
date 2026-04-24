@@ -22,9 +22,14 @@
   "nav": {
     "home": "홈",
     "mission": "미션",
-    "ranking": "랭킹",
-    "community": "커뮤니티",
+    "search": "검색",
     "my": "마이"
+  },
+  "search": {
+    "title": "검색",
+    "placeholder": "펫 이름으로 검색...",
+    "hint": "펫 이름을 검색해보세요",
+    "noResults": "검색 결과가 없습니다."
   },
   "signin": {
     "tagline1": "반려동물과 함께하는",
@@ -109,16 +114,13 @@
     "deleteConfirm": "제출을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
     "deleteButton": "삭제"
   },
-  "feed": {
-    "noFeeds": "아직 피드가 없습니다.",
-    "loadError": "게시글을 불러오는 데 실패했습니다.",
-    "detail": "피드 상세",
-    "missionPhotoAlt": "{petName}의 미션 사진 {index}",
-    "feedLoadError": "피드를 불러오지 못했습니다.",
+  "post": {
+    "noPosts": "아직 포스트가 없습니다.",
+    "loadError": "포스트를 불러오는 데 실패했습니다.",
     "linkCopied": "링크가 복사되었습니다",
     "linkCopyFailed": "링크 복사에 실패했습니다",
-    "delete": "피드 삭제",
-    "confirmDelete": "피드를 삭제하시겠습니까?",
+    "delete": "포스트 삭제",
+    "confirmDelete": "포스트를 삭제하시겠습니까?",
     "deleteCannotUndo": "이 작업은 되돌릴 수 없습니다.",
     "cancel": "취소"
   },

@@ -1,66 +1,78 @@
 'use client';
 
-import { StepPetType, StepBasicInfo, StepPhoto } from '@/features/pet/create/ui';
-import { cn } from '@/shared/lib/utils';
-import { FormProvider } from 'react-hook-form';
-import { Button } from '@/shared/ui';
+import { useRef, useState } from 'react';
+import { Camera } from 'lucide-react';
 import { useCreatePetForm } from '@/features/pet/create/hooks/useCreatePetForm';
+import { Button } from '@/shared/ui/button';
+import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
 
-interface CreatePetFormProps {
-  redirectTo?: string;
-}
+const inputCls =
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary';
 
-export function CreatePetForm({ redirectTo }: CreatePetFormProps) {
+export function CreatePetForm() {
+  const t = useTranslations('pet');
   const tc = useTranslations('common');
-  const { step, methods, canNext, handleButtonClick, handleBack, TOTAL_STEPS } =
-    useCreatePetForm(redirectTo);
+  const { methods, onSubmit, isPending } = useCreatePetForm();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+  } = methods;
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(URL.createObjectURL(file));
+    setValue('image', file);
+  };
 
   return (
-    <>
-      {/* 진행 바 */}
-      <div className="mt-4 mb-8 flex gap-1.5 px-5">
-        {Array.from({ length: TOTAL_STEPS }, (_, i) => (
-          <div
-            key={i}
-            className={cn(
-              'h-1 flex-1 rounded-full transition-colors duration-300',
-              i < step ? 'bg-primary' : 'bg-border'
-            )}
-          />
-        ))}
+    <form onSubmit={onSubmit} className="flex flex-col gap-4 px-5">
+      <div className="flex flex-col items-center gap-2">
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-primary/50 bg-card transition-colors hover:border-primary"
+        >
+          {previewUrl ? (
+            <img src={previewUrl} alt={t('petPhoto')} className="h-full w-full object-cover" />
+          ) : (
+            <div className="flex flex-col items-center gap-1 text-muted-foreground">
+              <Camera size={24} />
+              <span className="text-xs">{tc('addPhoto')}</span>
+            </div>
+          )}
+        </button>
+        <span className="text-xs text-muted-foreground">{t('tapToChange')}</span>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="hidden"
+          onChange={handleFileChange}
+        />
       </div>
 
-      <FormProvider {...methods}>
-        <form onSubmit={e => e.preventDefault()} className="flex flex-1 flex-col">
-          <div className="flex flex-1 flex-col px-5">
-            {step === 1 && <StepPetType />}
-            {step === 2 && <StepBasicInfo />}
-            {step === 3 && <StepPhoto />}
-          </div>
-        </form>
-      </FormProvider>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-foreground">{t('name')}</label>
+        <input
+          {...register('name')}
+          placeholder={t('enterName')}
+          className={cn(inputCls, errors.name && 'border-destructive')}
+        />
+        {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+      </div>
 
-      {/* 하단 버튼 */}
-      <div className="flex gap-4 px-5 pt-4 pb-10">
-        {step > 1 && (
-          <Button
-            type="button"
-            className="h-13 flex-1 rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
-            onClick={handleBack}
-          >
-            {tc('previous')}
-          </Button>
-        )}
-        <Button
-          type="button"
-          className="h-13 flex-1 rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
-          onClick={handleButtonClick}
-          disabled={!canNext()}
-        >
-          {step === TOTAL_STEPS ? tc('complete') : tc('next')}
+      <div className="mt-4">
+        <Button type="submit" disabled={isPending} className="w-full" size="lg">
+          {isPending ? tc('saving') : tc('confirm')}
         </Button>
       </div>
-    </>
+    </form>
   );
 }

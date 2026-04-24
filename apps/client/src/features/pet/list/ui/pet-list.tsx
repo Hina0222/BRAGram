@@ -4,7 +4,7 @@ import type { PetResponse } from '@pawboo/schemas/pet';
 import { PetListItem } from '@/features/pet/list/ui';
 
 interface PetListProps {
-  pets: Pick<PetResponse, 'id' | 'name' | 'imageUrl' | 'type'>[];
+  pets: Pick<PetResponse, 'id' | 'name' | 'imageUrl'>[];
   getPetHref: (petId: number) => string;
 }
 
