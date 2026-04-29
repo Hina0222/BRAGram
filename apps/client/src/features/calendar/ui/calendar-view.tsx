@@ -6,10 +6,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
 import PostDetailModal from '@/features/post/detail/ui/post-detail-modal';
 import { useCalendarView } from '../hooks/useCalendarView';
+import { usePetCalendarView } from '../hooks/usePetCalendarView';
 import { toDateKey, formatYear, formatMonth } from '../lib/calendar';
 import { CalendarViewSkeleton } from './calendar-view-skeleton';
 import { CalendarViewError } from './calendar-view-error';
 import { CalendarTile } from './calendar-tile';
+import type { PostItem } from '@pawboo/schemas/post';
 import './calendar.css';
 
 const CALENDAR_BASE_PROPS = {
@@ -23,8 +25,21 @@ const CALENDAR_BASE_PROPS = {
   className: 'custom-calendar',
 };
 
-function CalendarView() {
-  const { activeStartDate, prevMonthDate, postsByDate, prevMonth, nextMonth } = useCalendarView();
+interface CalendarViewContentProps {
+  activeStartDate: Date;
+  prevMonthDate: Date;
+  postsByDate: Record<string, PostItem>;
+  prevMonth: () => void;
+  nextMonth: () => void;
+}
+
+function CalendarViewContent({
+  activeStartDate,
+  prevMonthDate,
+  postsByDate,
+  prevMonth,
+  nextMonth,
+}: CalendarViewContentProps) {
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
 
   const tileContent = ({ date, view }: { date: Date; view: string }) =>
@@ -79,6 +94,21 @@ function CalendarView() {
       )}
     </>
   );
+}
+
+function MyCalendarViewInner() {
+  const hookData = useCalendarView();
+  return <CalendarViewContent {...hookData} />;
+}
+
+function PetCalendarViewInner({ petId }: { petId: number }) {
+  const hookData = usePetCalendarView(petId);
+  return <CalendarViewContent {...hookData} />;
+}
+
+function CalendarView({ petId }: { petId?: number }) {
+  if (petId !== undefined) return <PetCalendarViewInner petId={petId} />;
+  return <MyCalendarViewInner />;
 }
 
 export default withErrorBoundary(
