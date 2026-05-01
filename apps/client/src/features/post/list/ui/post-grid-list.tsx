@@ -33,7 +33,7 @@ export function PostGridList({ data, fetchNextPage, hasNextPage }: PostGridListP
   }
 
   return (
-    <div className="px-4">
+    <div>
       <div className="grid grid-cols-3 gap-2">
         {posts.map(post => (
           <button
