@@ -5,12 +5,13 @@ import { LikeButton } from '@/features/like/ui';
 import { PostDetailSkeleton, PostDetailError } from '@/features/post/detail/ui';
 import { useGetPostSuspenseQuery } from '@/features/post/detail/api/useGetPostQuery';
 import { useGetPetsQuery } from '@/features/pet/list/api/useGetPetsQuery';
-import { Carousel, CarouselContent, CarouselItem } from '@/shared/ui';
+import { Carousel, CarouselContent, CarouselItem, ConfirmDialog } from '@/shared/ui';
 import { useRouter } from '@/app/i18n/navigation';
 import { useDeletePostMutation } from '@/features/post/delete/api/useDeletePostMutation';
 import { CarouselApi } from '@/shared/ui/carousel';
 import React, { useEffect, useState } from 'react';
 import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
+import TrashIcon from '@/shared/assets/icons/TrashIcon.svg';
 
 interface PostDetailProps {
   id: number;
@@ -98,16 +99,21 @@ function PostDetail({ id }: PostDetailProps) {
       </div>
 
       {canDelete && (
-        <button
-          onClick={e => {
-            e.stopPropagation();
-            handleDelete();
-          }}
-          disabled={isPending}
-          className="mt-2 font-medium text-[#E1E1E3] underline disabled:opacity-50"
-        >
-          {isPending ? '삭제 중...' : '삭제하기'}
-        </button>
+        <ConfirmDialog
+          title={'정말 삭제 하겠습니까?'}
+          isPending={isPending}
+          onConfirm={handleDelete}
+          trigger={
+            <button
+              onClick={e => {
+                e.stopPropagation();
+              }}
+              className="mt-2 font-medium text-[#E1E1E3] underline disabled:opacity-50"
+            >
+              삭제하기
+            </button>
+          }
+        />
       )}
     </article>
   );

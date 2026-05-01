@@ -5,17 +5,7 @@ import { useLogoutMutation } from '@/features/user/me/api/useLogoutMutation';
 import { useDeleteAccountMutation } from '@/features/user/me/api/useDeleteAccountMutation';
 import MyPetList from './ui/my-pet-list';
 import { Header } from '@/widgets/header';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Button,
-} from '@/shared/ui';
+import { ConfirmDialog } from '@/shared/ui';
 import { useTranslations } from 'next-intl';
 import RightArrowIcon from '@/shared/assets/icons/RightArrowIcon.svg';
 
@@ -52,39 +42,27 @@ export default function MyPage() {
             </Link>
 
             {/* 로그아웃 */}
-            <button
-              onClick={() => logout()}
-              disabled={isPending}
-              className="mt-4 flex w-full items-center gap-3 rounded-[18px] bg-[#333333] py-4 pr-4 pl-6"
-            >
-              {isPending ? ts('loggingOut') : ts('logout')}
-            </button>
+            <ConfirmDialog
+              title={'정말 로그아웃 하겠습니까?'}
+              onConfirm={() => logout()}
+              isPending={isPending}
+              trigger={
+                <button className="mt-4 flex w-full items-center gap-3 rounded-[18px] bg-[#333333] py-4 pr-4 pl-6">
+                  로그아웃
+                </button>
+              }
+            />
           </div>
 
           {/* 탈퇴 */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <button disabled={isDeleting} className="mb-6 font-medium text-[#E1E1E3] underline">
-                계정 탈퇴
-              </button>
-            </DialogTrigger>
-            <DialogContent showCloseButton={false}>
-              <DialogHeader>
-                <DialogTitle>{ts('deleteAccount')}</DialogTitle>
-                <DialogDescription>{ts('deleteConfirmMessage')}</DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="gap-2">
-                <DialogClose asChild>
-                  <Button variant="outline" disabled={isDeleting}>
-                    {ts('cancel')}
-                  </Button>
-                </DialogClose>
-                <Button variant="destructive" onClick={() => deleteAccount()} disabled={isDeleting}>
-                  {isDeleting ? ts('deleting') : ts('deleteButton')}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <ConfirmDialog
+            title={'정말 탈퇴 하겠습니까?'}
+            onConfirm={() => deleteAccount()}
+            isPending={isDeleting}
+            trigger={
+              <button className="mb-6 font-medium text-[#E1E1E3] underline">계정 탈퇴</button>
+            }
+          />
         </section>
       </main>
     </>

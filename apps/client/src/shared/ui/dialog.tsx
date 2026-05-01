@@ -24,13 +24,17 @@ function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.C
 
 function DialogOverlay({
   className,
+  blur = false,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: React.ComponentProps<typeof DialogPrimitive.Overlay> & {
+  blur?: boolean;
+}) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'fixed inset-0 z-50 bg-[#131313CC] backdrop-blur data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'fixed inset-0 z-50 bg-[#131313CC] data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        blur && 'backdrop-blur',
         className
       )}
       {...props}
@@ -42,13 +46,15 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  blur = false,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
+  blur?: boolean;
 }) {
   return (
     <DialogPortal data-slot="dialog-portal">
-      <DialogOverlay />
+      <DialogOverlay blur={blur} />
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
@@ -73,14 +79,12 @@ function DialogContent({
 }
 
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div data-slot="dialog-header" className={cn('flex flex-col gap-2', className)} {...props} />
-  );
+  return <div data-slot="dialog-header" className={cn(className)} {...props} />;
 }
 
 function DialogFooter({ className, children, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div data-slot="dialog-footer" className={cn('flex justify-end gap-2', className)} {...props}>
+    <div data-slot="dialog-footer" className={cn(className)} {...props}>
       {children}
     </div>
   );

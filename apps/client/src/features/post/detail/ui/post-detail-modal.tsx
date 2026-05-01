@@ -14,6 +14,7 @@ function PostDetailModal({ id, open, onClose }: PostDetailModalProps) {
   return (
     <Dialog open={open} onOpenChange={open => !open && onClose()}>
       <DialogContent
+        blur={true}
         showCloseButton={true}
         aria-describedby={undefined}
         onClick={() => onClose()}

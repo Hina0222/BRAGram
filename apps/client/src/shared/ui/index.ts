@@ -14,6 +14,7 @@ export {
   DialogTitle,
   DialogTrigger,
 } from './dialog';
+export { ConfirmDialog } from './confirm-dialog';
 export { Badge, badgeVariants } from './badge';
 export {
   Carousel,
