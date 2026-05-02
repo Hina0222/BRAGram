@@ -16,7 +16,7 @@ export const submitMission = async ({
   values: SubmitMissionFormValues;
 }): Promise<PostResponse> => {
   const formData = new FormData();
-  values.images.forEach(file => formData.append('images', file));
+  formData.append('images', values.images[0]);
   return apiClient.post<PostResponse>(API_ROUTES.MISSIONS.SUBMIT.URL(missionId), formData);
 };
 

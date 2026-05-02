@@ -1,10 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { ImagePlus, X } from 'lucide-react';
-import { Button } from '@/shared/ui/button';
+import React, { useRef, useState } from 'react';
 import { useSubmitMissionForm } from '@/features/mission/submit/hooks/useSubmitMissionForm';
 import { useTranslations } from 'next-intl';
+import CameraIcon from '@/shared/assets/icons/CameraIcon.svg';
+import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
 
 interface SubmitMissionFormProps {
   missionId: number;
@@ -15,109 +15,66 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
   const { methods, onSubmit, isPending } = useSubmitMissionForm();
   const {
     setValue,
-    watch,
     formState: { errors },
   } = methods;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const images = watch('images') ?? [];
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
-    if (files.length === 0) return;
-    const remaining = 5 - images.length;
-    const added = files.slice(0, remaining);
-    previewUrls.forEach(url => URL.revokeObjectURL(url));
-    const newFiles = [...images, ...added];
-    setPreviewUrls(newFiles.map(f => URL.createObjectURL(f)));
-    setValue('images', newFiles, { shouldValidate: true });
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(URL.createObjectURL(file));
+    setValue('images', [file], { shouldValidate: true });
     e.target.value = '';
   };
 
-  const removeImage = (index: number) => {
-    URL.revokeObjectURL(previewUrls[index]);
-    const newFiles = images.filter((_, i) => i !== index);
-    const newUrls = previewUrls.filter((_, i) => i !== index);
-    setPreviewUrls(newUrls);
-    setValue('images', newFiles, { shouldValidate: true });
-  };
-
   return (
-    <form onSubmit={onSubmit(missionId)} className="mt-4 flex flex-1 flex-col gap-5 px-5">
-      <FormField label={t('photo')} required error={errors.images?.message as string | undefined}>
-        <div className="grid grid-cols-3 gap-2">
-          {previewUrls.map((url, i) => (
-            <div key={i} className="relative aspect-square overflow-hidden rounded-xl bg-card">
-              <img
-                src={url}
-                alt={t('photoAlt', { index: i + 1 })}
-                className="h-full w-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => removeImage(i)}
-                className="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-black/60 text-white"
-              >
-                <X size={12} />
-              </button>
-            </div>
-          ))}
-          {images.length < 5 && (
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="flex aspect-square items-center justify-center rounded-xl border-2 border-dashed border-primary/50 bg-card transition-colors hover:border-primary"
-            >
-              <div className="flex flex-col items-center gap-1 text-muted-foreground">
-                <ImagePlus size={24} />
-                <span className="text-xs">{images.length}/5</span>
-              </div>
-            </button>
-          )}
+    <form onSubmit={onSubmit(missionId)} className="flex flex-1 flex-col justify-between px-4">
+      {previewUrl ? (
+        <div className="flex flex-col items-center gap-4">
+          <h3 className="inline-flex items-center gap-1 rounded-full bg-[#333333] px-4 py-3 text-sm font-semibold text-[##E1E1E3]">
+            발자국으로 자유롭게 꾸며보세요
+            <LogoIcon className="h-4 w-4 text-[#FADF78]" />
+          </h3>
+          <div className="aspect-square overflow-hidden rounded-[30px]">
+            <img
+              src={previewUrl}
+              alt={t('photoAlt', { index: 1 })}
+              className="h-full w-full object-cover"
+            />
+          </div>
         </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          className="hidden"
-          onChange={handleFileChange}
-        />
-      </FormField>
+      ) : (
+        <div className="mt-14 flex aspect-square flex-col items-center justify-center space-y-6 rounded-[30px] border-3 border-dashed border-[#333333]">
+          <h3 className="font-semibold text-[#E1E1E3]">편집할 사진을 선택해주세요</h3>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="mx-auto flex items-center justify-center gap-2 rounded-full bg-[#E1E1E3] p-4 text-[#131313]"
+          >
+            <span className="font-medium">사진 업로드</span>
+            <CameraIcon />
+          </button>
+        </div>
+      )}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      {errors.images && <p className="text-xs text-destructive">{errors.images.message}</p>}
 
-      <div className="mt-auto pt-4 pb-10">
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="h-13 w-full rounded-2xl bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/80 disabled:opacity-40"
-        >
-          {isPending ? t('submitting') : t('complete')}
-        </Button>
-      </div>
+      <button
+        type="submit"
+        disabled={isPending || !previewUrl}
+        className="mb-4 w-full rounded-[18px] bg-[#FADF78] py-4 font-semibold text-[#4D4D4D] disabled:bg-[#4D4D4D] disabled:text-[#808080]"
+      >
+        업로드
+      </button>
     </form>
   );
 };
-
-function FormField({
-  label,
-  required,
-  error,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <p className="text-sm font-medium text-foreground">
-        {label}
-        {required && <span className="ml-1 text-primary">*</span>}
-      </p>
-      {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
-    </div>
-  );
-}
