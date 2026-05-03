@@ -1,11 +1,12 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { type ReactNode, type Ref } from 'react';
 import { cn } from '@/shared/lib/utils';
 import { DraggableElement } from './draggable-element';
 import type { CanvasElement } from '../model/canvas-element';
 
 interface ImageCanvasProps {
+  ref?: Ref<HTMLDivElement>;
   imageUrl: string;
   elements: CanvasElement[];
   onElementChange: (id: string, update: Pick<CanvasElement, 'x' | 'y'>) => void;
@@ -17,6 +18,7 @@ interface ImageCanvasProps {
 }
 
 export const ImageCanvas = ({
+  ref,
   imageUrl,
   elements,
   onElementChange,
@@ -27,6 +29,7 @@ export const ImageCanvas = ({
   className,
 }: ImageCanvasProps) => (
   <div
+    ref={ref}
     className={cn('relative aspect-square overflow-hidden rounded-[30px]', className)}
     onMouseDown={() => onSelect?.(null)}
   >

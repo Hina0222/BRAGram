@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useSubmitMissionForm } from '@/features/mission/submit';
-import { ImageCanvas, useCanvasElements } from '@/features/image-canvas';
+import { ImageCanvas, useCanvasElements, useCaptureCanvas } from '@/features/image-canvas';
 import CameraIcon from '@/shared/assets/icons/CameraIcon.svg';
 import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
 import PlusIcon from '@/shared/assets/icons/PlusIcon.svg';
@@ -19,6 +20,7 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
   } = methods;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const {
@@ -32,6 +34,8 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
     isMaxElements,
   } = useCanvasElements();
 
+  const { capture } = useCaptureCanvas(canvasRef);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -41,9 +45,18 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
     e.target.value = '';
   };
 
+  const handleFormSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    flushSync(() => setSelectedId(null));
+    const file = await capture();
+    if (!file) return;
+    setValue('images', [file]);
+    await onSubmit(missionId)();
+  };
+
   return (
     <form
-      onSubmit={onSubmit(missionId)}
+      onSubmit={handleFormSubmit}
       onMouseDown={() => setSelectedId(null)}
       className="flex flex-1 flex-col justify-between px-4"
     >
@@ -54,6 +67,7 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
             <LogoIcon className="h-4 w-4 text-[#FADF78]" />
           </h3>
           <ImageCanvas
+            ref={canvasRef}
             imageUrl={previewUrl}
             elements={elements}
             onElementChange={handleElementChange}
