@@ -1,5 +1,5 @@
 import { Header } from '@/widgets/header';
-import { CreatePostForm } from '@/features/post/create/ui';
+import { CreatePostForm } from './ui/create-post-form';
 
 export default function PostCreatePage() {
   return (

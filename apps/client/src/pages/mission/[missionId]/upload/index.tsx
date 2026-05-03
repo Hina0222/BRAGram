@@ -1,5 +1,5 @@
 import { Header } from '@/widgets/header';
-import { SubmitMissionForm } from '@/features/mission/submit/ui';
+import { SubmitMissionForm } from './ui/submit-mission-form';
 
 interface MissionUploadPageProps {
   params: Promise<{ missionId: string }>;
@@ -16,7 +16,7 @@ export default async function MissionUploadPage({ params }: MissionUploadPagePro
           <Header.Back />
         </Header.Left>
         <Header.Center>
-          <Header.Title>미션 제출</Header.Title>
+          <Header.Title>미션 업로드</Header.Title>
         </Header.Center>
       </Header>
       <SubmitMissionForm missionId={missionId} />

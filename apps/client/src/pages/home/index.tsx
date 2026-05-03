@@ -19,7 +19,9 @@ export default async function HomePage() {
         </Header.Right>
       </Header>
 
-      <HomePostList />
+      <main className="px-4">
+        <HomePostList />
+      </main>
 
       <HomeFab />
     </>
