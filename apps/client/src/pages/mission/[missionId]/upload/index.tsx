@@ -1,5 +1,5 @@
 import { Header } from '@/widgets/header';
-import { SubmitMissionForm } from '@/features/mission/submit/ui';
+import { SubmitMissionForm } from './ui/submit-mission-form';
 
 interface MissionUploadPageProps {
   params: Promise<{ missionId: string }>;

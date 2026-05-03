@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { useSubmitMissionForm } from '@/features/mission/submit/hooks/useSubmitMissionForm';
-import { useTranslations } from 'next-intl';
+import { useSubmitMissionForm } from '@/features/mission/submit';
+import { ImageCanvas, useCanvasElements } from '@/features/image-canvas';
 import CameraIcon from '@/shared/assets/icons/CameraIcon.svg';
 import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
+import PlusIcon from '@/shared/assets/icons/PlusIcon.svg';
 
 interface SubmitMissionFormProps {
   missionId: number;
 }
 
 export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
-  const t = useTranslations('submit');
   const { methods, onSubmit, isPending } = useSubmitMissionForm();
   const {
     setValue,
@@ -20,6 +20,17 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const {
+    elements,
+    selectedId,
+    setSelectedId,
+    handleElementChange,
+    handleTextChange,
+    addElement,
+    deleteElement,
+    isMaxElements,
+  } = useCanvasElements();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,19 +42,55 @@ export const SubmitMissionForm = ({ missionId }: SubmitMissionFormProps) => {
   };
 
   return (
-    <form onSubmit={onSubmit(missionId)} className="flex flex-1 flex-col justify-between px-4">
+    <form
+      onSubmit={onSubmit(missionId)}
+      onMouseDown={() => setSelectedId(null)}
+      className="flex flex-1 flex-col justify-between px-4"
+    >
       {previewUrl ? (
         <div className="flex flex-col items-center gap-4">
           <h3 className="inline-flex items-center gap-1 rounded-full bg-[#333333] px-4 py-3 text-sm font-semibold text-[##E1E1E3]">
             발자국으로 자유롭게 꾸며보세요
             <LogoIcon className="h-4 w-4 text-[#FADF78]" />
           </h3>
-          <div className="aspect-square overflow-hidden rounded-[30px]">
-            <img
-              src={previewUrl}
-              alt={t('photoAlt', { index: 1 })}
-              className="h-full w-full object-cover"
-            />
+          <ImageCanvas
+            imageUrl={previewUrl}
+            elements={elements}
+            onElementChange={handleElementChange}
+            renderElement={el => (
+              <div className="relative h-full w-full">
+                <LogoIcon className="h-full w-full" />
+                {selectedId === el.id ? (
+                  <input
+                    ref={node => node?.focus()}
+                    type="text"
+                    value={el.text ?? ''}
+                    onChange={e => handleTextChange(el.id, e.target.value)}
+                    className="absolute bottom-1.5 left-1/2 w-full -translate-x-1/2 text-center text-base font-bold text-[#131313] caret-[#131313] focus:outline-none"
+                  />
+                ) : (
+                  el.text && (
+                    <span className="absolute bottom-1.5 left-1/2 flex -translate-x-1/2 items-center justify-center text-base font-bold text-[#131313]">
+                      {el.text}
+                    </span>
+                  )
+                )}
+              </div>
+            )}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+            onElementDelete={deleteElement}
+          />
+          <div className="flex flex-col items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={addElement}
+              disabled={isMaxElements}
+              className="rounded-full bg-[#333333] px-7 py-5.25 disabled:opacity-40"
+            >
+              <PlusIcon />
+            </button>
+            <span className="font-semibold text-[#666666]">발자국 추가</span>
           </div>
         </div>
       ) : (
