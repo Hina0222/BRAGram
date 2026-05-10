@@ -107,6 +107,7 @@ function PostDetail({ id, relatedPosts }: PostDetailProps) {
                 'rounded-[8px] border',
                 i === current ? 'bg-[#FFFFFF]' : 'bg-transparent'
               )}
+              onClick={() => api?.scrollTo(i)}
             >
               <img
                 src={post.imageUrls[0]}
