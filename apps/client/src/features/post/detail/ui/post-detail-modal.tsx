@@ -3,14 +3,16 @@
 import { Dialog, DialogContent, DialogTitle } from '@/shared/ui';
 import React from 'react';
 import PostDetail from '@/features/post/detail/ui/post-detail';
+import type { PostItem } from '@pawboo/schemas/post';
 
 interface PostDetailModalProps {
   id: number;
   open: boolean;
   onClose: () => void;
+  relatedPosts?: PostItem[];
 }
 
-function PostDetailModal({ id, open, onClose }: PostDetailModalProps) {
+function PostDetailModal({ id, open, onClose, relatedPosts }: PostDetailModalProps) {
   return (
     <Dialog open={open} onOpenChange={open => !open && onClose()}>
       <DialogContent
@@ -25,7 +27,7 @@ function PostDetailModal({ id, open, onClose }: PostDetailModalProps) {
         }}
       >
         <DialogTitle className="sr-only">Post</DialogTitle>
-        <PostDetail id={id} />
+        <PostDetail id={id} relatedPosts={relatedPosts} />
       </DialogContent>
     </Dialog>
   );

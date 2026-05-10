@@ -64,10 +64,7 @@ function DialogContent({
         {...props}
       >
         {showCloseButton && (
-          <DialogPrimitive.Close
-            data-slot="dialog-close"
-            className="mx-auto mb-5 rounded-full bg-[#333333CC] px-3.75 py-2.5 backdrop-blur-md"
-          >
+          <DialogPrimitive.Close data-slot="dialog-close" className="mb-2 ml-auto px-3.75 py-2.5">
             <XIcon className="h-6 w-6" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
