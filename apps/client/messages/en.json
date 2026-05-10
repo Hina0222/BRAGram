@@ -22,9 +22,14 @@
   "nav": {
     "home": "Home",
     "mission": "Mission",
-    "ranking": "Ranking",
-    "community": "Community",
+    "search": "Search",
     "my": "My"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search by pet name...",
+    "hint": "Search for a pet by name",
+    "noResults": "No results found."
   },
   "signin": {
     "tagline1": "Record special moments",
@@ -109,16 +114,13 @@
     "deleteConfirm": "Are you sure you want to delete this submission? This action cannot be undone.",
     "deleteButton": "Delete"
   },
-  "feed": {
-    "noFeeds": "No feeds yet.",
+  "post": {
+    "noPosts": "No posts yet.",
     "loadError": "Failed to load post.",
-    "detail": "Feed Detail",
-    "missionPhotoAlt": "{petName}'s mission photo {index}",
-    "feedLoadError": "Failed to load feed.",
     "linkCopied": "Link copied",
     "linkCopyFailed": "Failed to copy link",
-    "delete": "Delete Feed",
-    "confirmDelete": "Delete this feed?",
+    "delete": "Delete Post",
+    "confirmDelete": "Delete this post?",
     "deleteCannotUndo": "This action cannot be undone.",
     "cancel": "Cancel"
   },

@@ -1,19 +1,29 @@
-import { BottomNav } from '@/widgets/bottom-nav';
-import { TitleHeader } from '@/widgets/header';
-import { FeedList } from '@/features/feed/list/ui';
-import { ServerFetchBoundary } from '@/shared/boundary/server-fetch-boundary';
-import { MissionCard } from '@/features/mission/today/ui/mission-card';
-import { getTodayMissionQueryOptions } from '@/features/mission/today/api/useGetTodayMissionQuery';
+import { Header } from '@/widgets/header';
+import SearchIcon from '@/shared/assets/icons/SearchIcon.svg';
+import HomePetAvatar from './ui/home-pet-avatar';
+import HomePostList from './ui/home-post-list';
+import HomeFab from './ui/home-fab';
 
 export default async function HomePage() {
   return (
-    <div className="pb-20">
-      <TitleHeader title="Pawboo" />
-      <ServerFetchBoundary queryOptions={getTodayMissionQueryOptions()}>
-        <MissionCard />
-        <FeedList />
-      </ServerFetchBoundary>
-      <BottomNav />
-    </div>
+    <>
+      <Header>
+        <Header.Left>
+          <HomePetAvatar />
+        </Header.Left>
+        <Header.Center>
+          <Header.Nav />
+        </Header.Center>
+        <Header.Right>
+          <Header.NavLink href="/search" icon={<SearchIcon />} />
+        </Header.Right>
+      </Header>
+
+      <main className="px-4">
+        <HomePostList />
+      </main>
+
+      <HomeFab />
+    </>
   );
 }

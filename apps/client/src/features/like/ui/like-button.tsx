@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Heart } from 'lucide-react';
-import { Button } from '@/shared/ui';
 import { cn } from '@/shared/lib/utils';
 import { useAddLikeMutation } from '../add/api/useAddLikeMutation';
 import { useRemoveLikeMutation } from '../remove/api/useRemoveLikeMutation';
+import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
 
 interface LikeButtonProps {
   submissionId: number;
@@ -41,18 +40,16 @@ export function LikeButton({ submissionId, initialLikeCount, initialIsLiked }: L
   };
 
   return (
-    <Button
-      variant="ghost"
-      size="xs"
+    <button
       onClick={handleClick}
       disabled={isPending}
-      className="gap-1.5 px-2"
+      className={cn(
+        'absolute right-3 bottom-3 flex items-center justify-center gap-x-1 rounded-full bg-[#4D4D4D80] p-3 transition-colors',
+        isLiked && 'text-[#FADF78]'
+      )}
     >
-      <Heart
-        size={16}
-        className={cn('transition-colors', isLiked && 'fill-red-500 text-red-500')}
-      />
-      <span className="text-xs text-muted-foreground">{likeCount}</span>
-    </Button>
+      <LogoIcon className="h-5 w-5" />
+      <span className="text-xs font-medium">{likeCount}</span>
+    </button>
   );
 }

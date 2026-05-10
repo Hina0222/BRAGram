@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import type { LikeResponse } from '@pawboo/schemas/like';
 
 export const removeLike = async (submissionId: number): Promise<LikeResponse> => {
-  return apiClient.delete<LikeResponse>(API_ROUTES.FEEDS.REMOVE_LIKE.URL(submissionId));
+  return apiClient.delete<LikeResponse>(API_ROUTES.POSTS.REMOVE_LIKE.URL(submissionId));
 };
 
 export const removeLikeMutationOptions = () => {

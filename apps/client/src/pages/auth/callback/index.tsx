@@ -10,7 +10,7 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     if (user) {
-      router.replace(user.nickname === null ? '/onboarding/profile' : '/');
+      router.replace('/');
     }
     if (isError) {
       router.replace('/signin');

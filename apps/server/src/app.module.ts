@@ -7,11 +7,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PetModule } from './pet/pet.module';
 import { MissionModule } from './mission/mission.module';
-import { FeedModule } from './feed/feed.module';
 import { LikeModule } from './like/like.module';
-import { CommentModule } from './comment/comment.module';
-import { RankingModule } from './ranking/ranking.module';
-import { FollowModule } from './follow/follow.module';
+import { PostModule } from './post/post.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -21,11 +19,9 @@ import { FollowModule } from './follow/follow.module';
     AuthModule,
     PetModule,
     MissionModule,
-    FeedModule,
     LikeModule,
-    CommentModule,
-    RankingModule,
-    FollowModule,
+    PostModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
