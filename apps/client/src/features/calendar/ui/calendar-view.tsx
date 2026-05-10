@@ -28,7 +28,7 @@ const CALENDAR_BASE_PROPS = {
 interface CalendarViewContentProps {
   activeStartDate: Date;
   prevMonthDate: Date;
-  postsByDate: Record<string, PostItem>;
+  postsByDate: Record<string, PostItem[]>;
   prevMonth: () => void;
   nextMonth: () => void;
 }
@@ -41,13 +41,17 @@ function CalendarViewContent({
   nextMonth,
 }: CalendarViewContentProps) {
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+  const [datePosts, setDatePosts] = useState<PostItem[]>([]);
 
   const tileContent = ({ date, view }: { date: Date; view: string }) =>
-    view === 'month' ? <CalendarTile date={date} post={postsByDate[toDateKey(date)]} /> : null;
+    view === 'month' ? <CalendarTile date={date} post={postsByDate[toDateKey(date)]?.[0]} /> : null;
 
   const handleClickDay = (date: Date) => {
-    const post = postsByDate[toDateKey(date)];
-    if (post) setSelectedPostId(post.id);
+    const posts = postsByDate[toDateKey(date)];
+    if (posts?.length) {
+      setSelectedPostId(posts[0].id);
+      setDatePosts(posts);
+    }
   };
 
   return (
@@ -90,7 +94,12 @@ function CalendarViewContent({
         </div>
       </div>
       {selectedPostId !== null && (
-        <PostDetailModal id={selectedPostId} open={true} onClose={() => setSelectedPostId(null)} />
+        <PostDetailModal
+          id={selectedPostId}
+          open={true}
+          onClose={() => setSelectedPostId(null)}
+          relatedPosts={datePosts}
+        />
       )}
     </>
   );

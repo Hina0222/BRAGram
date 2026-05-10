@@ -44,7 +44,7 @@ export function LikeButton({ submissionId, initialLikeCount, initialIsLiked }: L
       onClick={handleClick}
       disabled={isPending}
       className={cn(
-        'flex items-center justify-center gap-x-1 rounded-full bg-[#4D4D4D80] p-3 transition-colors',
+        'absolute right-3 bottom-3 flex items-center justify-center gap-x-1 rounded-full bg-[#4D4D4D80] p-3 transition-colors',
         isLiked && 'text-[#FADF78]'
       )}
     >
