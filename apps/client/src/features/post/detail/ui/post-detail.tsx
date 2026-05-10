@@ -11,7 +11,6 @@ import { useDeletePostMutation } from '@/features/post/delete/api/useDeletePostM
 import { CarouselApi } from '@/shared/ui/carousel';
 import React, { useEffect, useState } from 'react';
 import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
-import { motion } from 'framer-motion';
 import type { PostItem } from '@pawboo/schemas/post';
 import { cn } from '@/shared/lib/utils';
 
@@ -80,23 +79,15 @@ function PostDetail({ id, relatedPosts }: PostDetailProps) {
               ))}
         </CarouselContent>
         {relatedPosts && relatedPosts.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
             {relatedPosts.map((_, i) => (
-              <div key={i} className="relative flex h-3 w-3 items-center justify-center">
-                <div className="h-2 w-2 rounded-full bg-[#E1E1E3] opacity-40" />
-
-                {i === current && (
-                  <motion.div
-                    layoutId="activeDot"
-                    className="absolute h-3 w-3 rounded-full bg-white"
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 30,
-                    }}
-                  />
+              <div
+                key={i}
+                className={cn(
+                  'rounded-full',
+                  i === current ? 'h-3 w-3 bg-white' : 'h-2 w-2 bg-[#E1E1E3] opacity-40'
                 )}
-              </div>
+              />
             ))}
           </div>
         )}
