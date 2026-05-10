@@ -19,12 +19,9 @@ export const useCanvasElements = () => {
     setElements(prev => prev.map(el => (el.id === id ? { ...el, text: last } : el)));
   };
 
-  const addElement = () => {
+  const addElement = (x: number, y: number) => {
     if (elements.length >= MAX_ELEMENTS) return;
-    setElements(prev => [
-      ...prev,
-      { id: crypto.randomUUID(), x: 120, y: 120, width: 60, height: 60 },
-    ]);
+    setElements(prev => [...prev, { id: crypto.randomUUID(), x, y, width: 60, height: 60 }]);
   };
 
   const deleteElement = (id: string) => {

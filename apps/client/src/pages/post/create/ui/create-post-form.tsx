@@ -94,7 +94,11 @@ export const CreatePostForm = () => {
           <div className="flex flex-col items-center justify-center gap-2">
             <button
               type="button"
-              onClick={addElement}
+              onClick={() => {
+                if (!canvasRef.current) return;
+                const { width, height } = canvasRef.current.getBoundingClientRect();
+                addElement(Math.round(width / 2 - 30), Math.round(height / 2 - 30));
+              }}
               disabled={isMaxElements}
               className="rounded-full bg-[#333333] px-7 py-5.25 disabled:opacity-40"
             >
