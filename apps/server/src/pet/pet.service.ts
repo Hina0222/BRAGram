@@ -61,6 +61,12 @@ export class PetService {
     return pet;
   }
 
+  async findOneById(petId: number): Promise<PetResponse> {
+    const pet = await this.petRepository.findById(petId);
+    if (!pet) throw new NotFoundException('펫을 찾을 수 없습니다.');
+    return pet;
+  }
+
   async update(
     userId: number,
     petId: number,

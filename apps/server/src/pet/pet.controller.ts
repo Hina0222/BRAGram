@@ -63,11 +63,8 @@ export class PetController {
   }
 
   @Get(':id')
-  findOne(
-    @Req() req: AuthenticatedRequest,
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<PetResponse> {
-    return this.petService.findOne(req.user.id, id);
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<PetResponse> {
+    return this.petService.findOneById(id);
   }
 
   @Patch(':id')
