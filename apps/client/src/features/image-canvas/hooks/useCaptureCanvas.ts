@@ -12,11 +12,12 @@ export const useCaptureCanvas = (ref: RefObject<HTMLDivElement | null>) => {
       const { width: currentWidth } = ref.current.getBoundingClientRect();
 
       const pixelRatio = TARGET_WIDTH / currentWidth;
+      const options = { pixelRatio, skipAutoScale: true };
 
-      const blob = await toBlob(ref.current, {
-        pixelRatio,
-        skipAutoScale: true,
-      });
+      await toBlob(ref.current, options);
+      await toBlob(ref.current, options);
+      await toBlob(ref.current, options);
+      const blob = await toBlob(ref.current, options);
 
       if (!blob) return null;
 
