@@ -23,7 +23,14 @@ export default function SigninPage() {
 
         {/* 피처 하이라이트 */}
         <div className="max-w-[300px]">
-          <img src={LoginMainImg.src} alt="LoginLogoImg" className="h-full w-full object-cover" />
+          <img
+            src={LoginMainImg.src}
+            alt="LoginLogoImg"
+            fetchPriority="high"
+            width={300}
+            height={260}
+            className="h-full w-full object-cover"
+          />
         </div>
       </div>
 
