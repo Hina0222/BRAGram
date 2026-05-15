@@ -29,17 +29,17 @@ export function PetSearch() {
   return (
     <div className="space-y-5 px-4">
       <div className="flex items-center gap-2 rounded-[18px] border border-[#4D4D4D] bg-[#333333] p-4">
-        <SearchIcon />
+        <SearchIcon className="shrink-0" />
         <input
           type="text"
           value={query}
           onChange={handleChange}
           placeholder="닉네임을 검색하세요"
-          className="flex-1 text-foreground placeholder:text-[#666666] focus:outline-none"
+          className="min-w-0 flex-1 text-foreground placeholder:text-[#666666] focus:outline-none"
         />
         {query.length > 0 && (
           <button type="button" onClick={handleClear}>
-            <InputXIcon />
+            <InputXIcon className="shrink-0" />
           </button>
         )}
       </div>
