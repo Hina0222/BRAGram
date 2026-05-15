@@ -46,6 +46,7 @@
 
 :root {
     --radius: 0.625rem;
+    --font-baloo: sans-serif;
     --background: oklch(0.975 0.005 91);
     --foreground: oklch(0.147 0.004 49.25);
     --card: oklch(1 0 0);
@@ -142,5 +143,11 @@
 
     ::-webkit-scrollbar-thumb:hover {
         background: var(--foreground);
+    }
+}
+
+@layer utilities {
+    .font-baloo {
+        font-family: var(--font-baloo);
     }
 }

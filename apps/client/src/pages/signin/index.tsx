@@ -16,7 +16,7 @@ export default function SigninPage() {
       <div className="flex flex-1 flex-col items-center justify-center gap-10">
         {/* 로고 */}
         <div>
-          <img src={LoginLogoImg.src} alt="LoginLogoImg" className={'h-full w-full object-cover'} />
+          <h1 className="font-baloo text-[40px] text-[#E1E1E3]">Pawboo</h1>
         </div>
 
         {/* 피처 하이라이트 */}

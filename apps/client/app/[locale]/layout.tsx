@@ -14,6 +14,12 @@ const pretendard = localFont({
   weight: '45 920',
 });
 
+const balooBhai2 = localFont({
+  src: '../../src/app/fonts/BalooBhai2-Bold.ttf',
+  display: 'swap',
+  variable: '--font-baloo',
+});
+
 export const metadata: Metadata = {
   title: 'Pawboo',
   description: 'Pawboo',
@@ -38,7 +44,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${pretendard.className} dark antialiased`}>
+      <body className={`${pretendard.className} ${balooBhai2.variable} dark antialiased`}>
         <div className="mx-auto flex h-full min-h-svh max-w-[390px] flex-col">
           <NextIntlClientProvider messages={messages}>
             <QueryProvider>{children}</QueryProvider>
