@@ -1,9 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import LoginLogoImg from '@/shared/assets/images/LoginLogoImg.png';
 import LoginMainImg from '@/shared/assets/images/LoginMainImg.png';
 import KakaoIcon from '@/shared/assets/icons/KakaoIcon.svg';
+import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
 
 export default function SigninPage() {
   const t = useTranslations('signin');
@@ -15,13 +15,15 @@ export default function SigninPage() {
     <>
       <div className="flex flex-1 flex-col items-center justify-center gap-10">
         {/* 로고 */}
-        <div>
-          <h1 className="font-baloo text-[40px] text-[#E1E1E3]">Pawboo</h1>
+        <div className="flex flex-col items-center justify-center">
+          <LogoIcon className="w-[78px] text-[#FADF78]" />
+          <h1 className="font-baloo text-[40px] leading-10 text-[#E1E1E3]">Pawboo</h1>
+          <h3 className="text-sm font-semibold text-[#7E7E7F]">반려동물이 주인공인 SNS</h3>
         </div>
 
         {/* 피처 하이라이트 */}
-        <div>
-          <img src={LoginMainImg.src} alt="LoginLogoImg" className={'h-full w-full object-cover'} />
+        <div className="max-w-[300px]">
+          <img src={LoginMainImg.src} alt="LoginLogoImg" className="h-full w-full object-cover" />
         </div>
       </div>
 
