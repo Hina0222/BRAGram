@@ -4,14 +4,14 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { withErrorBoundary, withSuspense } from '@/shared/boundary';
-import PostDetailModal from '@/features/post/detail/ui/post-detail-modal';
+import CalendarPostDetailModal from './calendar-post-detail-modal';
 import { useCalendarView } from '../hooks/useCalendarView';
 import { usePetCalendarView } from '../hooks/usePetCalendarView';
 import { toDateKey, formatYear, formatMonth } from '../lib/calendar';
 import { CalendarViewSkeleton } from './calendar-view-skeleton';
 import { CalendarViewError } from './calendar-view-error';
 import { CalendarTile } from './calendar-tile';
-import type { PostItem } from '@pawboo/schemas/post';
+import type { PostDetail } from '@pawboo/schemas/post';
 import './calendar.css';
 
 const CALENDAR_BASE_PROPS = {
@@ -28,7 +28,7 @@ const CALENDAR_BASE_PROPS = {
 interface CalendarViewContentProps {
   activeStartDate: Date;
   prevMonthDate: Date;
-  postsByDate: Record<string, PostItem[]>;
+  postsByDate: Record<string, PostDetail[]>;
   prevMonth: () => void;
   nextMonth: () => void;
 }
@@ -40,8 +40,7 @@ function CalendarViewContent({
   prevMonth,
   nextMonth,
 }: CalendarViewContentProps) {
-  const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
-  const [datePosts, setDatePosts] = useState<PostItem[]>([]);
+  const [datePosts, setDatePosts] = useState<PostDetail[] | null>(null);
 
   const tileContent = ({ date, view }: { date: Date; view: string }) =>
     view === 'month' ? <CalendarTile date={date} post={postsByDate[toDateKey(date)]?.[0]} /> : null;
@@ -49,7 +48,6 @@ function CalendarViewContent({
   const handleClickDay = (date: Date) => {
     const posts = postsByDate[toDateKey(date)];
     if (posts?.length) {
-      setSelectedPostId(posts[0].id);
       setDatePosts(posts);
     }
   };
@@ -93,13 +91,8 @@ function CalendarViewContent({
           </div>
         </div>
       </div>
-      {selectedPostId !== null && (
-        <PostDetailModal
-          id={selectedPostId}
-          open={true}
-          onClose={() => setSelectedPostId(null)}
-          relatedPosts={datePosts}
-        />
+      {datePosts !== null && (
+        <CalendarPostDetailModal posts={datePosts} open={true} onClose={() => setDatePosts(null)} />
       )}
     </>
   );

@@ -2,15 +2,16 @@
 
 import { Dialog, DialogContent, DialogTitle } from '@/shared/ui';
 import React from 'react';
-import PostDetail from '@/features/post/detail/ui/post-detail';
+import type { PostDetail } from '@pawboo/schemas/post';
+import { CalendarPostDetail } from './calendar-post-detail';
 
-interface PostDetailModalProps {
-  id: number;
+interface CalendarPostDetailModalProps {
+  posts: PostDetail[];
   open: boolean;
   onClose: () => void;
 }
 
-function PostDetailModal({ id, open, onClose }: PostDetailModalProps) {
+function CalendarPostDetailModal({ posts, open, onClose }: CalendarPostDetailModalProps) {
   return (
     <Dialog open={open} onOpenChange={open => !open && onClose()}>
       <DialogContent
@@ -25,10 +26,10 @@ function PostDetailModal({ id, open, onClose }: PostDetailModalProps) {
         }}
       >
         <DialogTitle className="sr-only">Post</DialogTitle>
-        <PostDetail id={id} onDeleted={onClose} />
+        <CalendarPostDetail posts={posts} onDeleted={onClose} />
       </DialogContent>
     </Dialog>
   );
 }
 
-export default PostDetailModal;
+export default CalendarPostDetailModal;

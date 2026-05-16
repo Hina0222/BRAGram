@@ -2,10 +2,12 @@ import { useInfiniteQuery, useSuspenseInfiniteQuery } from '@tanstack/react-quer
 import { postQueryKeys } from '@/entities/post/model/post.query-key';
 import { apiClient } from '@/shared/api';
 import { API_ROUTES } from '@/shared/api/api-routes.constants';
-import type { PostListResponse } from '@pawboo/schemas/post';
+import type { CalendarPostListResponse } from '@pawboo/schemas/post';
 
-export const getMyPosts = async (params?: { cursor?: number }): Promise<PostListResponse> => {
-  return apiClient.get<PostListResponse>(API_ROUTES.POSTS.GET_MY_POSTS.URL, { params });
+export const getMyPosts = async (params?: {
+  cursor?: number;
+}): Promise<CalendarPostListResponse> => {
+  return apiClient.get<CalendarPostListResponse>(API_ROUTES.POSTS.GET_MY_POSTS.URL, { params });
 };
 
 export const getMyPostsInfiniteQueryOptions = () => {
@@ -14,7 +16,7 @@ export const getMyPostsInfiniteQueryOptions = () => {
     queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
       getMyPosts({ cursor: pageParam || undefined }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage: PostListResponse) =>
+    getNextPageParam: (lastPage: CalendarPostListResponse) =>
       lastPage.hasNext ? lastPage.cursor : undefined,
   };
 };

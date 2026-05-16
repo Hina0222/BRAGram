@@ -1,11 +1,11 @@
 'use client';
 
-import type { PostItem } from '@pawboo/schemas/post';
+import type { PostDetail } from '@pawboo/schemas/post';
 import LogoIcon from '@/shared/assets/icons/LogoIcon.svg';
 
 interface CalendarTileProps {
   date: Date;
-  post?: PostItem;
+  post?: PostDetail;
 }
 
 export function CalendarTile({ date, post }: CalendarTileProps) {
