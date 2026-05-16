@@ -25,6 +25,7 @@ import {
   type PostResponse,
   type PostDetail,
   type PostListResponse,
+  type CalendarPostListResponse,
 } from '@pawboo/schemas/post';
 
 @Controller('posts')
@@ -58,7 +59,7 @@ export class PostController {
   findMyPosts(
     @Req() req: AuthenticatedRequest,
     @Query() query: Record<string, string>,
-  ): Promise<PostListResponse> {
+  ): Promise<CalendarPostListResponse> {
     const parsed = PostQuerySchema.safeParse(query);
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.issues);
@@ -69,14 +70,15 @@ export class PostController {
   @Get('pets/:petId')
   @UseGuards(JwtAuthGuard)
   findPetPosts(
+    @Req() req: AuthenticatedRequest,
     @Param('petId', ParseIntPipe) petId: number,
     @Query() query: Record<string, string>,
-  ): Promise<PostListResponse> {
+  ): Promise<CalendarPostListResponse> {
     const parsed = PostQuerySchema.safeParse(query);
     if (!parsed.success) {
       throw new BadRequestException(parsed.error.issues);
     }
-    return this.postService.findPetPosts(petId, parsed.data);
+    return this.postService.findPetPosts(req.user.id, petId, parsed.data);
   }
 
   @Get('liked')

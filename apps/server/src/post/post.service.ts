@@ -11,6 +11,7 @@ import type {
   PostItem,
   PostDetail,
   PostListResponse,
+  CalendarPostListResponse,
   PostQuery,
 } from '@pawboo/schemas/post';
 
@@ -75,24 +76,63 @@ export class PostService {
   async findMyPosts(
     userId: number,
     query: PostQuery,
-  ): Promise<PostListResponse> {
+  ): Promise<CalendarPostListResponse> {
     const representativePet =
       await this.petRepository.findRepresentativeByUserId(userId);
     if (!representativePet) {
       return { data: [], hasNext: false, cursor: null };
     }
-    return this.toPostListResponse(
+    return this.toCalendarPostListResponse(
+      userId,
       await this.postRepository.findPosts(query, representativePet.id),
+      {
+        id: representativePet.id,
+        name: representativePet.name,
+        imageUrl: representativePet.imageUrl ?? null,
+      },
     );
   }
 
   async findPetPosts(
+    userId: number,
     petId: number,
     query: PostQuery,
-  ): Promise<PostListResponse> {
-    return this.toPostListResponse(
+  ): Promise<CalendarPostListResponse> {
+    const pet = await this.petRepository.findById(petId);
+    if (!pet) {
+      return { data: [], hasNext: false, cursor: null };
+    }
+    return this.toCalendarPostListResponse(
+      userId,
       await this.postRepository.findPosts(query, petId),
+      { id: pet.id, name: pet.name, imageUrl: pet.imageUrl ?? null },
     );
+  }
+
+  private async toCalendarPostListResponse(
+    userId: number,
+    result: { rows: PostListRow[]; hasNext: boolean; cursor: number | null },
+    pet: { id: number; name: string; imageUrl: string | null },
+  ): Promise<CalendarPostListResponse> {
+    const ids = result.rows.map((r) => r.id);
+    const [likedSet, likeCountMap] = await Promise.all([
+      this.postRepository.getLikedPosts(userId, ids),
+      this.postRepository.getLikeCounts(ids),
+    ]);
+    return {
+      data: result.rows.map((r) => ({
+        id: r.id,
+        type: r.type,
+        missionId: r.missionId ?? null,
+        imageUrls: r.imageUrls,
+        createdAt: r.createdAt.toISOString(),
+        pet,
+        likeCount: likeCountMap.get(r.id) ?? 0,
+        isLiked: likedSet.has(r.id),
+      })),
+      hasNext: result.hasNext,
+      cursor: result.cursor,
+    };
   }
 
   private toPostItem(row: PostListRow): PostItem {

@@ -69,6 +69,7 @@ describe('PostService', () => {
 
   const mockPetRepository = {
     findRepresentativeByUserId: jest.fn(),
+    findById: jest.fn(),
   };
 
   const mockAwsService = {
@@ -251,10 +252,19 @@ describe('PostService', () => {
     it('대표 펫 기준 포스트 정상 조회', async () => {
       petRepository.findRepresentativeByUserId.mockResolvedValue(mockPet);
       postRepository.findPosts.mockResolvedValue(mockFindPostsResult);
+      postRepository.getLikedPosts.mockResolvedValue(new Map([[1, true]]));
+      postRepository.getLikeCounts.mockResolvedValue(new Map([[1, 5]]));
 
       const result = await service.findMyPosts(1, {});
 
       expect(result.data).toHaveLength(1);
+      expect(result.data[0].likeCount).toBe(5);
+      expect(result.data[0].isLiked).toBe(true);
+      expect(result.data[0].pet).toEqual({
+        id: mockPet.id,
+        name: mockPet.name,
+        imageUrl: mockPet.imageUrl,
+      });
       expect(postRepository.findPosts).toHaveBeenCalledWith({}, mockPet.id);
     });
   });
@@ -323,12 +333,26 @@ describe('PostService', () => {
   });
 
   describe('findPetPosts', () => {
-    it('특정 펫 포스트 정상 조회', async () => {
-      postRepository.findPosts.mockResolvedValue(mockFindPostsResult);
+    it('펫 없음 - 빈 결과 반환', async () => {
+      petRepository.findById.mockResolvedValue(null);
 
-      const result = await service.findPetPosts(2, {});
+      const result = await service.findPetPosts(1, 999, {});
+
+      expect(result).toEqual({ data: [], hasNext: false, cursor: null });
+      expect(postRepository.findPosts).not.toHaveBeenCalled();
+    });
+
+    it('특정 펫 포스트 정상 조회', async () => {
+      petRepository.findById.mockResolvedValue({ ...mockPet, id: 2 });
+      postRepository.findPosts.mockResolvedValue(mockFindPostsResult);
+      postRepository.getLikedPosts.mockResolvedValue(new Map());
+      postRepository.getLikeCounts.mockResolvedValue(new Map([[1, 0]]));
+
+      const result = await service.findPetPosts(1, 2, {});
 
       expect(result.data).toHaveLength(1);
+      expect(result.data[0].pet.id).toBe(2);
+      expect(result.data[0].isLiked).toBe(false);
       expect(postRepository.findPosts).toHaveBeenCalledWith({}, 2);
     });
   });

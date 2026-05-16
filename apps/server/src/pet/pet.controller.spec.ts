@@ -163,7 +163,7 @@ describe('PetController', () => {
     it('특정 펫 조회', async () => {
       service.findOne.mockResolvedValue(mockPetResponse);
 
-      const result = await controller.findOne(req, 1);
+      const result = await controller.findOne(1);
 
       expect(service.findOne).toHaveBeenCalledWith(1, 1);
       expect(result).toEqual(mockPetResponse);
