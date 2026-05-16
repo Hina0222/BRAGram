@@ -38,8 +38,15 @@ export const PostListResponseSchema = z.object({
   cursor: z.number().nullable(),
 });
 
+export const CalendarPostListResponseSchema = z.object({
+  data: z.array(PostDetailSchema),
+  hasNext: z.boolean(),
+  cursor: z.number().nullable(),
+});
+
 export type PostResponse = z.infer<typeof PostResponseSchema>;
 export type PostQuery = z.infer<typeof PostQuerySchema>;
 export type PostItem = z.infer<typeof PostItemSchema>;
 export type PostDetail = z.infer<typeof PostDetailSchema>;
 export type PostListResponse = z.infer<typeof PostListResponseSchema>;
+export type CalendarPostListResponse = z.infer<typeof CalendarPostListResponseSchema>;
