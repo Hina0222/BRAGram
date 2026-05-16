@@ -24,8 +24,8 @@ export const IMAGE_PRESET = {
   },
   POST: {
     folder: 'posts',
-    width: 400,
-    height: 400,
+    width: 2048,
+    height: 2048,
     fit: 'inside' as const,
     withoutEnlargement: true,
     quality: 85,

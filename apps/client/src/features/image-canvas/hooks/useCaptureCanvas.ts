@@ -8,10 +8,13 @@ export const useCaptureCanvas = (ref: RefObject<HTMLDivElement | null>) => {
     if (!ref.current) return null;
 
     try {
-      const TARGET_WIDTH = 1200;
+      const MAX_TARGET_WIDTH = 2048;
       const { width: currentWidth } = ref.current.getBoundingClientRect();
+      const baseImg = ref.current.querySelector('img');
+      const naturalWidth = baseImg?.naturalWidth ?? currentWidth;
+      const targetWidth = Math.min(Math.max(naturalWidth, currentWidth), MAX_TARGET_WIDTH);
 
-      const pixelRatio = TARGET_WIDTH / currentWidth;
+      const pixelRatio = targetWidth / currentWidth;
       const options = { pixelRatio, skipAutoScale: true };
 
       await toBlob(ref.current, options);
