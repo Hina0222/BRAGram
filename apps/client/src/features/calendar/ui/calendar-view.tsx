@@ -40,15 +40,16 @@ function CalendarViewContent({
   prevMonth,
   nextMonth,
 }: CalendarViewContentProps) {
-  const [datePosts, setDatePosts] = useState<PostDetail[] | null>(null);
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const selectedPosts = selectedDateKey ? postsByDate[selectedDateKey] : undefined;
 
   const tileContent = ({ date, view }: { date: Date; view: string }) =>
     view === 'month' ? <CalendarTile date={date} post={postsByDate[toDateKey(date)]?.[0]} /> : null;
 
   const handleClickDay = (date: Date) => {
-    const posts = postsByDate[toDateKey(date)];
-    if (posts?.length) {
-      setDatePosts(posts);
+    const key = toDateKey(date);
+    if (postsByDate[key]?.length) {
+      setSelectedDateKey(key);
     }
   };
 
@@ -91,9 +92,13 @@ function CalendarViewContent({
           </div>
         </div>
       </div>
-      {datePosts !== null && (
-        <CalendarPostDetailModal posts={datePosts} open={true} onClose={() => setDatePosts(null)} />
-      )}
+      {selectedPosts?.length ? (
+        <CalendarPostDetailModal
+          posts={selectedPosts}
+          open
+          onClose={() => setSelectedDateKey(null)}
+        />
+      ) : null}
     </>
   );
 }

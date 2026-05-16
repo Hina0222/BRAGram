@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api';
 import { API_ROUTES } from '@/shared/api/api-routes.constants';
+import { patchLikeInCaches } from '@/features/like/lib/patch-like-cache';
 import { toast } from 'sonner';
 import type { LikeResponse } from '@pawboo/schemas/like';
 
@@ -13,7 +14,9 @@ export const removeLike = async (submissionId: number): Promise<LikeResponse> =>
 export const removeLikeMutationOptions = () => {
   return {
     mutationFn: removeLike,
-    onSuccess: () => {},
+    onSuccess: (data: LikeResponse, submissionId: number) => {
+      patchLikeInCaches(submissionId, data);
+    },
     onError: (error: Error) => {
       toast.error(error.message);
     },
