@@ -20,9 +20,20 @@ const balooBhai2 = localFont({
   variable: '--font-baloo',
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_URL ?? 'http://localhost:3001';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'Pawboo',
-  description: 'Pawboo',
+  description: '반려동물 일상 공유 해보세요!',
+  openGraph: {
+    title: 'Pawboo',
+    description: '반려동물 일상 공유 해보세요!',
+    url: siteUrl,
+    siteName: 'Pawboo',
+    locale: 'ko_KR',
+    type: 'website',
+  },
 };
 
 export function generateStaticParams() {
