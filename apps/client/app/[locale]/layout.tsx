@@ -33,6 +33,14 @@ export const metadata: Metadata = {
     siteName: 'Pawboo',
     locale: 'ko_KR',
     type: 'website',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Pawboo',
+      },
+    ],
   },
 };
 
