@@ -17,7 +17,6 @@ function PostDetailModal({ id, open, onClose }: PostDetailModalProps) {
         blur={true}
         showCloseButton={true}
         aria-describedby={undefined}
-        onClick={() => onClose()}
         onPointerDownOutside={e => {
           if (e.detail.originalEvent.button !== 0) {
             e.preventDefault();

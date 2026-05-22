@@ -18,7 +18,6 @@ function CalendarPostDetailModal({ posts, open, onClose }: CalendarPostDetailMod
         blur={true}
         showCloseButton={true}
         aria-describedby={undefined}
-        onClick={() => onClose()}
         onPointerDownOutside={e => {
           if (e.detail.originalEvent.button !== 0) {
             e.preventDefault();

@@ -46,7 +46,7 @@ export function CalendarPostDetail({ posts, onDeleted }: CalendarPostDetailProps
 
   return (
     <article className="flex flex-col items-center gap-2">
-      <Carousel className="w-full" setApi={setApi} onClick={e => e.stopPropagation()}>
+      <Carousel className="w-full" setApi={setApi}>
         <CarouselContent>
           {posts.map((post, i) => (
             <CarouselItem key={post.id}>
@@ -81,7 +81,7 @@ export function CalendarPostDetail({ posts, onDeleted }: CalendarPostDetailProps
         />
       </Carousel>
 
-      <div className="flex gap-2 overflow-x-auto" onClick={e => e.stopPropagation()}>
+      <div className="flex gap-2 overflow-x-auto">
         {posts.map((post, i) => (
           <div
             key={post.id}
@@ -102,12 +102,7 @@ export function CalendarPostDetail({ posts, onDeleted }: CalendarPostDetailProps
           isPending={isPending}
           onConfirm={handleDelete}
           trigger={
-            <button
-              onClick={e => {
-                e.stopPropagation();
-              }}
-              className="font-medium text-[#E1E1E3] underline disabled:opacity-50"
-            >
+            <button className="absolute bottom-10 font-medium text-[#E1E1E3] underline disabled:opacity-50">
               삭제하기
             </button>
           }

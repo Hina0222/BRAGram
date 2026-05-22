@@ -58,16 +58,16 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg',
+          'fixed top-[50%] left-[50%] z-50 flex h-full w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col justify-center duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg',
           className
         )}
         {...props}
       >
         {showCloseButton && (
-          <DialogPrimitive.Close data-slot="dialog-close" className="mb-2 ml-auto px-3.75 py-2.5">
+          <DialogClose className="mb-2 ml-auto px-3.75 py-2.5">
             <XIcon className="h-6 w-6" />
             <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
+          </DialogClose>
         )}
         {children}
       </DialogPrimitive.Content>

@@ -36,7 +36,7 @@ function PostDetail({ id, onDeleted }: PostDetailProps) {
 
   return (
     <article className="flex flex-col items-center gap-2">
-      <Carousel className="w-full" onClick={e => e.stopPropagation()}>
+      <Carousel className="w-full">
         <CarouselContent>
           {item.imageUrls.map((url, i) => (
             <CarouselItem key={i}>
@@ -59,8 +59,7 @@ function PostDetail({ id, onDeleted }: PostDetailProps) {
 
       <div
         className="flex cursor-pointer gap-x-2.5 rounded-full bg-[#333333CC] p-2 backdrop-blur-md"
-        onClick={e => {
-          e.stopPropagation();
+        onClick={() => {
           router.push(`/pets/${item.pet.id}`);
         }}
       >
@@ -88,12 +87,7 @@ function PostDetail({ id, onDeleted }: PostDetailProps) {
           isPending={isPending}
           onConfirm={handleDelete}
           trigger={
-            <button
-              onClick={e => {
-                e.stopPropagation();
-              }}
-              className="font-medium text-[#E1E1E3] underline disabled:opacity-50"
-            >
+            <button className="absolute bottom-10 font-medium text-[#E1E1E3] underline disabled:opacity-50">
               삭제하기
             </button>
           }

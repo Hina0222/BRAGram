@@ -51,7 +51,7 @@ function ConfirmDialog({
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent
         showCloseButton={false}
-        className="rounded-[20px] bg-[#FFFFFF] px-4 pt-9 pb-3.5"
+        className="h-auto rounded-[20px] bg-[#FFFFFF] px-4 pt-9 pb-3.5"
       >
         <DialogHeader className="mb-6.5">
           <DialogTitle className="text-center text-base font-medium text-[#131313]">
