@@ -2,6 +2,8 @@ services:
   postgres:
     container_name: pawboo-postgres-prod
     image: postgres:16-alpine
+    env_file:
+      - .env.prod
     ports:
       - "127.0.0.1:${POSTGRES_PORT}:5432"
     environment:
@@ -13,7 +15,7 @@ services:
     networks:
       - pawboo-network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
       interval: 10s
       timeout: 5s
       retries: 5
